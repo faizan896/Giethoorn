@@ -10,6 +10,15 @@ described below.
 
 ## Intel Mac local setup, 16 November 2026 PKT
 
+**Mac acceptance:** after applying `11a4247`, the user reports that image build
+and offline Paper Lab generation completed. Their direct-route Mac rehearsal
+also completed its requested 90 seconds, with `network_recovery_observed: true`,
+`crash_recovery_observed: true` and `supervisor_exit_code: 0`. Its saved run is
+`~/GiethoornData/rehearsal-20261116T161040Z-PXTg2R`. This is evidence from the user's
+Terminal output; its underlying archive has not been independently read here.
+The runner emits `completed` only after its native audit succeeds. A fresh
+24-hour Mac run and its final audit remain the next gate.
+
 The user approved source delivery through GitHub. The `mac-local-setup` branch
 was uploaded at `0d49d2e`; its ZIP downloaded successfully over HTTPS, all 119
 source files matched the commit, and executable modes were retained. The Mac
@@ -46,7 +55,8 @@ experiment without editing it. Local receipts bind both source hashes and
 distinguish a passed short window from a passed 24-hour request. The direct relay
 has bounded synthetic forwarding/target-rejection tests; the cloud acceptance
 uses the declared inherited-proxy route. That does not establish the Mac's direct
-network behavior or VM/filesystem acceptance.
+network behavior or VM/filesystem acceptance by itself; the separate user-reported
+Mac rehearsal above supplies the first local acceptance result.
 
 The source exporter includes the implementation, executable
 permissions, file hashes and optional saved Paper/Batch Lab previews. It excludes
@@ -71,7 +81,7 @@ and final `integrity: verified` / `full_window_completed: true` for that request
 monitor mounts those artifacts read-only and reports the correct 90-second gate.
 This verifies the packaged Linux runtime, not the Mac's direct route or a day run.
 
-The Mac's setup/demo/rehearsal still require local Terminal execution and its
+The Mac's setup/demo/rehearsal now complete according to the user's logs; its
 full 24-hour gate remains pending. The old cloud collector remains stopped. No
 old attempt is resumed, repaired or combined, and no environment was published,
 service installed or authenticated trading enabled.
