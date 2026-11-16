@@ -1,0 +1,34 @@
+[Unit]
+Description=Giethoorn bounded public-market-data collection
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=@USER@
+Group=@USER@
+WorkingDirectory=@WORKING_STATE@
+@STATE_SETUP@
+EnvironmentFile=-/etc/giethoorn/collector.env
+ExecStart=@RUNNER@ --binary @BINARY@ --state-dir @STATE@ -- --coin BTC --network mainnet --duration-secs 86400 --run-duration-secs 300 --max-restarts 5
+Restart=no
+KillMode=control-group
+KillSignal=SIGTERM
+TimeoutStopSec=60
+SendSIGKILL=yes
+RuntimeMaxSec=86520
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=@STATE@
+TasksMax=32
+LimitNOFILE=512
+MemoryMax=256M
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

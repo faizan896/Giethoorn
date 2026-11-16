@@ -1,0 +1,9 @@
+/target/
+/data/
+/.env
+/.env.*
+!/.env.example
+*.log
+/*-quotes.jsonl
+__pycache__/
+*.py[cod]

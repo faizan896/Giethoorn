@@ -1,0 +1,20 @@
+# Build context is an allowlist. Recordings, credentials and local binaries stay out.
+**
+!Cargo.toml
+!Cargo.lock
+!rust-toolchain.toml
+!src/
+!src/**
+!tests/
+!tests/**
+!fixtures/
+!fixtures/**
+!ops/
+!ops/**
+!scripts/
+!scripts/**
+!web/
+!web/**
+**/__pycache__/
+**/*.pyc
+**/*.log

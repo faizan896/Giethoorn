@@ -1,0 +1,153 @@
+#!/bin/bash
+# Compatible with macOS's Bash 3.2. No host Rust, Python, Git or paid server needed.
+set -euo pipefail
+umask 077
+mac_project=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)
+mac_data=${GIETHOORN_DATA_DIR:-"$HOME/GiethoornData"}
+mac_image=giethoorn-local:0.1.0
+mac_owner=$(id -u)
+mac_collector=giethoorn-local-collector-$mac_owner
+mac_monitor=giethoorn-local-monitor-$mac_owner
+mac_label=com.giethoorn.local
+
+fail() { echo "$*" >&2; exit 1; }
+usage() {
+  cat <<'HELP'
+Giethoorn on your Mac
+  ./scripts/mac setup       Build and test the Linux image
+  ./scripts/mac demo        Generate and open the offline synthetic Paper Lab
+  ./scripts/mac rehearsal   Run a 90-second live disconnect/crash rehearsal
+  ./scripts/mac start       Start a fresh 24-hour live experiment
+  ./scripts/mac status      Show the retained container state
+  ./scripts/mac logs        Show the last 30 collector log lines
+  ./scripts/mac open        Open the local monitor
+  ./scripts/mac stop        Stop this collector and monitor; preserve recordings
+Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
+Keep this Terminal open, the Mac plugged in and its lid open during a run.
+HELP
+}
+docker_ready() {
+  command -v docker >/dev/null 2>&1 || fail 'Install and open Docker Desktop for Intel Mac: https://docs.docker.com/desktop/setup/install/mac-install/'
+  docker info --format '{{.OSType}}' 2>/dev/null | /usr/bin/grep -qx linux || fail 'Open Docker Desktop and wait for its Linux engine to be ready.'
+}
+data_ready() {
+  case "$mac_data" in /*) ;; *) fail 'GIETHOORN_DATA_DIR must be an absolute path.' ;; esac
+  case "$mac_data" in /|*,*|*$'\n'*) fail 'Choose a dedicated data directory without commas or newlines.' ;; esac
+  mkdir -p "$mac_data"
+  [[ -w "$mac_data" ]] || fail 'Data directory is not writable.'
+}
+owned() { [[ "$(docker inspect --format '{{index .Config.Labels "com.giethoorn.local"}}' "$1" 2>/dev/null)" = true ]]; }
+exists() { docker inspect "$1" >/dev/null 2>&1; }
+image_ready() { docker image inspect "$mac_image" >/dev/null 2>&1 || fail 'Run ./scripts/mac setup first.'; }
+build_resources() {
+  read -r mac_cpus mac_memory <<< "$(docker info --format '{{.NCPU}} {{.MemTotal}}')"
+  [[ "$mac_cpus" =~ ^[0-9]+$ && "$mac_memory" =~ ^[0-9]+$ ]] || fail 'Docker resource information is unavailable.'
+  [[ "$mac_cpus" -ge 2 && "$mac_memory" -ge 4294967296 ]] || fail 'In Docker Settings → Resources, allocate at least 2 CPUs and 4 GB RAM, then Apply & Restart.'
+}
+run_args() {
+  mac_args=(--init --platform linux/amd64 --user "$(id -u):$(id -g)" --cap-drop ALL
+    --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=64m,mode=1777
+    --memory 768m --memory-swap 768m --cpus 2 --pids-limit 64
+    --log-opt max-size=10m --log-opt max-file=2 --stop-timeout 60 --label "$mac_label=true")
+}
+last_run() {
+  [[ -f "$mac_data/last-run" && ! -L "$mac_data/last-run" ]] || fail 'No retained local run yet.'
+  IFS= read -r mac_run < "$mac_data/last-run"
+  case "$mac_run" in *[!a-zA-Z0-9_-]*|'') fail 'Invalid retained run identifier.' ;; esac
+  [[ -d "$mac_data/$mac_run" ]] || fail 'Retained run directory is unavailable.'
+}
+remove_collector() {
+  if exists "$mac_collector"; then
+    owned "$mac_collector" || fail 'Collector name belongs to another container.'
+    [[ "$(docker inspect --format '{{.State.Running}}' "$mac_collector")" = false ]] || fail 'A collector is already running. Use status or stop.'
+    mac_previous=$(docker inspect --format '{{index .Config.Labels "com.giethoorn.run"}}' "$mac_collector")
+    case "$mac_previous" in *[!a-zA-Z0-9_-]*|'') fail 'Invalid previous run label.' ;; esac
+    [[ -d "$mac_data/$mac_previous" ]] || fail 'Previous data directory is unavailable; preserve its container.'
+    mac_log=$(mktemp "$mac_data/$mac_previous/container-log-XXXXXX")
+    docker logs "$mac_collector" > "$mac_log" 2>&1
+    docker rm "$mac_collector" >/dev/null
+  fi
+}
+stop_monitor() {
+  if exists "$mac_monitor"; then
+    owned "$mac_monitor" || fail 'Monitor name belongs to another container.'
+    docker stop --time 10 "$mac_monitor" >/dev/null
+    docker rm "$mac_monitor" >/dev/null
+  fi
+}
+watch_run() {
+  mac_watched_id=$(docker inspect --format '{{.Id}}' "$mac_collector")
+  [[ "$(docker inspect --format '{{index .Config.Labels "com.giethoorn.run"}}' "$mac_watched_id")" = "$mac_run" ]] || fail 'Collector changed before this view started.'
+  trap 'docker stop --time 60 "$mac_watched_id" >/dev/null 2>&1 || true; exit 130' INT TERM HUP
+  while [[ "$(docker inspect --format '{{.State.Running}}' "$mac_watched_id")" = true ]]; do sleep 3; done
+  mac_exit=$(docker inspect --format '{{.State.ExitCode}}' "$mac_watched_id")
+  docker logs --tail 12 "$mac_watched_id"
+  echo "Saved evidence: $mac_data/$mac_run"
+  echo 'Monitor: http://127.0.0.1:3000'
+  return "$mac_exit"
+}
+
+case "${1:-help}" in
+  help|--help|-h) usage ;;
+  setup)
+    docker_ready
+    build_resources
+    docker build --platform linux/amd64 --progress plain -f "$mac_project/ops/mac/Dockerfile" -t "$mac_image" "$mac_project"
+    data_ready
+    echo "Ready. Saved data will live in $mac_data"
+    echo 'Next: ./scripts/mac demo, then ./scripts/mac rehearsal'
+    ;;
+  demo)
+    docker_ready; image_ready; data_ready; run_args
+    mac_dir=$(mktemp -d "$mac_data/demo-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    docker run --rm "${mac_args[@]}" --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      python3 /app/ops/paper_demo.py --binary /usr/local/bin/giethoorn --output-dir /data/lab
+    if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/lab/paper-lab.html"; else echo "$mac_dir/lab/paper-lab.html"; fi
+    ;;
+  rehearsal|start)
+    mac_mode=$1
+    docker_ready; image_ready; data_ready; remove_collector; stop_monitor; run_args
+    mac_dir=$(mktemp -d "$mac_data/$mac_mode-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    mac_run=${mac_dir##*/}
+    mac_state=$(mktemp "$mac_data/.last-run-XXXXXX")
+    echo "$mac_run" > "$mac_state"
+    mv "$mac_state" "$mac_data/last-run"
+    mac_schedule=(--duration-secs 86400 --run-duration-secs 300 --disconnect-at-secs 30 --kill-at-secs 60)
+    if [[ "$mac_mode" = rehearsal ]]; then
+      mac_schedule=(--duration-secs 90 --run-duration-secs 45 --disconnect-at-secs 10 --kill-at-secs 25)
+    fi
+    docker run --detach "${mac_args[@]}" --name "$mac_collector" --label "com.giethoorn.run=$mac_run" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      python3 /app/ops/run_local.py --binary /usr/local/bin/giethoorn --output-dir /data/run --route direct "${mac_schedule[@]}"
+    if ! docker run --detach "${mac_args[@]}" --name "$mac_monitor" -p 127.0.0.1:3000:3000 \
+      --mount "type=bind,src=$mac_dir,dst=/data,readonly" "$mac_image" \
+      python3 /app/ops/dashboard.py --experiment /data/run/experiment --host 0.0.0.0 --port 3000; then
+      docker stop --time 60 "$mac_collector" >/dev/null
+      fail 'Monitor could not start. Collector stopped; its evidence is retained. Check whether port 3000 is in use.'
+    fi
+    echo 'Monitor: http://127.0.0.1:3000'
+    echo "Saved evidence: $mac_dir"
+    if [[ "$(uname -s)" = Darwin ]]; then
+      open http://127.0.0.1:3000 || echo 'Open http://127.0.0.1:3000 in your browser.'
+      exec caffeinate -ims /bin/bash "$mac_project/scripts/mac" watch
+    else
+      watch_run
+    fi
+    ;;
+  watch) docker_ready; data_ready; last_run; owned "$mac_collector" || fail 'Owned collector unavailable.'; watch_run ;;
+  status)
+    docker_ready
+    for mac_name in "$mac_collector" "$mac_monitor"; do
+      if exists "$mac_name"; then owned "$mac_name" || fail 'Container name is not owned by Giethoorn.'; docker inspect --format '{{.Name}}: {{.State.Status}} (exit {{.State.ExitCode}})' "$mac_name"; fi
+    done
+    ;;
+  logs) docker_ready; owned "$mac_collector" || fail 'Owned collector unavailable.'; docker logs --tail 30 "$mac_collector" ;;
+  open) if [[ "$(uname -s)" = Darwin ]]; then open http://127.0.0.1:3000; else echo http://127.0.0.1:3000; fi ;;
+  stop)
+    docker_ready
+    if exists "$mac_collector"; then owned "$mac_collector" || fail 'Collector is not owned by Giethoorn.'; docker stop --time 60 "$mac_collector" >/dev/null; fi
+    stop_monitor
+    echo 'Stopped. All saved recordings remain in your data directory.'
+    ;;
+  *) usage >&2; exit 2 ;;
+esac

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<meta name="theme-color" content="#263c30"><title>Giethoorn — Paper Lab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2040%2040%22%3E%3Crect%20width%3D%2240%22%20height%3D%2240%22%20rx%3D%2210%22%20fill%3D%22%23263c30%22%2F%3E%3Cg%20transform%3D%22translate%285%205%29%20scale%281.25%29%22%20fill%3D%22none%22%20stroke%3D%22%23eaf0e4%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%2013h16M6%2013V9m12%204V9M6%2010q6-8%2012%200M8%208v5m4-7v7m4-5v5M3%2017q3-2%206%200t6%200t6%200M5%2020q3-2%206%200t6%200%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<style>
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-feature-settings:"tnum"}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+button:disabled{cursor:default;opacity:.4}
+.topbar{height:74px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 40px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:650;letter-spacing:-.6px;text-decoration:none;color:var(--ink)}
+.brand-mark{width:29px;height:29px;background:var(--moss);border-radius:9px;color:white;display:grid;place-items:center;font-size:23px;font-weight:400}
+.brand small{font-size:10px;color:var(--muted);font-weight:400;margin-left:10px;letter-spacing:.3px}
+.topright{display:flex;align-items:center;gap:18px}
+.back{font-size:11px;color:var(--muted);text-decoration:none}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:30px;font-size:9px;font-weight:550;background:var(--brick-wash);color:var(--brick-ink);white-space:nowrap}
+.pill.green{color:var(--moss);background:var(--sage-wash)}
+.pill.amber{color:var(--warning);background:var(--thatch-wash)}
+.pill.red{color:var(--danger);background:var(--danger-wash)}
+.page{max-width:1340px;padding:30px 36px 25px;margin:auto}
+.eyebrow{font-size:9px;letter-spacing:1.7px;color:var(--muted);text-transform:uppercase}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}
+.heading h1{font-weight:600;letter-spacing:-.8px;font-size:27px;margin:7px 0 8px}
+.heading p{font-size:12px;color:var(--muted);line-height:1.7;margin:0}
+.version{font-size:10px;color:var(--muted);font-family:var(--mono)}
+.banner{padding:14px 17px;border:1px solid var(--brick-wash);border-radius:8px;background:var(--brick-wash);color:var(--brick-ink);font-size:11px;line-height:1.6;display:flex;gap:12px;align-items:center;margin:0 0 23px}
+.banner strong{color:var(--brick-ink);font-weight:600}
+.dot{height:6px;width:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}
+.card{background:white;border:1px solid var(--line);border-radius:11px;min-width:0}
+.stat{padding:19px 21px}
+.label{color:var(--muted);font-size:11px}
+.value{font-weight:570;font-size:25px;letter-spacing:-.7px;margin-top:13px;white-space:nowrap}
+.value small{font-size:11px;font-weight:400;color:var(--muted);letter-spacing:0;margin-left:5px}
+.stat-foot{font-size:9px;color:var(--muted);margin-top:9px;line-height:1.5}
+.positive{color:var(--moss)}
+.negative{color:var(--danger)}
+.main-grid{display:grid;grid-template-columns:minmax(0,1fr) 308px;gap:20px;align-items:start}
+.main-grid>div{min-width:0}
+.playback{padding:22px}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-title{font-size:12px;font-weight:600;margin:0}
+.small{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6}
+.event-box{display:flex;align-items:center;gap:14px;background:var(--surface-muted);border:1px solid var(--line-soft);border-radius:8px;padding:18px;margin-top:21px}
+.event-number{height:44px;width:44px;border-radius:10px;color:var(--brick-ink);background:var(--brick-wash);display:grid;place-items:center;font-size:15px;font-family:var(--mono);flex-shrink:0}
+.event-title{font-size:14px;font-weight:550;letter-spacing:-.2px}
+.event-detail{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
+.event-time{margin-left:auto;font-size:10px;color:var(--muted);font-family:var(--mono);white-space:nowrap}
+.play-controls{display:flex;align-items:center;gap:9px;margin-top:18px}
+.button{border:1px solid var(--line);background:white;color:var(--muted);border-radius:6px;font-size:10px;padding:9px 12px;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.button:hover{background:var(--surface-muted)}
+.button.primary{background:var(--moss);border-color:var(--moss);color:white;min-width:111px}
+.button.primary:hover{background:var(--moss)}
+.play-controls .frame-label{margin-left:auto;color:var(--muted);font-size:10px;font-family:var(--mono)}
+input[type=range]{width:100%;accent-color:var(--moss);height:18px;margin:17px 0 4px;cursor:pointer}
+.range-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:8px}
+.chart-header{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:20px;padding-top:18px;gap:12px}
+.chart-header strong{font-size:11px;font-weight:550}
+.chart-header span{font-size:9px;color:var(--muted)}
+.chart{display:block;width:100%;height:185px;margin-top:8px}
+.valuation{display:flex;gap:18px;font-size:10px;color:var(--muted);margin-top:6px}
+.valuation strong{font-family:var(--mono);font-weight:400;color:var(--muted);margin-left:4px}
+.assumptions{padding:22px}
+.assumption{padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.assumption:last-child{border:0;padding-bottom:0}
+.assumption small{font-size:9px;color:var(--muted);display:block}
+.assumption strong{font-size:11px;font-weight:500;display:block;margin-top:6px;color:var(--muted)}
+.limits{border-top:1px solid var(--line);margin-top:16px;padding-top:15px;display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.limit small{font-size:9px;color:var(--muted);display:block}
+.limit strong{font-size:11px;font-family:var(--mono);font-weight:400;color:var(--muted);display:block;margin-top:6px}
+.risk-card{padding:20px;margin-top:18px}
+.risk-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.risk-row{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:10px;color:var(--muted)}
+.risk-row strong{font-family:var(--mono);color:var(--muted);font-weight:400}
+.risk-note{color:var(--muted);font-size:9px;line-height:1.7;margin:14px 0 0;background:var(--surface-muted);padding:10px;border-radius:6px}
+.orders{margin-top:20px;overflow:hidden}
+.orders-head{display:flex;align-items:center;justify-content:space-between;padding:21px 22px 15px;gap:12px}
+.table-wrap{overflow:auto;max-height:340px}
+table{border-collapse:collapse;width:100%;font-size:10px;min-width:640px}
+th{text-align:left;font-size:9px;font-weight:500;color:var(--muted);background:var(--surface-muted);padding:11px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);white-space:nowrap}
+td{color:var(--muted);padding:15px 16px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+.mono{font-family:var(--mono)}
+.side{font-size:9px;padding:4px 7px;border-radius:4px;background:var(--sage-wash);color:var(--moss)}
+.side.sell{background:var(--brick-wash);color:var(--brick-ink)}
+.empty{padding:30px;text-align:center;color:var(--muted);font-size:11px}
+.status{font-size:9px;padding:4px 7px;border-radius:4px;background:var(--surface-muted);color:var(--muted)}
+.status.filled{background:var(--sage-wash);color:var(--moss)}
+.status.rejected{background:var(--thatch-wash);color:var(--warning)}
+.timeline{padding:22px;margin-top:20px}
+.event-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:17px}
+.event-chip{background:var(--surface-muted);border:1px solid var(--line);color:var(--muted);border-radius:5px;padding:7px 9px;font-size:10px;font-family:var(--mono)}
+.event-chip.current{background:var(--sage-wash);border-color:var(--sage-wash);color:var(--moss)}
+.event-chip.past{color:var(--muted);background:var(--surface-muted)}
+.footer{display:flex;justify-content:space-between;gap:14px;font-size:9px;color:var(--muted);line-height:1.7;margin-top:23px}
+.footer span:last-child{color:var(--brick-ink)}
+.scenario-state{white-space:nowrap}
+.money{overflow:hidden;text-overflow:ellipsis}
+.table-detail{font-size:8px;color:var(--muted);margin-top:5px}
+.summary-line{display:flex;gap:8px;align-items:center;font-size:9px;color:var(--muted);margin-top:14px}
+.summary-line .dot{background:var(--brick)}
+html{scroll-behavior:smooth}
+
+@media(max-width:1000px){.main-grid{grid-template-columns:minmax(0,1fr) 270px}
+.page{padding:27px 25px}
+.stat{padding:17px}
+.value{font-size:22px}
+.topbar{padding:0 26px}
+.playback{padding:20px}
+.event-time{display:none}
+.chart-header span{max-width:150px;text-align:right;line-height:1.6}
+}
+
+@media(max-width:780px){.stats{grid-template-columns:1fr 1fr;gap:12px}
+.main-grid{grid-template-columns:minmax(0,1fr)}
+.right-column{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.risk-card{margin-top:0}
+.event-time{display:block}
+.assumptions{padding:20px}
+.chart{height:200px}
+.footer{flex-direction:column;gap:4px}
+}
+
+@media(max-width:500px){.topbar{height:62px;padding:0 18px}
+.brand{font-size:16px}
+.brand small,.version{display:none}
+.back{display:block;font-size:0}
+.back:before{content:"←";font-size:16px}
+.page{padding:22px 16px}
+.heading h1{font-size:24px}
+.heading p{font-size:10px}
+.banner{font-size:10px;padding:12px;align-items:start}
+.banner .dot{margin-top:5px}
+.stat{padding:15px}
+.label{font-size:10px}
+.value{font-size:21px}
+.value small{font-size:10px}
+.stat-foot{font-size:8px}
+.main-grid{gap:16px}
+.playback{padding:17px}
+.event-box{padding:13px;gap:10px}
+.event-number{height:36px;width:36px;font-size:12px;border-radius:8px}
+.event-title{font-size:12px}
+.event-detail{font-size:9px}
+.event-time{display:none}
+.button{padding:8px 10px}
+.play-controls{gap:6px}
+.play-controls .frame-label{font-size:8px}
+.button.primary{min-width:105px}
+.chart-header span{font-size:8px;max-width:150px}
+.right-column{display:block}
+.risk-card{margin-top:16px}
+.valuation{font-size:9px;gap:12px}
+.orders-head{padding:17px}
+.section-title{font-size:11px}
+.event-chip{padding:7px 9px}
+.timeline{padding:18px}
+}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+}
+
+</style>
+<style id="giethoorn-theme">__GIETHOORN_THEME__</style></head><body class="paper">
+<header class="topbar"><a class="brand" href="#"><span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h16M6 13V9m12 4V9M6 10q6-8 12 0M8 8v5m4-7v7m4-5v5M3 17q3-2 6 0t6 0t6 0M5 20q3-2 6 0t6 0"/></svg></span>giethoorn<small>/ Paper Lab</small></a><div class="topright"><a class="back" id="back" href="/" aria-label="Back to market monitor">← Market monitor</a><span class="pill"><span class="dot"></span><span id="lab-kind">Synthetic simulation</span></span></div></header>
+<main class="page"><div class="heading"><div><div class="eyebrow">OFFLINE RESEARCH WORKSPACE</div><h1 id="lab-title">Paper Lab</h1><p id="lab-description">Step through orders, assumed fills, positions and the accounting they produce.</p></div><span class="version" id="model-version">PAPER MODEL v1</span></div>
+<div class="banner" role="note"><span class="dot"></span><span id="scenario-disclosure"><strong>Synthetic scenario.</strong> Prices and fills are scripted examples. This is an accounting and lifecycle demonstration; no trading strategy or live orders are running.</span></div>
+<section class="stats" aria-label="Simulated paper account">
+<article class="card stat"><div class="label" id="balance-label">Paper collateral balance</div><div class="value money" id="balance">—</div><div class="stat-foot">Starting balance <span id="starting">—</span> · USDC</div></article>
+<article class="card stat"><div class="label">Net position</div><div class="value"><span id="position">—</span><small id="coin">BTC</small></div><div class="stat-foot" id="position-caption">Scripted contract position</div></article>
+<article class="card stat"><div class="label">Realized P&amp;L</div><div class="value money" id="realized">—</div><div class="stat-foot">FIFO accounting · before fees</div></article>
+<article class="card stat"><div class="label">Assumed fees paid</div><div class="value money" id="fees">—</div><div class="stat-foot"><span id="fee-context">Fixed scenario fee rate · </span><span id="fee-rate">—</span></div></article>
+</section>
+<div class="main-grid"><div>
+<section class="card playback"><div class="card-head"><div><h2 class="section-title" id="playback-title">Scenario playback</h2><div class="small">Each event and the account state it produces.</div></div><span class="pill amber scenario-state" id="scenario-state">Scenario complete</span></div>
+<div class="recorded-metrics" id="recorded-metrics" hidden><div><small>Last recorded mid</small><strong id="recorded-price">—</strong></div><div><small>Recorded spread</small><strong id="recorded-spread">—</strong></div><div><small id="selected-feed-title">Selected feed</small><strong id="recorded-feed-status">—</strong></div><div><small>Original event</small><strong id="source-sequence">—</strong></div></div><div class="recorded-at" id="recorded-at" hidden></div>
+<div class="event-box"><div class="event-number" id="event-number">—</div><div><div class="event-title" id="event-title">—</div><div class="event-detail" id="event-detail">—</div></div><span class="event-time" id="scenario-time">—</span></div>
+<div class="play-controls"><button class="button primary" id="play">Play scenario</button><button class="button" id="previous" aria-label="Previous event">←</button><button class="button" id="next" aria-label="Next event">→</button><button class="button" id="reset">Reset</button><span class="frame-label" id="frame-label">—</span></div>
+<label for="scrubber" class="small" id="scrubber-label">Choose a scenario event</label><input id="scrubber" type="range" min="0" max="0" value="0" aria-label="Scenario event"><div class="range-labels"><span id="range-start">Session started</span><span id="range-end">Scenario end</span></div>
+<div class="chart-header"><strong id="chart-title">Net paper P&amp;L</strong><span id="chart-note">Scripted outcome, including assumed fees</span></div><div class="execution-chart-controls" id="execution-chart-controls" hidden><button data-execution-chart="price" aria-pressed="true">Recorded price</button><button data-execution-chart="pnl" aria-pressed="false">Net paper P&amp;L</button></div><svg id="pnl-chart" class="chart" viewBox="0 0 760 185" role="img" aria-label="Synthetic paper PnL across replayed events"></svg>
+<div class="valuation"><span>Unrealized <strong id="unrealized">—</strong></span><span>Paper equity <strong id="equity">—</strong></span></div><div class="summary-line"><span class="dot"></span><span id="valuation-note">Historical scenario mark</span></div><div class="execution-costs" id="execution-costs" hidden><div><small>Assumed fees</small><strong id="execution-fees">—</strong></div><div><small>Spread paid vs mid</small><strong id="execution-spread">—</strong></div><div><small>Adverse slippage cost</small><strong id="execution-slippage">—</strong></div><p class="execution-cost-note">Spread and slippage are already reflected in fill prices. Fees are deducted separately.</p></div>
+</section>
+<section class="card orders"><div class="orders-head"><div><h2 class="section-title">Simulated orders</h2><div class="small">States reflect only the selected event and its earlier history.</div></div><span class="pill" id="order-count">—</span></div><div class="table-wrap"><table><thead><tr><th>Order ID</th><th>Side</th><th>Limit price</th><th>Filled / requested</th><th>Status</th><th>Risk / cancellation</th></tr></thead><tbody id="order-rows"></tbody></table></div><p class="recorded-order-note" id="recorded-order-note" hidden>Orders and fills are disabled in this replay.</p></section>
+</div><div class="right-column">
+<section class="card source-card" id="execution-assumptions" hidden><h2 class="section-title">Execution assumptions</h2><div class="small">Controlled IOC scenario · uncalibrated</div><div class="source-facts"><div><span>Assumed fee rate</span><strong id="assumed-fee"></strong></div><div><span>New-order delay</span><strong id="assumed-latency"></strong></div><div><span>Fresh-quote window</span><strong id="assumed-window"></strong></div><div><span>Adverse slippage</span><strong id="assumed-slippage"></strong></div><div><span>Top-size fraction</span><strong id="assumed-participation"></strong></div><div><span>Fill rule</span><strong>Next fresh quote · IOC</strong></div></div><p class="small">Fills use the opposite best price, an adverse price adjustment and a shared size cap. Unfilled remainders receive an assumed immediate cancel acknowledgement.</p><div class="small">Scenario fingerprint</div><code class="scenario-digest" id="scenario-digest"></code></section>
+<section class="card source-card" id="recording-source" hidden><h2 class="section-title">Source recording</h2><div class="small" id="recording-origin"></div><div class="source-facts"><div><span>Selected feed</span><strong id="source-feed"></strong></div><div><span>Recording</span><strong id="source-complete">Finalized recording</strong></div><div><span>Source end reason</span><strong id="source-end-reason">—</strong></div><div><span>24-hour gate</span><strong id="source-gate">Not verified</strong></div><div><span>Depth at this event</span><strong id="source-depth-status">—</strong></div><div><span>BBO at this event</span><strong id="source-bbo-status">—</strong></div></div><div class="small">Recording fingerprint</div><code id="recording-digest"></code><div class="small">Every replay event links to an original recorded event. Times and health are historical.</div></section>
+<section class="card assumptions"><h2 class="section-title">Model assumptions</h2><div class="small">Explicit, reproducible and uncalibrated</div><div class="assumption"><small>Market data</small><strong id="market-assumption">Synthetic scripted prices</strong></div><div class="assumption"><small>Fill model</small><strong id="fill-assumption">Explicit assumed fills only</strong></div><div class="assumption"><small>Position accounting</small><strong>Linear contract · FIFO lots</strong></div><div class="assumption"><small>Fee assumption</small><strong id="fee-assumption">—</strong></div><div class="assumption"><small>Not modeled in this slice</small><strong id="unmodeled-assumptions">Funding, margin, liquidation, queue position and execution latency</strong></div><div class="limits"><div class="limit"><small>Position limit</small><strong id="position-limit">—</strong></div><div class="limit"><small>Order notional cap</small><strong id="notional-limit">—</strong></div><div class="limit"><small>Loss limit</small><strong id="loss-limit">—</strong></div><div class="limit"><small>Mark deadline</small><strong id="deadline">—</strong></div></div></section>
+<section class="card risk-card"><div class="risk-head"><h2 class="section-title">Paper risk state</h2><span class="pill" id="risk-status">—</span></div><div class="risk-row"><span>Mark state</span><strong id="mark-state">—</strong></div><div class="risk-row"><span>Working orders</span><strong id="working">—</strong></div><div class="risk-row"><span>Worst long position</span><strong id="worst-long">—</strong></div><div class="risk-row"><span>Worst short position</span><strong id="worst-short">—</strong></div><p class="risk-note" id="risk-note">Stopping new orders does not invent cancellation acknowledgements or flatten positions.</p></section>
+</div></div>
+<section class="card timeline"><h2 class="section-title">Event trace</h2><div class="small">Select an event to inspect its exact resulting state.</div><div class="small" id="trace-meta" hidden></div><div class="event-list" id="event-list"></div></section>
+<footer class="footer"><span id="source-label">Explicitly synthetic paper scenario</span><span id="mode-footer">Offline model · no exchange access · no live-feed integration</span></footer>
+<div class="place-signature"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h16M6 13V9m12 4V9M6 10q6-8 12 0M8 8v5m4-7v7m4-5v5M3 17q3-2 6 0t6 0t6 0M5 20q3-2 6 0t6 0"/></svg><span>Inspired by Giethoorn, Netherlands.</span></div>
+</main><script id="paper-boot" type="application/json">__PAPER_BOOT__</script>
+<script>
+(()=>{'use strict';
+const themeColor=name=>getComputedStyle(document.documentElement).getPropertyValue("--"+name).trim();
+const data=JSON.parse(document.getElementById('paper-boot').textContent),frames=data.frames,report=data.report,$=id=>document.getElementById(id);
+const execution=report.config.source.kind==='recorded_execution',recorded=execution||report.config.source.kind==='recorded_market',market=data.market,executionData=data.execution;let executionChart=execution?'pnl':'price',traceStart=-1;let index=frames.length-1,timer=null;
+function money(value){if(value===null||value===undefined)return '—';let raw=String(value),negative=raw.startsWith('-');if(negative)raw=raw.slice(1);const parts=raw.split('.');return (negative?'−':'')+'$'+parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',')+'.'+(parts[1]||'').padEnd(2,'0');}
+function text(id,value){$(id).textContent=value;}
+function node(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=value;return n;}
+function pretty(value){return String(value).replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());}
+function signedClass(id,value){$(id).classList.toggle('positive',value!==null&&!String(value).startsWith('-')&&String(value)!=='0');$(id).classList.toggle('negative',value!==null&&String(value).startsWith('-'));}
+const descriptions={session_started:'Synthetic configuration loaded',market_observed:'Scripted market observation',market_disconnected:'Synthetic market disconnect',timer:'Recorded scenario timer',order_requested:'Simulated order requested',order_accepted:'Assumed order acceptance',order_rejected:'Assumed order rejection',cancel_requested:'Simulated cancellation requested',cancel_accepted:'Assumed cancellation acknowledgement',cancel_rejected:'Assumed cancellation rejection',assumed_fill:'Explicit assumed fill',halt:'Paper risk halt',session_ended:'Synthetic scenario complete'};
+function render(){const frame=frames[index],a=frame.account,r=frame.risk;const orders=new Map();for(const value of frames.slice(0,index+1))if(value.order)orders.set(value.order.id,value.order);text('balance',money(a.collateral_balance));text('position',a.position_quantity);text('coin',report.config.coin);text('starting',money(report.config.starting_collateral));text('position-caption',a.position_quantity==='0'?'Flat · no open position':a.position_quantity.startsWith('-')?'Short contract position · synthetic':'Long contract position · synthetic');text('realized',money(a.realized_pnl));signedClass('realized',a.realized_pnl);text('fees',money(a.fees));text('fee-rate',report.config.fee_rate);text('event-number',String(frame.sequence).padStart(2,'0'));let title=descriptions[frame.event_kind]||pretty(frame.event_kind);if(frame.duplicate)title='Duplicate event ignored';if(frame.order?.status==='rejected'&&frame.event_kind==='order_requested')title='New order blocked by paper risk';text('event-title',title);let detail=frame.order?frame.order.id+' · '+pretty(frame.order.status):'Paper state after event '+frame.sequence;if(frame.assumed_fill&&!frame.duplicate)detail=frame.assumed_fill.fill_id+' · '+frame.assumed_fill.quantity+' '+report.config.coin+' @ '+money(frame.assumed_fill.price);if(frame.order?.rejection)detail+=' · '+pretty(frame.order.rejection);if(frame.duplicate)detail+=' · balances unchanged';text('event-detail',detail);text('scenario-time',(frame.monotonic_ns/1000000)+' ms');text('frame-label',frame.sequence+' / '+frames.length);$('scrubber').max=frames.length-1;$('scrubber').value=index;$('previous').disabled=index===0;$('next').disabled=index===frames.length-1;text('scenario-state',frame.complete?'Scenario complete':'Event '+frame.sequence+' of '+frames.length);$('scenario-state').className='pill'+(frame.complete?' green':' amber');text('unrealized',money(a.unrealized_pnl));text('equity',money(a.equity));text('valuation-note',a.mark_price===null?'No market mark observed':(a.mark_fresh?'Fresh scenario mark':'Historical scenario mark')+' · '+money(a.mark_price));text('fee-assumption',report.config.fee_rate+' × fill notional');text('position-limit',report.config.max_abs_position+' '+report.config.coin);text('notional-limit',money(report.config.max_order_notional));text('loss-limit',money(report.config.max_loss));text('deadline',report.config.stale_after_ms+' ms');text('risk-status',r.halted?'Halted':'New orders guarded');$('risk-status').className='pill'+(r.halted?' amber':' green');text('mark-state',pretty(r.market_status));text('working',r.working_orders);text('worst-long',r.worst_long_position+' '+report.config.coin);text('worst-short',r.worst_short_position+' '+report.config.coin);text('risk-note',r.halt_reason?r.halt_reason+' · Existing orders need explicit cancellation acknowledgement.':'New orders require a fresh mark and stay within configured exposure limits.');text('order-count',orders.size+' orders');text('source-label',report.config.source.label);const rows=$('order-rows');rows.replaceChildren();for(const order of [...orders.values()].sort((a,b)=>b.created_sequence-a.created_sequence)){const row=node('tr');row.append(node('td','mono',order.id));const side=node('td');side.append(node('span','side'+(order.side==='sell'?' sell':''),order.side.toUpperCase()));row.append(side,node('td','mono',money(order.limit_price)),node('td','mono',order.filled_quantity+' / '+order.quantity));const status=node('td');status.append(node('span','status '+order.status,pretty(order.status)));row.append(status);row.append(node('td','',order.rejection?pretty(order.rejection):order.cancel_pending?'ACK still pending':order.cancel_acknowledged?'Cancellation acknowledged':'—'));rows.append(row);}if(!orders.size){const row=node('tr'),cell=node('td','empty','No orders have been requested at this event.');cell.colSpan=6;row.append(cell);rows.append(row);}if(recorded){renderRecorded(frame);renderRecordedTrace();}if(execution)renderExecution(frame);for(const b of document.querySelectorAll('[data-event]')){const i=Number(b.dataset.event);b.classList.toggle('current',i===index);b.classList.toggle('past',i<index);b.setAttribute('aria-pressed',String(i===index));}draw();}
+function draw(){if(recorded&&(!execution||executionChart==='price')){drawRecordedMarket();return;}const svg=$('pnl-chart'),ns=svg.namespaceURI;svg.replaceChildren();const W=Math.max(300,Math.round(svg.getBoundingClientRect().width)||760),H=185,pad={l:52,r:15,t:14,b:24};svg.setAttribute('viewBox','0 0 '+W+' '+H);const values=frames.slice(0,index+1).map((f,i)=>({i,value:f.account.net_pnl===null?NaN:Number(f.account.net_pnl)})).filter(p=>Number.isFinite(p.value));const minimum=Math.min(0,...values.map(p=>p.value)),maximum=Math.max(0,...values.map(p=>p.value)),extra=Math.max((maximum-minimum)*.15,.05),lo=minimum-extra,hi=maximum+extra;const x=i=>pad.l+i/Math.max(1,frames.length-1)*(W-pad.l-pad.r),y=v=>pad.t+(hi-v)/(hi-lo)*(H-pad.t-pad.b);function add(tag,attrs,label){const n=document.createElementNS(ns,tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,String(v));if(label!==undefined)n.textContent=label;svg.append(n);return n;}for(let i=0;i<=3;i++){const value=hi-(hi-lo)*i/3,yy=y(value);add('line',{x1:pad.l,x2:W-pad.r,y1:yy,y2:yy,stroke:themeColor("line-soft"),'stroke-dasharray':'3 4'});add('text',{x:pad.l-10,y:yy+3,'text-anchor':'end',fill:themeColor("axis"),'font-size':9,'font-family':'ui-monospace,monospace'},value.toFixed(2));}add('line',{x1:pad.l,x2:W-pad.r,y1:y(0),y2:y(0),stroke:themeColor("line"),'stroke-dasharray':'4 4'});const line=values.map((p,i)=>(i?'L':'M')+x(p.i)+','+y(p.value)).join('');add('path',{d:line,fill:'none',stroke:themeColor("moss"),'stroke-width':1.8,'stroke-linejoin':'round'});if(values.length){const last=values[values.length-1];add('circle',{cx:x(last.i),cy:y(last.value),r:3,fill:themeColor("moss")});}add('text',{x:pad.l,y:H-4,fill:themeColor("axis"),'font-size':9},'Event 1');add('text',{x:W-pad.r,y:H-4,'text-anchor':'end',fill:themeColor("axis"),'font-size':9},'Event '+frames.length);}
+
+function setupRecorded(){
+ const source=report.config.source,captured=source.origin==='captured_public_data';
+ text('lab-kind',captured?'Recorded replay':'Fixture replay');text('lab-title','Recorded market replay');
+ text('lab-description','Replay recorded prices and feed health through the paper mark model.');text('model-version','MARK REPLAY v2');
+ const disclosure=$('scenario-disclosure');disclosure.replaceChildren(node('strong','',captured?'Recorded public-market data. ':'Synthetic market fixture. '),document.createTextNode('Offline market validation; orders and fills are disabled. No strategy is running. The 24-hour collection gate remains unverified.'));
+ text('balance-label','Assumed paper balance');text('fee-context','No fills · fee model inactive');$('fee-rate').hidden=true;
+ text('playback-title','Recording playback');text('scrubber-label','Choose a recorded event');text('range-start','Recording start');text('range-end','Replay end');text('chart-title','Recorded '+source.feed.toUpperCase()+' midprice');text('chart-note','Recorded prices · gaps retained');
+ $('pnl-chart').setAttribute('aria-label','Recorded selected-feed midprices with source gaps retained');
+ text('market-assumption',captured?'Captured public-market recording':'Explicitly synthetic market fixture');text('fill-assumption','Disabled · market marks only');
+ text('mode-footer','Offline recording replay · no strategy orders · no live connection');
+ text('source-feed',source.feed.toUpperCase()+' · '+report.config.coin);text('source-end-reason',pretty(market.replay.source_report.end_reason||'unknown'));text('selected-feed-title',source.feed.toUpperCase()+' at this event');
+ text('recording-origin',(captured?'Hyperliquid public capture':'Synthetic fixture')+' · '+pretty(source.network));text('recording-digest',source.recording_sha256);
+ for(const id of ['recorded-metrics','recorded-at','recording-source','trace-meta'])$(id).hidden=false;
+ text('play','Play replay');document.querySelector('.orders .table-wrap').hidden=true;$('recorded-order-note').hidden=false;if(execution)setupExecution();
+}
+function renderRecorded(frame){
+ const link=market.links[index],source=report.config.source,states=link.feeds;
+ let quote=null;for(let i=index;i>=0;i--){if(market.links[i].quote){quote=market.links[i].quote;break;}}
+ text('recorded-price',money(quote?.mid));text('recorded-spread',money(quote?.spread));
+ text('recorded-feed-status',pretty(states?.[source.feed]?.status||'disconnected'));
+ const profile=market.replay.source_report.feeds.policy.profile;text('source-depth-status',pretty(states?.depth?.status||(profile==='bbo'?'disabled':'disconnected')));text('source-bbo-status',pretty(states?.bbo?.status||(profile==='depth'?'disabled':'disconnected')));
+ text('source-sequence',String(link.market_sequence)+(link.generated_end?' · replay end':''));
+ const recordedTime=new Date(Math.floor(link.local_time_ns/1000000)).toISOString();
+ text('recorded-at','Recorded '+recordedTime.replace('T',' ').replace('Z',' UTC')+' · '+(link.connection_id?'connection '+link.connection_id:'session boundary'));
+ text('scenario-time',((frame.monotonic_ns-market.links[0].monotonic_ns)/1000000000).toFixed(3)+' s recorded');
+ const titles={session_started:'Recorded replay started',session_ended:'Recording replay finished',market_observed:'Recorded '+source.feed.toUpperCase()+' quote',market_disconnected:'Recorded feed unavailable',timer:'Recorded event · mark unchanged'};text('event-title',titles[frame.event_kind]||pretty(frame.event_kind));
+ text('event-detail',link.generated_end?'Replay finished; source recording retained unchanged.':'Original event '+link.market_sequence+' · '+(frame.event_kind==='market_observed'?'Recorded '+source.feed.toUpperCase()+' quote':'Paper mark: '+pretty(frame.risk.market_status)));
+ text('scenario-state',frame.complete?'Replay complete':'Event '+frame.sequence+' of '+frames.length);
+ text('valuation-note',frame.account.mark_price===null?'No recorded mark observed':(frame.account.mark_fresh?'Usable at this recorded event':'Historical mark · not usable at this event')+' · '+money(frame.account.mark_price));
+ text('fee-assumption','Inactive · no fills generated');text('risk-status','Replay only');$('risk-status').className='pill amber';
+ text('risk-note','Orders and fills are disabled. Recorded freshness is evaluated at this event, not against the current clock.');
+}
+
+function setupExecution(){
+ const model=report.config.source.assumptions,captured=report.config.source.origin==='captured_public_data';
+ text('lab-kind','Controlled simulation');text('lab-title','Execution scenarios');text('lab-description','Test fixed orders against recorded prices with explicit fees, liquidity and timing assumptions.');text('model-version','IOC SCENARIO v3');
+ $('scenario-disclosure').replaceChildren(node('strong','',captured?'Recorded prices, simulated execution. ':'Synthetic fixture and simulated execution. '),document.createTextNode('Orders, acknowledgements and fills are assumptions. No live strategy or venue orders are running. The 24-hour collection gate remains unverified.'));
+ text('fee-context','Assumed rate · ');$('fee-rate').hidden=false;
+ text('playback-title','Controlled order replay');text('fill-assumption','Next fresh quote · capped IOC');text('unmodeled-assumptions','Funding, margin, liquidation, queue position, market impact and venue constraints');
+ text('mode-footer','Offline controlled scenarios · simulated execution · no strategy activation');
+ text('assumed-fee',model.fee_rate+' × notional');text('assumed-latency',model.latency_ms+' ms');text('assumed-window',model.quote_wait_ms+' ms');text('assumed-slippage',model.slippage_bps+' bps');text('assumed-participation',model.top_size_fraction+' of displayed top size');text('scenario-digest',report.config.source.scenario_sha256);
+ for(const id of ['execution-assumptions','execution-chart-controls','execution-costs'])$(id).hidden=false;
+ document.querySelector('.orders .table-wrap').hidden=false;$('recorded-order-note').hidden=true;
+ for(const button of document.querySelectorAll('[data-execution-chart]'))button.addEventListener('click',()=>{executionChart=button.dataset.executionChart;render();});
+}
+function renderExecution(frame){
+ const step=executionData.trace[index],source=market.links[index],a=frame.account,r=frame.risk;
+ const titles={scenario_request:frame.order?.status==='rejected'?'Scenario order blocked by risk':'Scenario order submitted',assumed_accept:'Simulated order accepted',assumed_fill:'Assumed IOC fill',ioc_remainder_cancel:'IOC remainder cancellation',assumed_cancel_ack:'Simulated cancellation acknowledged',assumed_expiry_reject:'Simulated quote-window expiry'};
+ if(step.phase!=='market'&&step.phase!=='replay_end'){
+  text('event-title',titles[step.phase]||pretty(step.phase));let detail=frame.order?frame.order.id+' · '+pretty(frame.order.status):'';
+  if(frame.assumed_fill)detail+=' · '+frame.assumed_fill.quantity+' '+report.config.coin+' @ '+money(frame.assumed_fill.price)+' · fee '+money(frame.assumed_fill.fee);
+  if(frame.order?.rejection)detail+=' · '+pretty(frame.order.rejection);text('event-detail',detail+' · original event '+source.market_sequence);
+ }else if(frame.event_kind==='session_started'){text('event-title','Controlled scenario started');text('event-detail','Fixed scenario and execution assumptions loaded.');}
+ else if(frame.complete){text('event-title','Controlled replay finished');text('event-detail',r.working_orders+' unresolved working orders · positions retained.');}
+ text('position-caption',a.position_quantity==='0'?'Flat · simulated account':a.position_quantity.startsWith('-')?'Short simulated position':'Long simulated position');
+ text('fee-assumption',report.config.fee_rate+' × assumed fill notional');
+ text('execution-fees',money(step.cumulative_costs.fees));text('execution-spread',money(step.cumulative_costs.spread_cost));text('execution-slippage',money(step.cumulative_costs.slippage_cost));
+ const unresolved=frame.complete&&(r.working_orders>0||a.position_quantity!=='0');
+ if(unresolved){text('scenario-state','Ended · unresolved');$('scenario-state').className='pill amber';}
+ text('risk-status',r.halted?'Halted':unresolved?'Open exposure':'Simulated risk checks');$('risk-status').className='pill'+(r.halted||unresolved?' amber':' green');
+ text('risk-note',r.halt_reason?r.halt_reason+' · In-flight fills remain accountable.':unresolved?'Replay ended with unresolved exposure. No cancellation acknowledgement or flattening is invented.':'New scenario orders require a fresh recorded mark and stay within the declared exposure limits.');
+ const pnl=executionChart==='pnl';text('chart-title',pnl?'Net paper P&L':'Recorded '+report.config.source.feed.toUpperCase()+' midprice');text('chart-note',pnl?'After assumed fees · historical marks':'Recorded prices · gaps retained');$('pnl-chart').setAttribute('aria-label',pnl?'Simulated net paper PnL after assumed fees':'Recorded selected-feed midprices with source gaps retained');
+ for(const button of document.querySelectorAll('[data-execution-chart]'))button.setAttribute('aria-pressed',String(button.dataset.executionChart===executionChart));
+}
+
+function renderRecordedTrace(){
+ const start=Math.floor(index/40)*40;if(start===traceStart)return;traceStart=start;
+ const list=$('event-list');list.replaceChildren();const end=Math.min(frames.length,start+40);
+ for(let i=start;i<end;i++){const b=node('button','event-chip',String(i+1));b.dataset.event=i;b.title=descriptions[frames[i].event_kind]||frames[i].event_kind;b.setAttribute('aria-label','Replay event '+(i+1));b.addEventListener('click',()=>{stop();go(i);});list.append(b);}
+ text('trace-meta','Events '+(start+1)+'–'+end+' of '+frames.length+' · use the slider to move through the recording.');
+}
+function drawRecordedMarket(){
+ const svg=$('pnl-chart'),ns=svg.namespaceURI;svg.replaceChildren();
+ const W=Math.max(300,Math.round(svg.getBoundingClientRect().width)||760),H=185,pad={l:67,r:15,t:14,b:24};svg.setAttribute('viewBox','0 0 '+W+' '+H);
+ const marks=frames.map((f,i)=>({i,value:f.event_kind==='market_observed'?Number(market.links[i].quote?.mid):NaN})).filter(p=>Number.isFinite(p.value));
+ const minimum=marks.length?Math.min(...marks.map(p=>p.value)):0,maximum=marks.length?Math.max(...marks.map(p=>p.value)):1,extra=Math.max((maximum-minimum)*.12,.1),lo=minimum-extra,hi=maximum+extra;
+ const first=market.links[0].monotonic_ns,last=market.links.at(-1).monotonic_ns;
+ const x=i=>pad.l+(market.links[i].monotonic_ns-first)/Math.max(1,last-first)*(W-pad.l-pad.r),y=v=>pad.t+(hi-v)/(hi-lo)*(H-pad.t-pad.b);
+ function add(tag,attrs,label){const n=document.createElementNS(ns,tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,String(v));if(label!==undefined)n.textContent=label;svg.append(n);return n;}
+ for(let i=0;i<=3;i++){const value=hi-(hi-lo)*i/3,yy=y(value);add('line',{x1:pad.l,x2:W-pad.r,y1:yy,y2:yy,stroke:themeColor('line-soft'),'stroke-dasharray':'3 4'});add('text',{x:pad.l-10,y:yy+3,'text-anchor':'end',fill:themeColor('axis'),'font-size':9,'font-family':'ui-monospace,monospace'},new Intl.NumberFormat('en-US',{maximumFractionDigits:1}).format(value));}
+ let chunks=[],chunk=[],connection=null,previousMark=null;
+ for(let i=0;i<=index;i++){const f=frames[i],link=market.links[i],isMark=f.event_kind==='market_observed'&&link.quote?.mid!==null&&Number.isFinite(Number(link.quote?.mid));const gap=isMark&&previousMark!==null&&link.monotonic_ns-previousMark>report.config.stale_after_ms*1000000;if(f.risk.market_status!=='fresh'||gap||(connection!==null&&connection!==link.connection_id)){if(chunk.length)chunks.push(chunk);chunk=[];}connection=link.connection_id;
+  if(isMark){chunk.push({i,value:Number(link.quote.mid)});previousMark=link.monotonic_ns;}
+ }if(chunk.length)chunks.push(chunk);
+ const colour=themeColor(report.config.source.feed==='bbo'?'moss':'brick');
+ for(const points of chunks){if(points.length===1)add('circle',{cx:x(points[0].i),cy:y(points[0].value),r:2,fill:colour});else add('path',{'data-recorded-series':'true',d:points.map((p,i)=>(i?'L':'M')+x(p.i)+','+y(p.value)).join(''),fill:'none',stroke:colour,'stroke-width':1.8,'stroke-linejoin':'round'});}
+ add('text',{x:pad.l,y:H-4,fill:themeColor('axis'),'font-size':9},'0s');add('text',{x:W-pad.r,y:H-4,'text-anchor':'end',fill:themeColor('axis'),'font-size':9},((last-first)/1000000000).toFixed(1)+'s recorded');
+}
+
+function stop(){if(timer){clearInterval(timer);timer=null;}$('play').textContent=recorded?'Play replay':'Play scenario';}
+function go(value){index=Math.max(0,Math.min(frames.length-1,value));render();}
+$('play').addEventListener('click',()=>{if(timer){stop();return;}if(index===frames.length-1)go(0);$('play').textContent='Ⅱ Pause playback';timer=setInterval(()=>{if(index>=frames.length-1){stop();return;}go(index+1);},650);});
+$('previous').addEventListener('click',()=>{stop();go(index-1);});$('next').addEventListener('click',()=>{stop();go(index+1);});$('reset').addEventListener('click',()=>{stop();go(0);});$('scrubber').addEventListener('input',event=>{stop();go(Number(event.target.value));});
+if(recorded)setupRecorded();
+for(let i=0;!recorded&&i<frames.length;i++){const b=node('button','event-chip',String(i+1).padStart(2,'0'));b.dataset.event=i;b.title=descriptions[frames[i].event_kind]||frames[i].event_kind;b.setAttribute('aria-label','Scenario event '+(i+1));b.addEventListener('click',()=>{stop();go(i);});$('event-list').append(b);}
+if(!location.protocol.startsWith('http'))$('back').hidden=true;window.addEventListener('resize',()=>requestAnimationFrame(draw));render();
+})();
+</script></body></html>

@@ -1,0 +1,27 @@
+{
+  "scenario_version": 1,
+  "label": "Synthetic IOC lifecycle and cost checks",
+  "assumptions": {
+    "fee_rate": "0.0005",
+    "slippage_bps": "1",
+    "top_size_fraction": "0.25",
+    "latency_ms": 0,
+    "quote_wait_ms": 100
+  },
+  "starting_collateral": "10000",
+  "max_abs_position": "2",
+  "max_order_notional": "1000",
+  "max_working_orders": 16,
+  "max_loss": "100",
+  "orders": [
+    {"id": "missing-market", "after_market_sequence": 1, "side": "buy", "limit_price": "101", "quantity": "1"},
+    {"id": "ambiguous-time", "after_market_sequence": 9, "side": "buy", "limit_price": "101", "quantity": "0.1"},
+    {"id": "not-marketable", "after_market_sequence": 9, "side": "buy", "limit_price": "90", "quantity": "0.1"},
+    {"id": "oversized", "after_market_sequence": 9, "side": "buy", "limit_price": "101", "quantity": "100"},
+    {"id": "buy-partial", "after_market_sequence": 11, "side": "buy", "limit_price": "101", "quantity": "1"},
+    {"id": "stale-send", "after_market_sequence": 12, "side": "buy", "limit_price": "101", "quantity": "0.1"},
+    {"id": "sell-partial", "after_market_sequence": 13, "side": "sell", "limit_price": "99", "quantity": "1"},
+    {"id": "expiry-boundary", "after_market_sequence": 14, "side": "buy", "limit_price": "101", "quantity": "0.1"},
+    {"id": "late-pending", "after_market_sequence": 25, "side": "buy", "limit_price": "101", "quantity": "0.1"}
+  ]
+}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+./scripts/dev fmt -- --check
+./scripts/dev clippy --locked --all-targets -- -D warnings
+./scripts/dev test --locked --all-targets
+python3 -m unittest discover -s ops -p 'test_*.py'
+bash -n ops/run-collector-service scripts/dev scripts/cloud-setup.sh scripts/verify-live scripts/verify-collect

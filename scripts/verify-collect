@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Bounded public-data acceptance for the checksummed directory format.
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+if [[ $# -gt 4 ]]; then
+  echo "Usage: scripts/verify-collect [duration-secs [coin [mainnet|testnet [segment-bytes]]]]" >&2
+  exit 2
+fi
+capture_duration=${1:-60}
+capture_coin=${2:-BTC}
+capture_network=${3:-mainnet}
+segment_bytes=${4:-67108864}
+mkdir -p data
+verification_dir=$(mktemp -d "data/collect-check-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+echo "Collection artifacts: $verification_dir" >&2
+
+./scripts/dev run --locked --quiet -- collect \
+  --coin "$capture_coin" --network "$capture_network" --duration-secs "$capture_duration" \
+  --max-segment-bytes "$segment_bytes" --output-dir "$verification_dir/session" \
+  > "$verification_dir/live-quotes.jsonl" 2> "$verification_dir/capture.stderr"
+test -s "$verification_dir/live-quotes.jsonl"
+./scripts/dev run --locked --quiet -- replay --input "$verification_dir/session" \
+  > "$verification_dir/replayed-quotes.jsonl" 2> "$verification_dir/replay.stderr"
+cmp "$verification_dir/live-quotes.jsonl" "$verification_dir/replayed-quotes.jsonl"
+./scripts/dev run --locked --quiet -- inspect --input "$verification_dir/session" \
+  > "$verification_dir/inspection.json"
+cat "$verification_dir/inspection.json"

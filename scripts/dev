@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Activate the managed cloud toolchain when present. On another machine, use
+# its existing rustup installation and the repository's rust-toolchain.toml.
+if [[ -x /workspace/.toolchains/cargo/bin/cargo ]]; then
+  export RUSTUP_HOME=/workspace/.toolchains/rustup
+  export CARGO_HOME=/workspace/.toolchains/cargo
+  export PATH="$CARGO_HOME/bin:$PATH"
+fi
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+exec cargo "$@"

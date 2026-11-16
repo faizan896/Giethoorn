@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# A successful exit requires real usable data AND identical replay output.
+# Every run gets a new directory; failures retain their diagnostic files.
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+if [[ $# -gt 3 ]]; then
+  echo "Usage: scripts/verify-live [duration-secs [coin [mainnet|testnet]]]" >&2
+  exit 2
+fi
+capture_duration=${1:-30}
+capture_coin=${2:-BTC}
+capture_network=${3:-mainnet}
+mkdir -p data
+verification_dir=$(mktemp -d "data/live-check-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+echo "Verification artifacts: $verification_dir" >&2
+
+./scripts/dev run --locked --quiet -- capture \
+  --coin "$capture_coin" --network "$capture_network" \
+  --duration-secs "$capture_duration" --output "$verification_dir/session.jsonl" \
+  > "$verification_dir/live-quotes.jsonl" 2> "$verification_dir/capture.stderr"
+test -s "$verification_dir/live-quotes.jsonl"
+./scripts/dev run --locked --quiet -- replay --input "$verification_dir/session.jsonl" \
+  > "$verification_dir/replayed-quotes.jsonl" 2> "$verification_dir/replay.stderr"
+cmp "$verification_dir/live-quotes.jsonl" "$verification_dir/replayed-quotes.jsonl"
+./scripts/dev run --locked --quiet -- inspect --input "$verification_dir/session.jsonl" \
+  > "$verification_dir/inspection.json"
+cat "$verification_dir/inspection.json"

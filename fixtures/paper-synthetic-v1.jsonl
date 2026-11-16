@@ -1,0 +1,29 @@
+{"paper_schema_version":1,"sequence":1,"monotonic_ns":0,"event":{"type":"session_started","config":{"source":{"kind":"synthetic","label":"Synthetic order lifecycle and FIFO accounting example"},"coin":"BTC","quote_currency":"USDC","starting_collateral":"10000","fee_rate":"0.0005","max_abs_position":"2","max_order_notional":"1000","max_working_orders":4,"max_loss":"100","stale_after_ms":2000}}}
+{"paper_schema_version":1,"sequence":2,"monotonic_ns":1000000,"event":{"type":"market_observed","bid":"99","ask":"101"}}
+{"paper_schema_version":1,"sequence":3,"monotonic_ns":2000000,"event":{"type":"order_requested","id":"buy-A","side":"buy","limit_price":"100","quantity":"1"}}
+{"paper_schema_version":1,"sequence":4,"monotonic_ns":3000000,"event":{"type":"order_accepted","id":"buy-A"}}
+{"paper_schema_version":1,"sequence":5,"monotonic_ns":4000000,"event":{"type":"assumed_fill","fill_id":"fill-1","order_id":"buy-A","price":"100","quantity":"0.4"}}
+{"paper_schema_version":1,"sequence":6,"monotonic_ns":5000000,"event":{"type":"cancel_requested","id":"buy-A"}}
+{"paper_schema_version":1,"sequence":7,"monotonic_ns":6000000,"event":{"type":"assumed_fill","fill_id":"fill-2","order_id":"buy-A","price":"99","quantity":"0.1"}}
+{"paper_schema_version":1,"sequence":8,"monotonic_ns":7000000,"event":{"type":"assumed_fill","fill_id":"fill-2","order_id":"buy-A","price":"99","quantity":"0.1"}}
+{"paper_schema_version":1,"sequence":9,"monotonic_ns":8000000,"event":{"type":"cancel_accepted","id":"buy-A"}}
+{"paper_schema_version":1,"sequence":10,"monotonic_ns":9000000,"event":{"type":"market_observed","bid":"109","ask":"111"}}
+{"paper_schema_version":1,"sequence":11,"monotonic_ns":10000000,"event":{"type":"order_requested","id":"sell-B","side":"sell","limit_price":"109","quantity":"0.3"}}
+{"paper_schema_version":1,"sequence":12,"monotonic_ns":11000000,"event":{"type":"order_accepted","id":"sell-B"}}
+{"paper_schema_version":1,"sequence":13,"monotonic_ns":12000000,"event":{"type":"cancel_requested","id":"sell-B"}}
+{"paper_schema_version":1,"sequence":14,"monotonic_ns":13000000,"event":{"type":"assumed_fill","fill_id":"fill-3","order_id":"sell-B","price":"110","quantity":"0.3"}}
+{"paper_schema_version":1,"sequence":15,"monotonic_ns":14000000,"event":{"type":"cancel_accepted","id":"sell-B"}}
+{"paper_schema_version":1,"sequence":16,"monotonic_ns":2010000000,"event":{"type":"timer"}}
+{"paper_schema_version":1,"sequence":17,"monotonic_ns":2011000000,"event":{"type":"order_requested","id":"stale-C","side":"buy","limit_price":"110","quantity":"0.1"}}
+{"paper_schema_version":1,"sequence":18,"monotonic_ns":2012000000,"event":{"type":"market_disconnected","reason":"Synthetic disconnect"}}
+{"paper_schema_version":1,"sequence":19,"monotonic_ns":2013000000,"event":{"type":"market_observed","bid":"89","ask":"91"}}
+{"paper_schema_version":1,"sequence":20,"monotonic_ns":2014000000,"event":{"type":"order_requested","id":"sell-D","side":"sell","limit_price":"89","quantity":"0.3"}}
+{"paper_schema_version":1,"sequence":21,"monotonic_ns":2015000000,"event":{"type":"order_accepted","id":"sell-D"}}
+{"paper_schema_version":1,"sequence":22,"monotonic_ns":2016000000,"event":{"type":"assumed_fill","fill_id":"fill-4","order_id":"sell-D","price":"90","quantity":"0.3"}}
+{"paper_schema_version":1,"sequence":23,"monotonic_ns":2017000000,"event":{"type":"market_observed","bid":"84","ask":"86"}}
+{"paper_schema_version":1,"sequence":24,"monotonic_ns":2018000000,"event":{"type":"order_requested","id":"buy-E","side":"buy","limit_price":"86","quantity":"0.1"}}
+{"paper_schema_version":1,"sequence":25,"monotonic_ns":2019000000,"event":{"type":"order_accepted","id":"buy-E"}}
+{"paper_schema_version":1,"sequence":26,"monotonic_ns":2020000000,"event":{"type":"assumed_fill","fill_id":"fill-5","order_id":"buy-E","price":"85","quantity":"0.1"}}
+{"paper_schema_version":1,"sequence":27,"monotonic_ns":2021000000,"event":{"type":"halt","reason":"Synthetic scenario halt"}}
+{"paper_schema_version":1,"sequence":28,"monotonic_ns":2022000000,"event":{"type":"order_requested","id":"halted-F","side":"buy","limit_price":"85","quantity":"0.1"}}
+{"paper_schema_version":1,"sequence":29,"monotonic_ns":2023000000,"event":{"type":"session_ended","reason":"synthetic_scenario_complete"}}
