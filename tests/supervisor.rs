@@ -189,6 +189,21 @@ impl Harness {
         self.temp.path().join("supervision")
     }
 
+    fn command(&self) -> Command {
+        let mut command = Command::new(env!("CARGO_BIN_EXE_giethoorn"));
+        command
+            .env("HTTPS_PROXY", &self.proxy)
+            .env("https_proxy", &self.proxy)
+            .env("ALL_PROXY", &self.proxy)
+            .env("all_proxy", &self.proxy)
+            .env("NO_PROXY", "")
+            .env("no_proxy", "")
+            .env("SSL_CERT_FILE", &self.ca)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        command
+    }
+
     fn spawn(&self, duration: u64, restarts: u32) -> Child {
         self.spawn_with_budget(duration, restarts, 65536, 1048576)
     }
@@ -200,7 +215,7 @@ impl Harness {
         run_bytes: u64,
         total_bytes: u64,
     ) -> Child {
-        let mut command = Command::new(env!("CARGO_BIN_EXE_giethoorn"));
+        let mut command = self.command();
         command
             .args(["supervise", "--output-dir"])
             .arg(self.root())
@@ -223,16 +238,7 @@ impl Harness {
             .arg("--max-total-recording-bytes")
             .arg(total_bytes.to_string())
             .arg("--max-restarts")
-            .arg(restarts.to_string())
-            .env("HTTPS_PROXY", &self.proxy)
-            .env("https_proxy", &self.proxy)
-            .env("ALL_PROXY", &self.proxy)
-            .env("all_proxy", &self.proxy)
-            .env("NO_PROXY", "")
-            .env("no_proxy", "")
-            .env("SSL_CERT_FILE", &self.ca)
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped());
+            .arg(restarts.to_string());
         if self.combined {
             command.args([
                 "--feed-profile",
@@ -843,16 +849,58 @@ fn local_recording_budget_failure_is_fatal_and_never_restarted() {
 #[test]
 fn whole_supervision_budget_stops_before_starting_a_child_with_insufficient_allowance() {
     let h = Harness::new(ExchangeMode::Normal);
-    let sizing = finish(h.spawn(3, 0));
-    assert!(sizing.status.success());
-    let used = summary(&h, &sizing)["recording_bytes"].as_u64().unwrap();
-    fs::rename(h.root(), h.temp.path().join("sizing")).unwrap();
+    // Measure one collector recording directly. A short supervisor sizing window
+    // also includes copying/hashing the debug executable, which can consume the
+    // whole window on a slower CPU before any collector starts.
+    let sizing_directory = h.temp.path().join("sizing");
+    let mut command = h.command();
+    command
+        .args([
+            "collect",
+            "--coin",
+            "BTC",
+            "--network",
+            "mainnet",
+            "--duration-secs",
+            "2",
+            "--max-reconnects",
+            "0",
+            "--max-segment-bytes",
+            "700",
+            "--max-session-bytes",
+            "65536",
+            "--output-dir",
+        ])
+        .arg(&sizing_directory);
+    let sizing = finish(command.spawn().unwrap());
+    assert!(
+        sizing.status.success(),
+        "sizing collector failed:\nstdout: {}\nstderr: {}",
+        String::from_utf8_lossy(&sizing.stdout),
+        String::from_utf8_lossy(&sizing.stderr)
+    );
+    let inspection = giethoorn::inspect::inspect(&sizing_directory, false).unwrap();
+    assert!(inspection.storage.finalized && inspection.session.complete);
+    assert_eq!(
+        inspection.session.end_reason.as_deref(),
+        Some("duration_elapsed")
+    );
+    assert!(inspection.two_sided_snapshots > 0);
+    let sizing_quotes = h.temp.path().join("sizing-quotes.jsonl");
+    fs::write(&sizing_quotes, &sizing.stdout).unwrap();
+    assert_eq!(
+        compare_quotes(&sizing_directory, &sizing_quotes, false).unwrap(),
+        "exact"
+    );
+    let used = inspection.file_bytes;
     let limit = used + 1800;
-    let output = finish(h.spawn_with_budget(8, 0, 65536, limit));
+    // The quota, rather than the total time window, must stop this run. The
+    // existing 15-second finish watchdog still bounds the test if that regresses.
+    let output = finish(h.spawn_with_budget(30, 0, 65536, limit));
     assert!(!output.status.success());
     let report = summary(&h, &output);
-    assert_eq!(report["status"], "budget_exhausted");
-    assert_eq!(report["started_runs"], 1);
+    assert_eq!(report["status"], "budget_exhausted", "{report}");
+    assert_eq!(report["started_runs"], 1, "{report}");
     assert!(report["recording_bytes"].as_u64().unwrap() <= limit);
     let audit = audit_supervision(&h.root()).unwrap();
     assert_eq!(

@@ -10,6 +10,25 @@ described below.
 
 ## Intel Mac local setup, 16 November 2026 PKT
 
+The user approved source delivery through GitHub. The `mac-local-setup` branch
+was uploaded at `0d49d2e`; its ZIP downloaded successfully over HTTPS, all 119
+source files matched the commit, and executable modes were retained. The Mac
+then reached the image's native tests and reported a failure in
+`whole_supervision_budget_stops_before_starting_a_child_with_insufficient_allowance`.
+
+That budget test previously measured recording size using a separate three-second
+supervisor window. Copying/hashing the debug executable counts against that
+window. A constrained-CPU reproduction exhausted the window before any collector
+started (`supervision collected no usable snapshots`). Calibration now runs one
+two-second collector directly and requires a finalized, usable recording with
+exact quote replay. The actual supervisor budget case has an ample time window
+so the quota must stop it; its existing 15-second test watchdog, one-child count,
+byte ceiling and independent `BudgetExhausted` audit assertions remain enforced.
+The fixed case passes three constrained-CPU trials and a forced-software-SHA run.
+The required `./scripts/check` also passes all 150 Rust and 64 Python tests,
+formatting, clippy and shell checks. This changes the test fixture, not collector
+behavior, schemas or resource limits.
+
 The user chose their Intel MacBook Pro (2019, i9, 64 GiB, macOS 26.7.1) as the
 local host. A paid VPS is not required for current collection/research. See
 [the local setup guide](local-mac.md) and [decision 0007](decisions/0007-local-mac.md).
@@ -29,7 +48,7 @@ has bounded synthetic forwarding/target-rejection tests; the cloud acceptance
 uses the declared inherited-proxy route. That does not establish the Mac's direct
 network behavior or VM/filesystem acceptance.
 
-The source exporter includes the current unpushed implementation, executable
+The source exporter includes the implementation, executable
 permissions, file hashes and optional saved Paper/Batch Lab previews. It excludes
 the original raw recording archives, native build outputs, environment files,
 common private-key files and cloud build certificates/credentials. The download
@@ -60,9 +79,8 @@ service installed or authenticated trading enabled.
 The user observed a real chat **Could not download artifact** error. A clipboard
 fallback was also incomplete: the pasted payload ended around byte 10,752 of a
 470,480-byte restore file and left zsh waiting at `heredoc>`. Their local file
-search found no restored source. A local Git snapshot is prepared as a transfer
-alternative; uploading it is an external write requiring the user's approval.
-The proposed remote branch is `mac-local-setup`, containing source/tests/docs only,
+search found no restored source. With the user's approval, the Git snapshot was
+uploaded as a transfer alternative. Its branch is `mac-local-setup`, containing source/tests/docs only,
 with no raw recordings, archive outputs or environment credentials. The Mac's
 installation/rehearsal must not be declared successful from these transfer steps.
 
