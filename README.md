@@ -7,8 +7,9 @@ Live Hyperliquid capture, checksummed rotation and exact replay have been verifi
 Storage budgets, offline inspection, archive audit and interrupted-session recovery
 are implemented. A one-hour supervision baseline passed. Two cloud 24-hour
 attempts stopped before completion; their retained recordings verify. The first
-Mac day run failed after about 11.5 hours on a collector deadline; its data still
-needs an independent audit. The full 24-hour gate remains pending. See
+Mac day run failed after about 11.5 hours on a collector deadline; the user's
+local native audit verifies 334,794 observations with the source unchanged.
+The full 24-hour gate remains pending. See
 [status](docs/status.md) for the current result.
 Explicit schema-2 profiles separate BBO and
 depth freshness; legacy capture output remains the default. No wallet, private keys,
@@ -27,6 +28,9 @@ No paid server or host Rust installation is required. Start with the offline lab
 and 90-second recovery rehearsal before requesting a fresh 24-hour window.
 Use `bash scripts/mac review` to audit a stopped local run offline, without
 rebuilding the image or changing its recordings.
+Use `bash scripts/mac replay N` to open one finalized child recording in the
+offline Paper Lab; `N` is the child number shown in the review. This uses recorded
+prices and feed health, with orders and fills disabled.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

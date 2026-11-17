@@ -126,6 +126,12 @@ if args[0]=='info':
  else:print('linux')
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
 if args[:2]==['image','inspect']:sys.exit(0)
+if args[0]=='run' and '/app/ops/paper_market.py' in args:
+ if os.environ.get('GIETHOORN_TEST_CASE')=='replay-failure':sys.exit(7)
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=target.split('src=',1)[1].split(',dst=',1)[0]
+ view=Path(source)/'lab/paper-lab.html';view.parent.mkdir();view.write_text('synthetic orchestration view')
+ sys.exit(0)
 if args[0]=='inspect':
  if os.environ.get('GIETHOORN_TEST_CASE')=='active-review':
   if '--format' in args:print('true')
@@ -219,6 +225,68 @@ if args[0]=='run' and '--name' in args:
             self.assertNotEqual(result.returncode,0);self.assertIn('still running',result.stderr)
             calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
             self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
+
+    def replay_source(self, root):
+        source=root/'saved data/start-fixture'
+        session=source/'run/experiment/supervision/run-000134/session'
+        session.mkdir(parents=True)
+        (session/'index.jsonl').write_text('synthetic orchestration index\n')
+        (source.parent/'last-run').write_text('start-fixture\n')
+        return source
+
+    def test_replay_opens_only_the_explicit_recording_offline_with_bounded_runtime(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);source=self.replay_source(root)
+            original=(source/'run/experiment/supervision/run-000134/session/index.jsonl').read_bytes()
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'replay','000134'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            run=next(c for c in calls if c[0]=='run')
+            self.assertEqual(run[run.index('--input')+1],'/source/run/experiment/supervision/run-000134/session')
+            self.assertEqual(run[run.index('--origin')+1],'captured-public-data')
+            self.assertEqual(run[run.index('--feed')+1],'bbo')
+            self.assertEqual(run[run.index('--network')+1],'none')
+            self.assertIn('--read-only',run);self.assertIn('180s',run)
+            self.assertIn('--kill-after=10s',run)
+            self.assertTrue(any('dst=/source,readonly' in c for c in run))
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+            view=next((root/'saved data').glob('replay-*/lab/paper-lab.html'))
+            self.assertIn(str(view),result.stdout)
+            self.assertIn('Child: run-000134',(view.parent.parent/'source-selection.txt').read_text())
+            self.assertEqual(original,(source/'run/experiment/supervision/run-000134/session/index.jsonl').read_bytes())
+
+    def test_replay_refuses_invalid_or_missing_children_before_running_a_container(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.replay_source(root)
+            for value in ('0','000000','-1','1.2','../134','1000000','135'):
+                with self.subTest(child=value):
+                    result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'replay',value],env=env,capture_output=True,text=True)
+                    self.assertNotEqual(result.returncode,0)
+            log=root/'calls.jsonl'
+            calls=[json.loads(line) for line in log.read_text().splitlines()] if log.exists() else []
+            self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
+            self.assertFalse(list((root/'saved data').glob('replay-*')))
+
+    def test_replay_keeps_failed_evidence_and_propagates_native_exit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);source=self.replay_source(root)
+            env['GIETHOORN_TEST_CASE']='replay-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'replay','134'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,7,result.stderr)
+            self.assertIn('Replay saved:',result.stdout)
+            self.assertTrue(source.exists())
+            self.assertTrue(next((root/'saved data').glob('replay-*/source-selection.txt')).exists())
+            self.assertFalse(list((root/'saved data').glob('replay-*/lab/paper-lab.html')))
+
+    def test_replay_refuses_an_active_collector_without_creating_replay_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.replay_source(root)
+            env['GIETHOORN_TEST_CASE']='active-review'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'replay','134'],env=env,capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0);self.assertIn('still running',result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
+            self.assertFalse(list((root/'saved data').glob('replay-*')))
 
 
 class MacPackageTests(unittest.TestCase):

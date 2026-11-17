@@ -3,8 +3,9 @@
 This package runs the collector and research tools on your own Mac, without a
 paid VPS. Source is available on the repository's `mac-local-setup` branch.
 Docker Desktop supplies the Linux environment required by the fault-test runner.
-The Mac setup itself still needs acceptance on your machine. A Linux container
-test is not evidence that your Mac has completed a 24-hour collection window.
+The user reports a successful build, demo, short recovery rehearsal and local
+archive audit. The day run stopped early; its verified recordings do not establish
+a completed 24-hour collection window. See [current results](status.md).
 
 ## Install Docker Desktop once
 
@@ -139,6 +140,36 @@ The first Mac day attempt reported a deadline failure after about 11 hours
 30 minutes. Preserve it and review its data before deciding on another run;
 interrupted hours cannot be combined into a full-day pass. Collection and offline
 research are separate milestones, so no immediate repeat day run is necessary.
+
+## Open your recorded prices in Paper Lab
+
+After reviewing the archive, select one finalized child number from that review:
+
+```sh
+bash scripts/mac replay 134
+```
+
+Child 134 is the last finalized recording from the user's first Mac day attempt.
+Its native audit reports 2,049 observations and exact quote replay despite the
+parent's watchdog failure. The argument is an explicit child number in the last
+retained run, not a count of recordings or a strategy selection. Leading zeros
+are accepted. Unavailable/invalid numbers and a running collector are refused.
+
+This command uses the existing image's recorded-market adapter, with source
+mounted read-only and networking disabled. It validates and copies that one
+session, independently checks the mapped paper ledger, then opens
+`~/GiethoornData/replay-*/lab/paper-lab.html` in your browser. The saved HTML is
+portable and works offline. `source-selection.txt` records the selected parent,
+child, feed and scope. The core adapter's source hashes bind the copied recording.
+
+Use the playback controls to inspect recorded BTC BBO prices, spreads, event times
+and historical feed health. It shows one session, not the full 11.5-hour dataset
+or current prices. Orders/fills are disabled; its flat assumed balance is not a
+strategy result. Recovered prefixes cannot be passed off as finalized inputs.
+The parent day gate stays incomplete. The source remains unchanged and each
+invocation keeps its own output. A failed replay or 180-second timeout retains
+diagnostics instead of opening a successful-looking view. Only the launcher
+needs updating for this command; no Docker rebuild or host Python is required.
 
 ## Control and stop
 

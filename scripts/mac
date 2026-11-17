@@ -21,6 +21,7 @@ Giethoorn on your Mac
   ./scripts/mac status      Show the retained container state
   ./scripts/mac logs        Show the last 30 collector log lines
   ./scripts/mac review      Audit the last stopped run; preserve original data
+  ./scripts/mac replay N    Open recorded BTC prices from finalized child N
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -56,6 +57,12 @@ last_run() {
   IFS= read -r mac_run < "$mac_data/last-run"
   case "$mac_run" in *[!a-zA-Z0-9_-]*|'') fail 'Invalid retained run identifier.' ;; esac
   [[ -d "$mac_data/$mac_run" ]] || fail 'Retained run directory is unavailable.'
+}
+stopped_collector() {
+  if exists "$mac_collector"; then
+    owned "$mac_collector" || fail 'Collector is not owned by Giethoorn.'
+    [[ "$(docker inspect --format '{{.State.Running}}' "$mac_collector")" = false ]] || fail 'Collector is still running; wait until it stops.'
+  fi
 }
 remove_collector() {
   if exists "$mac_collector"; then
@@ -145,10 +152,7 @@ case "${1:-help}" in
   logs) docker_ready; owned "$mac_collector" || fail 'Owned collector unavailable.'; docker logs --tail 30 "$mac_collector" ;;
   review)
     docker_ready; image_ready; data_ready; last_run; run_args
-    if exists "$mac_collector"; then
-      owned "$mac_collector" || fail 'Collector is not owned by Giethoorn.'
-      [[ "$(docker inspect --format '{{.State.Running}}' "$mac_collector")" = false ]] || fail 'Collector is still running; review after it stops.'
-    fi
+    stopped_collector
     [[ -f "$mac_project/ops/review_local.py" ]] || fail 'Download ops/review_local.py with this launcher update.'
     mac_review=$(mktemp -d "$mac_data/review-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
     mac_review_exit=0
@@ -160,6 +164,31 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  replay)
+    [[ "$#" -eq 2 && "${2:-}" =~ ^[0-9]{1,6}$ ]] || fail 'Usage: bash scripts/mac replay N (one finalized child number, 1-999999).'
+    [[ "$((10#$2))" -gt 0 ]] || fail 'Child number must be between 1 and 999999.'
+    printf -v mac_selected 'run-%06d' "$((10#$2))"
+    docker_ready; image_ready; data_ready; last_run; run_args; stopped_collector
+    mac_source="$mac_data/$mac_run/run/experiment/supervision/$mac_selected/session"
+    [[ -d "$mac_source" && -f "$mac_source/index.jsonl" ]] || fail 'Selected recording is unavailable in the last retained run.'
+    mac_dir=$(mktemp -d "$mac_data/replay-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "Run: $mac_run" "Child: $mac_selected" 'Feed: BBO' \
+      'Origin: captured-public-data' 'Scope: one recorded session; no strategy evaluation or full-day claim.' \
+      > "$mac_dir/source-selection.txt"
+    echo "Replaying: $mac_run/$mac_selected (one recorded BBO session)"
+    mac_replay_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_data/$mac_run,dst=/source,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 180s \
+      python3 /app/ops/paper_market.py --binary /usr/local/bin/giethoorn \
+      --input "/source/run/experiment/supervision/$mac_selected/session" \
+      --output-dir /data/lab --origin captured-public-data --feed bbo || mac_replay_exit=$?
+    echo "Replay saved: $mac_dir"
+    [[ "$mac_replay_exit" -eq 0 ]] || exit "$mac_replay_exit"
+    [[ -f "$mac_dir/lab/paper-lab.html" ]] || fail 'Replay did not produce a view; inspect retained diagnostics.'
+    if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/lab/paper-lab.html"; else echo "$mac_dir/lab/paper-lab.html"; fi
     ;;
   open) if [[ "$(uname -s)" = Darwin ]]; then open http://127.0.0.1:3000; else echo http://127.0.0.1:3000; fi ;;
   stop)

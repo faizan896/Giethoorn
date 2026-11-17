@@ -47,6 +47,19 @@ recoveries, and successful experiment/local completion receipts. A completed
 90-second rehearsal or correctly preserved failure cannot become a day pass.
 Archive integrity is internal consistency, not authenticated venue provenance.
 
+## Replay a selected finalized child
+
+Once a local audit supplies usable finalized children, `scripts/mac replay N`
+opens one explicitly selected child through the existing recorded-market adapter.
+It revalidates that recording rather than trusting the review's cached counters,
+and keeps the current mark-only source/report schemas unchanged. Source is
+read-only, networking is disabled, and a fresh output includes the parent/child
+selection plus the adapter's hashed copy, independently replayed ledger and
+portable Paper Lab. A 180-second timeout retains diagnostics on failure. Active
+collectors, unavailable inputs and incomplete prefixes are refused. This is a
+single-session viewing/integration step; it does not evaluate a strategy, repair
+a prefix or complete the parent's reliability window.
+
 ## Verification
 
 Unit tests cover failed-versus-completed interpretation, refused/malformed native

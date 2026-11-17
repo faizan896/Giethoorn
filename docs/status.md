@@ -10,6 +10,40 @@ described below.
 
 ## Stopped Mac day attempt, 17 November 2026 PKT
 
+**Local audit accepted:** the user ran the published review update and supplied
+its native result: `integrity: verified`, `source_unchanged: true`, audit exit 0,
+no timeout and no metadata issues. All 134 child archives were validated:
+334,794 observations, 139,614,246 recording bytes, 133 finalized recordings and
+one recovered prefix. Evidence is saved locally at
+`~/GiethoornData/review-20261117T115403Z-Hus68T/report`. This establishes local
+archive integrity according to the supplied native audit output; the original
+Mac files have not been transferred to or read in this cloud workspace.
+
+The last child, 134, exited zero with a finalized recording, exact quote
+comparison and 2,049 observations. Its reported elapsed time is 1,818 seconds
+(30m 18s), despite a nominal five-minute child allowance. A clean child exit does
+not undo a parent watchdog deadline violation. VM suspension or a shutdown/stall
+is compatible with this delay, but the audit does not identify its cause. The
+parent remains failed and `verified_24_hour_window` remains false.
+
+The next local command is `bash scripts/mac replay 134`, after updating only
+the launcher. It uses the existing image to validate and copy that one finalized
+recording, independently replay the derived paper inputs, and open its portable
+Paper Lab. The view shows saved BBO prices/feed health; it is not a whole-archive
+analysis, a live quote screen or a strategy-performance test. Original source is
+read-only, networking is disabled, output is fresh, and a 180-second job timeout
+retains failure diagnostics. Active collectors and unavailable child numbers are
+refused. Recovered prefixes remain separate and are not repaired for replay.
+
+Validation: 83 Python tests, shell syntax and whitespace checks pass. The complete
+launcher replays a saved cloud child into 525 independently checked paper updates
+from 524 source records, with no fills and no full-window claim. A recovered
+prefix is refused; original and copied archive inventories remain unchanged.
+Evidence: `data/mac-recorded-replay-20261117T115917Z-70o_c6fk/acceptance.json`.
+This verifies the existing Linux image and launcher, not execution of the new
+command on the Mac. Engine/replay schemas and the old release/runner pins remain
+unchanged; an image rebuild is not required.
+
 The user's first Mac day attempt is retained at
 `~/GiethoornData/start-20261116T161743Z-8dyq7k`. Its collector has exited with code
 1; its read-only monitor remains running. The user reports a power/internet
@@ -17,8 +51,8 @@ outage. The supplied supervisor summary records `status: failed` and
 `reason: collector exceeded its run deadline; no automatic restart`.
 It reports 41,404.564 seconds (11h 30m 4s), 134 started children, 2 restarts,
 334,794 validated snapshots and 139,614,246 recording bytes (about 133 MiB).
-Peak sampled RSS is 11,624,448 bytes and the sampled FD maximum is 6. These are
-user-supplied producer counters, not a fresh independent audit of the Mac data.
+Peak sampled RSS is 11,624,448 bytes and the sampled FD maximum is 6. These
+initially supplied producer counters now agree with the local native audit above.
 The outer experiment reports both initial recoveries but fails overall.
 
 The deadline identifies the terminal watchdog condition; it does not establish
@@ -35,7 +69,8 @@ integrity, finalized recordings/recovered prefixes and the actual day gate. A
 native refusal never manufactures audited totals or repairs a missing summary.
 See [decision 0008](decisions/0008-stopped-local-review.md) and
 [Mac review instructions](local-mac.md#review-a-stopped-run-before-starting-another).
-Mac acceptance of this new review and its actual retained recordings is pending.
+Mac review acceptance is now supplied above. The recorded Paper Lab command still
+requires execution on the Mac; no new full-day run has been requested.
 
 Validation: 79 Python tests and shell syntax checks pass. The existing ordinary-user
 image verifies the saved cloud 90-second rehearsal (767 observations, 2 finalized
