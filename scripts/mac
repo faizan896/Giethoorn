@@ -22,6 +22,7 @@ Giethoorn on your Mac
   ./scripts/mac logs        Show the last 30 collector log lines
   ./scripts/mac review      Audit the last stopped run; preserve original data
   ./scripts/mac replay N    Open recorded BTC prices from finalized child N
+  ./scripts/mac quality     Review gaps and research suitability in your browser
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -164,6 +165,32 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  quality)
+    docker_ready; image_ready; data_ready; last_run; run_args; stopped_collector
+    for mac_required in ops/review_local.py ops/quality_local.py web/quality.html docs/research-plan.md; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the quality update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/quality-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "Source run: $mac_run" 'Origin: captured-public-data' > "$mac_dir/source-selection.txt"
+    echo "Reviewing data quality: $mac_run"
+    mac_quality_options=(--origin captured-public-data --template /quality.html --theme /app/web/theme.css --protocol /protocol.md)
+    if [[ "$mac_run" = start-20261116T161743Z-8dyq7k ]]; then mac_quality_options+=(--inspected-child 134); fi
+    mac_quality_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_data/$mac_run,dst=/source,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/quality.html,dst=/quality.html,readonly" \
+      --mount "type=bind,src=$mac_project/docs/research-plan.md,dst=/protocol.md,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 600s \
+      python3 /helpers/quality_local.py --binary /usr/local/bin/giethoorn \
+      --experiment /source/run/experiment --output-dir /data/report "${mac_quality_options[@]}" || mac_quality_exit=$?
+    echo "Quality evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/quality.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/quality.html"; else echo "$mac_dir/report/quality.html"; fi
+    fi
+    exit "$mac_quality_exit"
     ;;
   replay)
     [[ "$#" -eq 2 && "${2:-}" =~ ^[0-9]{1,6}$ ]] || fail 'Usage: bash scripts/mac replay N (one finalized child number, 1-999999).'

@@ -8,6 +8,45 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Dataset-quality report, 17 November 2026 PKT
+
+`bash scripts/mac quality` now produces an offline quality inventory and portable
+Giethoorn-themed view for the last stopped archive. It uses the existing image,
+fresh native audit, read-only source/helpers/assets and a new derived directory;
+there is no image rebuild, source upload or live collection. Original per-child
+records and verified normalized observations drive timing/state measurements.
+Clock discontinuities, reconnects and repeated exchange times break candidate BBO
+spans; recorded fresh time is capped at its actual deadline. See
+[the quality guide](quality.md) and [decision 0009](decisions/0009-dataset-quality.md).
+
+The manifest binds source inventories, auditor/helper fingerprints, the copied
+research protocol, fixed policy, span artifact and chronological candidate groups.
+Fewer than five candidate children cannot admit a retrospective study split.
+Known run-134 visual exposure is declared for its original Mac parent only.
+The signal runner, signal outcomes and economic test remain unimplemented.
+
+Validation passes 102 Python tests, shell syntax and whitespace checks. The full
+ordinary-user launcher on the saved cloud rehearsal retains 767 verified
+observations across two finalized children and one excluded recovered prefix.
+Its two finalized children contain 533 usable BBO updates and 11 qualifying spans
+totalling 25.979429340 seconds; no study split is admitted from only two children.
+These are cloud-rehearsal results, not measurements of the user's Mac archive.
+A separate mutation copy is refused with null quality totals and no admitted
+rows. An explicitly synthetic failed legacy archive verifies as retained evidence
+but has no BBO candidates and no study admission. Original inventories stay equal.
+
+Offline browser checks pass recording filters/search/keyboard selection, prefix
+and unavailable states, exact JSON download, inert hostile text, integer precision
+and 390/320-pixel layouts, with no JavaScript errors or network requests. Evidence
+is under `data/quality-acceptance-20261117T123006Z-zxwuixii/release/` (native
+`acceptance.json`, `browser-review/browser-checks.json` and screenshots); the
+synthetic legacy fixture is recorded separately under the evidence parent.
+
+The Mac's actual quality totals require running the new local command; they are
+not inferred from its earlier integrity audit or the cloud sample. The day gate
+remains pending, no collector has been restarted, and the original release and
+experiment-runner fingerprints remain unchanged.
+
 ## Research preparation, 17 November 2026 PKT
 
 The user reports the recorded-replay step done and explicitly confirms that the
@@ -20,9 +59,10 @@ signal outcomes: qualify/fingerprint the finalized source, test one fixed BBO-si
 imbalance prediction, separate chronological development/validation/test children,
 and require a later explicit costed-execution specification. Run 134 is flagged
 as selected for visual inspection rather than claiming an untouched holdout.
-The next implementation is the dataset-quality report; the signal runner and
-strategy evaluation do not exist yet. This change is documentation only and
-does not require a Mac update, rebuild, new capture or collection-policy change.
+The protocol was prepared before outcome analysis. Its first dataset-quality
+implementation is now documented above; the signal runner and strategy
+evaluation do not exist yet. The protocol-only step required no Mac update or
+collection-policy change.
 
 ## Stopped Mac day attempt, 17 November 2026 PKT
 

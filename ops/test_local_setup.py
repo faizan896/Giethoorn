@@ -126,6 +126,12 @@ if args[0]=='info':
  else:print('linux')
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
 if args[:2]==['image','inspect']:sys.exit(0)
+if args[0]=='run' and '/helpers/quality_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=target.split('src=',1)[1].split(',dst=',1)[0]
+ view=Path(source)/'report/quality.html';view.parent.mkdir();view.write_text('synthetic quality orchestration view')
+ if os.environ.get('GIETHOORN_TEST_CASE')=='quality-failure':sys.exit(1)
+ sys.exit(0)
 if args[0]=='run' and '/app/ops/paper_market.py' in args:
  if os.environ.get('GIETHOORN_TEST_CASE')=='replay-failure':sys.exit(7)
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
@@ -225,6 +231,59 @@ if args[0]=='run' and '--name' in args:
             self.assertNotEqual(result.returncode,0);self.assertIn('still running',result.stderr)
             calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
             self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
+
+    def quality_assets(self, project):
+        for name in ('ops/review_local.py','ops/quality_local.py','web/quality.html','docs/research-plan.md'):
+            target=project/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text('synthetic orchestration asset')
+
+    def test_quality_uses_read_only_sources_and_assets_without_rebuilding_or_collecting(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.replay_source(root);self.quality_assets(project)
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'quality'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            run=next(c for c in calls if c[0]=='run')
+            self.assertEqual(run[run.index('--network')+1],'none')
+            self.assertIn('--read-only',run);self.assertIn('600s',run)
+            self.assertNotIn('--inspected-child',run)
+            for target in ('/source','/helpers','/quality.html','/protocol.md'):
+                self.assertTrue(any('dst='+target+',readonly' in arg for arg in run))
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+            view=next((root/'saved data').glob('quality-*/report/quality.html'))
+            self.assertIn(str(view),result.stdout)
+
+    def test_quality_declares_known_visual_exposure_only_for_the_original_mac_parent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);source=self.replay_source(root);self.quality_assets(project)
+            identifier='start-20261116T161743Z-8dyq7k'
+            source.rename(source.parent/identifier)
+            (source.parent/'last-run').write_text(identifier+'\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'quality'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            run=next(c for c in calls if c[0]=='run')
+            self.assertEqual(run[run.index('--inspected-child')+1],'134')
+
+    def test_quality_preserves_nonzero_failure_and_still_exposes_diagnostic_view(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.replay_source(root);self.quality_assets(project)
+            env['GIETHOORN_TEST_CASE']='quality-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'quality'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1,result.stderr)
+            self.assertIn('quality.html',result.stdout)
+            self.assertTrue(next((root/'saved data').glob('quality-*/source-selection.txt')).exists())
+
+    def test_quality_refuses_missing_assets_or_an_active_collector_before_container_start(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.replay_source(root)
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'quality'],env=env,capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0);self.assertIn('missing',result.stderr)
+            self.quality_assets(project);env['GIETHOORN_TEST_CASE']='active-review'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'quality'],env=env,capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0);self.assertIn('still running',result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
+            self.assertFalse(list((root/'saved data').glob('quality-*')))
 
     def replay_source(self, root):
         source=root/'saved data/start-fixture'

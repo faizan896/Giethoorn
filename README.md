@@ -31,6 +31,8 @@ rebuilding the image or changing its recordings.
 Use `bash scripts/mac replay N` to open one finalized child recording in the
 offline Paper Lab; `N` is the child number shown in the review. This uses recorded
 prices and feed health, with orders and fills disabled.
+Use `bash scripts/mac quality` for an offline [dataset-quality report](docs/quality.md)
+covering per-session gaps, feed freshness and candidate spans for the fixed study.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

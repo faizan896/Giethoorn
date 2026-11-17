@@ -1,9 +1,11 @@
 # First offline research study
 
-Status: specification prepared before signal results. The research runner and
-dataset-quality report below are not implemented yet. Existing Paper Lab replays
-recorded marks or fixed protocol scenarios; neither generates this signal. This
-plan does not change an engine, recording or paper schema.
+Status: specification prepared before signal results. The [dataset-quality
+report](quality.md) now implements the inventory, cadence-span diagnostics and
+candidate partition manifest. The signal runner and economic test remain
+unimplemented. Existing Paper Lab replays recorded marks or fixed protocol
+scenarios; neither generates this signal. This plan does not change an engine,
+recording or paper schema.
 
 The immediate input is the user's locally audited BTC archive: 133 finalized
 children and one recovered prefix, with 334,794 observations across both feeds.

@@ -171,6 +171,20 @@ invocation keeps its own output. A failed replay or 180-second timeout retains
 diagnostics instead of opening a successful-looking view. Only the launcher
 needs updating for this command; no Docker rebuild or host Python is required.
 
+## Review all recordings for research suitability
+
+After updating the quality files, run:
+
+```sh
+bash scripts/mac quality
+```
+
+This opens a saved data-quality report for the whole last stopped archive, using
+the existing image. It separates native feed freshness from the first study's
+tighter BBO cadence, preserves recovered prefixes outside the candidate dataset,
+and keeps a hashed source/protocol manifest. No raw archive is uploaded or
+changed. See [how to read the quality report](quality.md) for fields and limits.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:
