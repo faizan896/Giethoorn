@@ -8,6 +8,36 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Mac development study accepted, 17 November 2026 PKT
+
+The user completed the fixed development run and supplied `status: completed`,
+`source_unchanged: true`, `quality_unchanged: true` and no error. The local evidence
+is `~/GiethoornData/study-20261117T142333Z-iWDe6F/report`, using the existing frozen
+quality snapshot `quality-20261117T125619Z-mAfC1j`. Original Mac files have not been
+read in this cloud workspace; acceptance is based on the supplied local output.
+
+The 79 development children produced 4,766 samples: 3,392 directional signals and
+1,374 abstentions. Only 882 signals have labels (26.0024%); 2,510 signal labels
+are unavailable (73.9976%). Across all samples, 1,183 labels are available and
+3,583 unavailable: 3,533 on the fixed 250-ms gap rule and 50 on unusable feeds.
+All count identities and reported rounding were independently recomputed here.
+
+On the 882 labelled signals, 457 hits give 51.8141%, versus always-up 225/882
+(25.5102%) and always-down 268/882 (30.3855%). Unchanged outcomes are 389/882
+and count as misses. The mean signed midprice change is 0.511285753366 bps
+(0.00511285753366%) before any execution costs. These descriptive development
+results beat the constant-direction controls on the available subset; the large
+missing-label share can select a different market/data regime. They do not
+establish significance, tradability or profitability across all signal attempts.
+
+No rule, threshold, horizon or partition has changed after viewing this result.
+Next is the existing explicit `validation` command on 26 frozen children; the
+28 retrospective-test children remain unrun. No code update, new collection or
+image rebuild is required for validation. Arithmetic receipt:
+`data/mac-development-review-20261117T142816Z-ky2946j0/terminal-observation.json`
+(explicitly user-terminal provenance, not a reconstructed native study report).
+The operational day gate and economic testing remain outstanding.
+
 ## Fixed prediction study and Mac quality acceptance, 17 November 2026 PKT
 
 The user completed the Mac quality command and supplied a successful local result:
@@ -54,9 +84,9 @@ in the Mac image or source. Evidence is under
 `release-browser-review/`, capture/quality diagnostics and preservation receipts).
 The original release and experiment-runner pins remain unchanged.
 
-Mac study execution/outcomes are pending its local command. Its signal result is
-not inferred from the small cloud check. No new Mac collection or day attempt
-has been started; economic testing and the 24-hour gate remain outstanding.
+Mac development acceptance is now supplied above, independently of this smaller
+cloud check. Validation/test outcomes remain unrun. No new Mac collection or day
+attempt has been started; economic testing and the 24-hour gate remain outstanding.
 
 ## Dataset-quality report, 17 November 2026 PKT
 
