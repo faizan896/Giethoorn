@@ -185,6 +185,19 @@ tighter BBO cadence, preserves recovered prefixes outside the candidate dataset,
 and keeps a hashed source/protocol manifest. No raw archive is uploaded or
 changed. See [how to read the quality report](quality.md) for fields and limits.
 
+## Run the first fixed signal study
+
+After the study update, use the identifier printed by your quality run:
+
+```sh
+bash scripts/mac study quality-20261117T125619Z-mAfC1j
+```
+
+This uses that frozen snapshot and source, defaulting to development only. The
+saved browser report shows prediction counts, missing labels and same-sample
+directional baselines. Validation/test outcomes stay unrun. Source and quality
+evidence are read-only; the existing image is reused. See [study instructions](study.md).
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

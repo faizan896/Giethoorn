@@ -33,6 +33,9 @@ offline Paper Lab; `N` is the child number shown in the review. This uses record
 prices and feed health, with orders and fills disabled.
 Use `bash scripts/mac quality` for an offline [dataset-quality report](docs/quality.md)
 covering per-session gaps, feed freshness and candidate spans for the fixed study.
+The [fixed signal study](docs/study.md) runs a predeclared prediction on one frozen
+partition, defaulting to development while other groups remain unrun. Its metrics
+describe predictions, with no orders or economic-performance claim.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

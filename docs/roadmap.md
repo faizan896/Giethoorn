@@ -67,7 +67,8 @@ Offline preparation now has a [first research protocol](research-plan.md): freez
 and qualify the existing data, test one fixed BBO-size prediction hypothesis,
 retain chronological evaluation partitions, then specify a separate costed test.
 The [quality report](quality.md) implements the first dataset qualification step;
-the signal runner is not implemented yet.
+the [fixed signal study](study.md) now runs a prediction on one explicit partition.
+Costed strategy evaluation remains ahead.
 This preparation does not activate strategies or change the collection gate.
 
 ## 3. Single-venue execution and risk

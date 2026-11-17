@@ -23,6 +23,7 @@ Giethoorn on your Mac
   ./scripts/mac review      Audit the last stopped run; preserve original data
   ./scripts/mac replay N    Open recorded BTC prices from finalized child N
   ./scripts/mac quality     Review gaps and research suitability in your browser
+  ./scripts/mac study ID    Test the fixed signal on a frozen quality snapshot
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -165,6 +166,45 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  study)
+    [[ "$#" -ge 2 && "$#" -le 3 ]] || fail 'Usage: bash scripts/mac study quality-ID [development|validation|retrospective_test]'
+    mac_quality_id=$2
+    case "$mac_quality_id" in quality-*) ;; *) fail 'Choose the quality snapshot identifier printed by the quality command.' ;; esac
+    case "$mac_quality_id" in *[!a-zA-Z0-9_-]*) fail 'Invalid quality snapshot identifier.' ;; esac
+    mac_partition=${3:-development}
+    case "$mac_partition" in development|validation|retrospective_test) ;; *) fail 'Choose one explicit study partition.' ;; esac
+    docker_ready; image_ready; data_ready; run_args; stopped_collector
+    mac_quality_dir="$mac_data/$mac_quality_id/report"
+    mac_selection_file="$mac_data/$mac_quality_id/source-selection.txt"
+    [[ -f "$mac_selection_file" && ! -L "$mac_selection_file" ]] || fail 'Frozen quality source selection is unavailable.'
+    IFS= read -r mac_selection < "$mac_selection_file"
+    case "$mac_selection" in 'Source run: '*) mac_run=${mac_selection#Source run: } ;; *) fail 'Invalid quality source selection.' ;; esac
+    case "$mac_run" in *[!a-zA-Z0-9_-]*|'') fail 'Invalid frozen source identifier.' ;; esac
+    [[ -d "$mac_data/$mac_run" && -d "$mac_quality_dir" ]] || fail 'Frozen source or quality report is unavailable.'
+    for mac_required in ops/review_local.py ops/quality_local.py ops/study_core.py ops/study_local.py web/quality.html web/study.html; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the study update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/study-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "$mac_selection" "Quality snapshot: $mac_quality_id" "Partition: $mac_partition" > "$mac_dir/source-selection.txt"
+    echo "Running fixed signal study: $mac_partition ($mac_run)"
+    mac_study_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_data/$mac_run,dst=/source,readonly" \
+      --mount "type=bind,src=$mac_quality_dir,dst=/quality,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/quality.html,dst=/quality.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/study.html,dst=/study.html,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 600s python3 /helpers/study_local.py \
+      --binary /usr/local/bin/giethoorn --experiment /source/run/experiment --quality /quality \
+      --output-dir /data/report --origin captured-public-data --partition "$mac_partition" \
+      --quality-template /quality.html --study-template /study.html --theme /app/web/theme.css || mac_study_exit=$?
+    echo "Study evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/study.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/study.html"; else echo "$mac_dir/report/study.html"; fi
+    fi
+    exit "$mac_study_exit"
     ;;
   quality)
     docker_ready; image_ready; data_ready; last_run; run_args; stopped_collector

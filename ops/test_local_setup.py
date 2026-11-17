@@ -126,6 +126,11 @@ if args[0]=='info':
  else:print('linux')
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
 if args[:2]==['image','inspect']:sys.exit(0)
+if args[0]=='run' and '/helpers/study_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=target.split('src=',1)[1].split(',dst=',1)[0]
+ view=Path(source)/'report/study.html';view.parent.mkdir();view.write_text('synthetic study orchestration view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='study-failure' else 0)
 if args[0]=='run' and '/helpers/quality_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=target.split('src=',1)[1].split(',dst=',1)[0]
@@ -231,6 +236,45 @@ if args[0]=='run' and '--name' in args:
             self.assertNotEqual(result.returncode,0);self.assertIn('still running',result.stderr)
             calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
             self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
+
+    def study_setup(self,root,project):
+        self.replay_source(root);self.quality_assets(project)
+        for name in ('ops/study_core.py','ops/study_local.py','web/study.html'):
+            (project/name).write_text('synthetic study orchestration asset')
+        quality=root/'saved data/quality-fixture';(quality/'report').mkdir(parents=True)
+        (quality/'source-selection.txt').write_text('Source run: start-fixture\nOrigin: captured-public-data\n')
+        return quality
+
+    def test_study_uses_explicit_frozen_parent_and_development_only_by_default(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.study_setup(root,project)
+            (root/'saved data/last-run').write_text('different-new-run\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'study','quality-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            run=next(c for c in calls if c[0]=='run')
+            self.assertEqual(run[run.index('--partition')+1],'development')
+            self.assertEqual(run[run.index('--network')+1],'none')
+            self.assertTrue(any('start-fixture,dst=/source,readonly' in item for item in run))
+            self.assertTrue(any('quality-fixture/report,dst=/quality,readonly' in item for item in run))
+            self.assertIn('600s',run);self.assertIn('--read-only',run)
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+
+    def test_study_refuses_unsafe_snapshot_or_implicit_all_partitions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.study_setup(root,project)
+            for extra in (['quality-../escape'],['different-id'],['quality-fixture','all']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'study',*extra],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+
+    def test_study_preserves_nonzero_exit_with_diagnostic_view(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.study_setup(root,project)
+            env['GIETHOORN_TEST_CASE']='study-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'study','quality-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1,result.stderr)
+            self.assertIn('study.html',result.stdout)
 
     def quality_assets(self, project):
         for name in ('ops/review_local.py','ops/quality_local.py','web/quality.html','docs/research-plan.md'):

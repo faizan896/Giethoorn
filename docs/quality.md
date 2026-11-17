@@ -58,6 +58,6 @@ process kill or exhausted filesystem can leave only partial artifacts. Keep
 those diagnostics and do not repair or replace the original archive.
 
 The report's completion means a quality review finished, not a passed day window
-or a strategy result. The next implementation is the fixed prediction study in
-[the research plan](research-plan.md), followed by separately specified costed
-execution tests. See [decision 0009](decisions/0009-dataset-quality.md).
+or a strategy result. The [fixed prediction study](study.md) now implements the
+next step in [the research plan](research-plan.md); costed execution testing stays
+separate. See [decision 0009](decisions/0009-dataset-quality.md).

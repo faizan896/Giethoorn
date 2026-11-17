@@ -8,6 +8,56 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Fixed prediction study and Mac quality acceptance, 17 November 2026 PKT
+
+The user completed the Mac quality command and supplied a successful local result:
+134 retained recordings, 133 finalized candidates, one excluded recovered prefix,
+334,794 retained observations and 330,784 usable BBO observations. Its 6,523
+qualifying spans sum to 14,931.944878902 seconds (4h 8m 51.945s), as separate spans,
+not continuous coverage. The frozen child split is 79 development / 26 validation
+/ 28 retrospective test. Source is unchanged and no quality error is reported.
+Local evidence: `~/GiethoornData/quality-20261117T125619Z-mAfC1j/report`.
+These are user-supplied local results; the Mac files have not been read here.
+
+Run 134 reports 1,818.492983278 seconds of process time, 1,818.387945625 seconds of
+recorded time and a 1,585.466088153-second maximum event gap (26m 25.466s).
+No wall-minus-monotonic discontinuity was detected. This identifies a large gap
+excluded from qualifying spans; it does not establish the component/cause of the
+stall. The historical watchdog/day failure remains unchanged.
+
+The fixed prediction study is now implemented. `bash scripts/mac study
+quality-20261117T125619Z-mAfC1j` selects that frozen snapshot/source and defaults
+to development only. It rechecks source/quality fingerprints, native audit,
+domain and membership; then records causal version-1 features and labelled or
+explicitly missing outcomes. Other partitions stay unrun with null metrics.
+The portable report compares the signal against constant-direction controls on
+the same labelled-signal subset. No orders or economic returns are evaluated.
+See [study instructions](study.md) and [decision 0010](decisions/0010-fixed-signal-study.md).
+
+Validation passes 126 Python tests, shell checks and offline browser checks.
+The complete ordinary-user launcher passes twice with identical feature/sample
+bytes and unchanged source/quality evidence. Its small separate cloud sample
+has 15 development samples, 9 directional signals, only 3 labelled directional
+signals and 10 unavailable labels across all samples. Two directional hits and
+one unchanged price verify accounting/controls; these few outcomes are integration
+evidence, not evidence of a predictive or economic edge. Validation/test outcomes
+are not calculated. Browser checks cover unavailable groups, exact exports,
+inert hostile strings, large integers and 390/320-pixel layouts without requests.
+
+The separate 120-second capture provided nine qualifying finalized children but
+ended operationally failed on a nonretryable final short-child exit. Its archive
+integrity verifies; that failure was retained and never promoted to a completed
+capture window. Cloud collection needed its managed session CA mounted read-only
+for verified TLS; no TLS verification was disabled and no session trust was put
+in the Mac image or source. Evidence is under
+`data/study-acceptance-20261117T130645Z-r_nn64p5/` (`native-release.json`,
+`release-browser-review/`, capture/quality diagnostics and preservation receipts).
+The original release and experiment-runner pins remain unchanged.
+
+Mac study execution/outcomes are pending its local command. Its signal result is
+not inferred from the small cloud check. No new Mac collection or day attempt
+has been started; economic testing and the 24-hour gate remain outstanding.
+
 ## Dataset-quality report, 17 November 2026 PKT
 
 `bash scripts/mac quality` now produces an offline quality inventory and portable
@@ -23,7 +73,8 @@ The manifest binds source inventories, auditor/helper fingerprints, the copied
 research protocol, fixed policy, span artifact and chronological candidate groups.
 Fewer than five candidate children cannot admit a retrospective study split.
 Known run-134 visual exposure is declared for its original Mac parent only.
-The signal runner, signal outcomes and economic test remain unimplemented.
+The signal runner is now implemented above; actual Mac outcomes and the economic
+test remain outstanding.
 
 Validation passes 102 Python tests, shell syntax and whitespace checks. The full
 ordinary-user launcher on the saved cloud rehearsal retains 767 verified
@@ -42,10 +93,9 @@ is under `data/quality-acceptance-20261117T123006Z-zxwuixii/release/` (native
 `acceptance.json`, `browser-review/browser-checks.json` and screenshots); the
 synthetic legacy fixture is recorded separately under the evidence parent.
 
-The Mac's actual quality totals require running the new local command; they are
-not inferred from its earlier integrity audit or the cloud sample. The day gate
-remains pending, no collector has been restarted, and the original release and
-experiment-runner fingerprints remain unchanged.
+The Mac's actual quality totals are now supplied in the acceptance above and
+are separate from this smaller cloud sample. The day gate remains pending, no
+Mac collector has been restarted, and original release/runner pins are unchanged.
 
 ## Research preparation, 17 November 2026 PKT
 
@@ -60,8 +110,8 @@ imbalance prediction, separate chronological development/validation/test childre
 and require a later explicit costed-execution specification. Run 134 is flagged
 as selected for visual inspection rather than claiming an untouched holdout.
 The protocol was prepared before outcome analysis. Its first dataset-quality
-implementation is now documented above; the signal runner and strategy
-evaluation do not exist yet. The protocol-only step required no Mac update or
+implementation and fixed signal study are now documented above; costed strategy
+evaluation remains ahead. The protocol-only step required no Mac update or
 collection-policy change.
 
 ## Stopped Mac day attempt, 17 November 2026 PKT
