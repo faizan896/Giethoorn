@@ -20,6 +20,7 @@ Giethoorn on your Mac
   ./scripts/mac start       Start a fresh 24-hour live experiment
   ./scripts/mac status      Show the retained container state
   ./scripts/mac logs        Show the last 30 collector log lines
+  ./scripts/mac review      Audit the last stopped run; preserve original data
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -142,6 +143,24 @@ case "${1:-help}" in
     done
     ;;
   logs) docker_ready; owned "$mac_collector" || fail 'Owned collector unavailable.'; docker logs --tail 30 "$mac_collector" ;;
+  review)
+    docker_ready; image_ready; data_ready; last_run; run_args
+    if exists "$mac_collector"; then
+      owned "$mac_collector" || fail 'Collector is not owned by Giethoorn.'
+      [[ "$(docker inspect --format '{{.State.Running}}' "$mac_collector")" = false ]] || fail 'Collector is still running; review after it stops.'
+    fi
+    [[ -f "$mac_project/ops/review_local.py" ]] || fail 'Download ops/review_local.py with this launcher update.'
+    mac_review=$(mktemp -d "$mac_data/review-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    mac_review_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_data/$mac_run,dst=/source,readonly" \
+      --mount "type=bind,src=$mac_project/ops/review_local.py,dst=/review_local.py,readonly" \
+      --mount "type=bind,src=$mac_review,dst=/review" "$mac_image" \
+      python3 /review_local.py --binary /usr/local/bin/giethoorn --experiment /source/run/experiment \
+      --output-dir /review/report || mac_review_exit=$?
+    echo "Review saved: $mac_review/report"
+    exit "$mac_review_exit"
+    ;;
   open) if [[ "$(uname -s)" = Darwin ]]; then open http://127.0.0.1:3000; else echo http://127.0.0.1:3000; fi ;;
   stop)
     docker_ready

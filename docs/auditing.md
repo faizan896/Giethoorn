@@ -13,6 +13,15 @@ root are rejected. Active supervisors are rejected through the shared/exclusive
 root lock. A missing or partial final summary is not accepted; inspect individual
 `run-NNNNNN/session` directories with explicit recovery instead.
 
+On the local Mac package, `bash scripts/mac review` runs this native audit with
+the stopped source mounted read-only and networking disabled. It saves fresh
+before/after SHA-256 inventories, the native output/errors and a version-1
+`review.json` outside the original run. The existing image need not be rebuilt.
+This wrapper keeps operational failure, evidence integrity and full-day
+completion as separate results; it never repairs or resumes an archive. See
+[local instructions](local-mac.md#review-a-stopped-run-before-starting-another)
+and [decision 0008](decisions/0008-stopped-local-review.md).
+
 ## What is recomputed
 
 - SHA-256 of the retained collector executable, checked against configuration and summary.

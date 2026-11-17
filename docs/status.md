@@ -8,6 +8,45 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Stopped Mac day attempt, 17 November 2026 PKT
+
+The user's first Mac day attempt is retained at
+`~/GiethoornData/start-20261116T161743Z-8dyq7k`. Its collector has exited with code
+1; its read-only monitor remains running. The user reports a power/internet
+outage. The supplied supervisor summary records `status: failed` and
+`reason: collector exceeded its run deadline; no automatic restart`.
+It reports 41,404.564 seconds (11h 30m 4s), 134 started children, 2 restarts,
+334,794 validated snapshots and 139,614,246 recording bytes (about 133 MiB).
+Peak sampled RSS is 11,624,448 bytes and the sampled FD maximum is 6. These are
+user-supplied producer counters, not a fresh independent audit of the Mac data.
+The outer experiment reports both initial recoveries but fails overall.
+
+The deadline identifies the terminal watchdog condition; it does not establish
+whether VM suspension, a network stall or another cause delayed the child.
+No retry limit, grace period or fail-closed policy has been relaxed. The full-day
+gate remains pending, and no replacement day run has been started here.
+
+`bash scripts/mac review` now audits a stopped run offline with the existing
+image's native auditor. The updated launcher and new `ops/review_local.py` are
+mounted from source, so this review requires no image rebuild. Original data is
+read-only; derived inventories, diagnostics and `review.json` are saved in a new
+Mac `review-*` directory. It separately reports producer failure, native archive
+integrity, finalized recordings/recovered prefixes and the actual day gate. A
+native refusal never manufactures audited totals or repairs a missing summary.
+See [decision 0008](decisions/0008-stopped-local-review.md) and
+[Mac review instructions](local-mac.md#review-a-stopped-run-before-starting-another).
+Mac acceptance of this new review and its actual retained recordings is pending.
+
+Validation: 79 Python tests and shell syntax checks pass. The existing ordinary-user
+image verifies the saved cloud 90-second rehearsal (767 observations, 2 finalized
+recordings and 1 recovered prefix), and independently accepts an explicitly
+synthetic failed archive without claiming window completion. A mutation copy is
+rejected with null audited counts and retained diagnostics. The complete
+`scripts/mac review` path also passes on Linux Docker. All source inventories
+remain unchanged; every short/failed case keeps the day gate false. Evidence is
+under `data/local-review-20261117T113345Z-3dexzxyf/acceptance.json`. These container
+checks do not independently establish integrity of the user's Mac archive.
+
 ## Intel Mac local setup, 16 November 2026 PKT
 
 **Mac acceptance:** after applying `11a4247`, the user reports that image build
@@ -16,8 +55,8 @@ also completed its requested 90 seconds, with `network_recovery_observed: true`,
 `crash_recovery_observed: true` and `supervisor_exit_code: 0`. Its saved run is
 `~/GiethoornData/rehearsal-20261116T161040Z-PXTg2R`. This is evidence from the user's
 Terminal output; its underlying archive has not been independently read here.
-The runner emits `completed` only after its native audit succeeds. A fresh
-24-hour Mac run and its final audit remain the next gate.
+The runner emits `completed` only after its native audit succeeds. The later
+Mac day attempt failed as documented above; the full-day gate remains pending.
 
 The user approved source delivery through GitHub. The `mac-local-setup` branch
 was uploaded at `0d49d2e`; its ZIP downloaded successfully over HTTPS, all 119

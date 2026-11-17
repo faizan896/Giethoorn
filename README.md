@@ -5,9 +5,11 @@ Replayable market-data infrastructure for a future systematic trading product.
 **Current milestone:** make public market-data collection operationally reliable.
 Live Hyperliquid capture, checksummed rotation and exact replay have been verified.
 Storage budgets, offline inspection, archive audit and interrupted-session recovery
-are implemented. A one-hour supervision baseline passed. Two supervised 24-hour
-attempts stopped before completion; retained recordings verify, but the full
-24-hour gate remains pending. See [status](docs/status.md) for the current result.
+are implemented. A one-hour supervision baseline passed. Two cloud 24-hour
+attempts stopped before completion; their retained recordings verify. The first
+Mac day run failed after about 11.5 hours on a collector deadline; its data still
+needs an independent audit. The full 24-hour gate remains pending. See
+[status](docs/status.md) for the current result.
 Explicit schema-2 profiles separate BBO and
 depth freshness; legacy capture output remains the default. No wallet, private keys,
 live order placement, or strategy execution exists in this version. An isolated
@@ -23,6 +25,8 @@ On an Intel Mac, use the [local Mac setup](docs/local-mac.md). Docker Desktop
 builds/tests the Linux application and keeps recordings in `~/GiethoornData`.
 No paid server or host Rust installation is required. Start with the offline lab
 and 90-second recovery rehearsal before requesting a fresh 24-hour window.
+Use `bash scripts/mac review` to audit a stopped local run offline, without
+rebuilding the image or changing its recordings.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

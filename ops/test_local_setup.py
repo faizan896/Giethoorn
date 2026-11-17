@@ -127,6 +127,9 @@ if args[0]=='info':
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
 if args[:2]==['image','inspect']:sys.exit(0)
 if args[0]=='inspect':
+ if os.environ.get('GIETHOORN_TEST_CASE')=='active-review':
+  if '--format' in args:print('true')
+  sys.exit(0)
  if 'foreign' in os.environ.get('GIETHOORN_TEST_CASE',''):
   if '--format' in args:print('false')
   sys.exit(0)
@@ -185,6 +188,37 @@ if args[0]=='run' and '--name' in args:
             self.assertTrue(any(c[0]=='stop' and any('collector' in a for a in c) for c in calls))
             run=(root/'saved data/last-run').read_text().strip()
             self.assertTrue((root/'saved data'/run).is_dir())
+
+    def test_review_mounts_originals_read_only_without_starting_or_stopping_a_collector(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root)
+            (project/'ops').mkdir()
+            (project/'ops/review_local.py').write_bytes((PROJECT/'ops/review_local.py').read_bytes())
+            source=root/'saved data/start-fixture';source.mkdir(parents=True)
+            (source.parent/'last-run').write_text('start-fixture\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'review'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[c for c in calls if c[0]=='run']
+            self.assertEqual(len(runs),1)
+            self.assertEqual(runs[0][runs[0].index('--network')+1],'none')
+            self.assertIn('--read-only',runs[0])
+            mounts=[runs[0][i+1] for i,v in enumerate(runs[0]) if v=='--mount']
+            self.assertTrue(any('dst=/source,readonly' in m for m in mounts))
+            self.assertTrue(any('dst=/review_local.py,readonly' in m for m in mounts))
+            self.assertFalse(any(c[0] in ('build','stop','rm') for c in calls))
+            self.assertNotIn('--detach',runs[0])
+
+    def test_review_refuses_an_active_collector(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root)
+            source=root/'saved data/start-fixture';source.mkdir(parents=True)
+            (source.parent/'last-run').write_text('start-fixture\n')
+            env['GIETHOORN_TEST_CASE']='active-review'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'review'],env=env,capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0);self.assertIn('still running',result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            self.assertFalse(any(c[0] in ('run','build','stop','rm') for c in calls))
 
 
 class MacPackageTests(unittest.TestCase):

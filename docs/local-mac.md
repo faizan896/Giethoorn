@@ -1,7 +1,7 @@
 # Giethoorn on your Intel Mac
 
 This package runs the collector and research tools on your own Mac, without a
-paid VPS. It includes the current source files; it does not rely on a GitHub push.
+paid VPS. Source is available on the repository's `mac-local-setup` branch.
 Docker Desktop supplies the Linux environment required by the fault-test runner.
 The Mac setup itself still needs acceptance on your machine. A Linux container
 test is not evidence that your Mac has completed a 24-hour collection window.
@@ -26,8 +26,7 @@ collector and monitor each have a 768 MiB container limit and no privileged acce
 
 If the chat's artifact download fails, a reviewed source snapshot can be delivered
 through the existing `faizan896/Giethoorn` repository's `mac-local-setup` branch.
-That branch must first be uploaded with the user's approval; its existence must
-not be inferred from this guide. Once available, select the branch in GitHub,
+That source delivery was uploaded with the user's approval. Select the branch in GitHub,
 choose **Code → Download ZIP**, and extract it. Its directory will normally be
 `~/Downloads/Giethoorn-mac-local-setup`; run the commands below from that directory
 instead. This route does not need Git or developer tools installed on the Mac.
@@ -105,6 +104,41 @@ Recordings and all audit artifacts persist in `~/GiethoornData/start-*/run/`:
 The experiment admits up to 4 GiB of recording data and keeps a 1 GiB disk reserve;
 these do not cover every log, image, build cache or other application on the Mac.
 Docker console logs are separately capped. Earlier recordings are never pruned.
+
+## Review a stopped run before starting another
+
+From your existing source directory, with Docker open:
+
+```sh
+bash scripts/mac review
+```
+
+This audits the run selected by `~/GiethoornData/last-run`. It uses the existing
+image's native auditor and the downloaded `ops/review_local.py`; updating these
+two source files does not require an image rebuild. The source run and helper
+are mounted read-only, networking is disabled, and derived reports go into a new
+`~/GiethoornData/review-*/report/` directory. It does not start, stop or remove the
+collector or its monitor. A running collector is refused.
+
+Read `reported_reason`, `reported_elapsed` and `last_reported_run` for the saved
+failure. `integrity: verified` means the native auditor recomputed the retained
+archive successfully; a failed run can still have intact, useful recordings.
+`source_unchanged` compares SHA-256, size and modification time before and after,
+including the local wrapper receipts. Finalized recordings and recovered prefixes
+are counted separately. A recovered prefix may have a lost tail; neither result
+establishes continuous market coverage or profitable trading.
+
+The command exits zero when the review verifies evidence, even if the collector
+failed. `verified_24_hour_window` remains false unless the native full-window
+audit and local/experiment completion receipts all establish an actual day pass.
+Missing final summaries or corrupt data yield `audit_unverified` and a nonzero
+exit, retaining native diagnostics without repairing anything. A separate
+per-recording recovery may then be needed. See [the audit guide](auditing.md).
+
+The first Mac day attempt reported a deadline failure after about 11 hours
+30 minutes. Preserve it and review its data before deciding on another run;
+interrupted hours cannot be combined into a full-day pass. Collection and offline
+research are separate milestones, so no immediate repeat day run is necessary.
 
 ## Control and stop
 
