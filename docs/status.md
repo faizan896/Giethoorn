@@ -8,6 +8,22 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Research preparation, 17 November 2026 PKT
+
+The user reports the recorded-replay step done and explicitly confirms that the
+BTC chart is visible in the browser. This is user-reported local UI acceptance;
+no new replay stdout or Mac artifacts have been read here. Local native archive
+audit acceptance below remains established from the earlier output.
+
+The [first offline research protocol](research-plan.md) is now specified before
+signal outcomes: qualify/fingerprint the finalized source, test one fixed BBO-size
+imbalance prediction, separate chronological development/validation/test children,
+and require a later explicit costed-execution specification. Run 134 is flagged
+as selected for visual inspection rather than claiming an untouched holdout.
+The next implementation is the dataset-quality report; the signal runner and
+strategy evaluation do not exist yet. This change is documentation only and
+does not require a Mac update, rebuild, new capture or collection-policy change.
+
 ## Stopped Mac day attempt, 17 November 2026 PKT
 
 **Local audit accepted:** the user ran the published review update and supplied
@@ -69,8 +85,9 @@ integrity, finalized recordings/recovered prefixes and the actual day gate. A
 native refusal never manufactures audited totals or repairs a missing summary.
 See [decision 0008](decisions/0008-stopped-local-review.md) and
 [Mac review instructions](local-mac.md#review-a-stopped-run-before-starting-another).
-Mac review acceptance is now supplied above. The recorded Paper Lab command still
-requires execution on the Mac; no new full-day run has been requested.
+Mac review acceptance is supplied above. The user now also confirms the recorded
+Paper Lab chart opens locally, as noted in the research handoff. No new full-day
+run has been requested.
 
 Validation: 79 Python tests and shell syntax checks pass. The existing ordinary-user
 image verifies the saved cloud 90-second rehearsal (767 observations, 2 finalized

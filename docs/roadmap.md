@@ -63,6 +63,12 @@ recovery is documented; resource use is bounded; paper decisions replay exactly.
 Simulation must label its queue/fill/latency assumptions. Never treat top-of-book
 touches as guaranteed maker fills.
 
+Offline preparation now has a [first research protocol](research-plan.md): freeze
+and qualify the existing data, test one fixed BBO-size prediction hypothesis,
+retain chronological evaluation partitions, then specify a separate costed test.
+The protocol is written; its quality/signal runners are not implemented yet.
+This preparation does not activate strategies or change the collection gate.
+
 ## 3. Single-venue execution and risk
 
 Introduce authenticated execution as a separately configured capability. Add unique
