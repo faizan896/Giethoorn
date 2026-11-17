@@ -8,6 +8,34 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Mac validation study accepted, 17 November 2026 PKT
+
+The user completed the unchanged fixed study on the 26 validation children,
+reporting `status: completed`, source/quality unchanged and no error. Local
+evidence is `~/GiethoornData/study-20261117T143648Z-Wt5dIy/report`, using the same
+quality snapshot `quality-20261117T125619Z-mAfC1j`. This is acceptance from supplied
+local Terminal output; original Mac files have not been read in this workspace.
+
+There are 1,575 samples: 1,143 directional signals and 432 abstentions. Labels
+are available for 340 signals (29.7463%) and missing for 803 (70.2537%). Across all
+samples there are 448 available and 1,127 missing labels, with 1,111 gap-rule and
+16 unusable-feed exclusions. All count identities and displayed rounding check.
+
+On the same 340 labelled signals, 193 hits give 56.7647%, versus always-up
+84/340 (24.7059%) and always-down 123/340 (36.1765%). There are 133 unchanged
+outcomes, counted as misses. Mean signed midprice change is 0.439610943767 bps
+(0.00439610943767%) before execution costs. The direction-score pattern persists
+in this separate group, while mean movement is smaller than development and most
+signal outcomes remain unavailable. Selection from missing labels, correlation
+and costs still prevent a significance, tradability or profit conclusion.
+
+Rules and cohorts remain unchanged. Next is the existing `retrospective_test`
+command on the last 28 frozen children, with no tuning or new code/download.
+Those outcomes have not yet been calculated. Arithmetic receipt:
+`data/mac-validation-review-20261117T143905Z-480ed7gd/terminal-observation.json`
+(user-terminal provenance, not reconstructed native evidence). Economic testing
+and the operational day gate remain outstanding.
+
 ## Mac development study accepted, 17 November 2026 PKT
 
 The user completed the fixed development run and supplied `status: completed`,
@@ -30,10 +58,10 @@ results beat the constant-direction controls on the available subset; the large
 missing-label share can select a different market/data regime. They do not
 establish significance, tradability or profitability across all signal attempts.
 
-No rule, threshold, horizon or partition has changed after viewing this result.
-Next is the existing explicit `validation` command on 26 frozen children; the
-28 retrospective-test children remain unrun. No code update, new collection or
-image rebuild is required for validation. Arithmetic receipt:
+No rule, threshold, horizon or partition changed after viewing this result.
+The subsequent 26-child validation result is recorded above; the final 28
+retrospective-test children remain unrun. No update, collection or rebuild was
+required for validation. Arithmetic receipt:
 `data/mac-development-review-20261117T142816Z-ky2946j0/terminal-observation.json`
 (explicitly user-terminal provenance, not a reconstructed native study report).
 The operational day gate and economic testing remain outstanding.
@@ -84,8 +112,8 @@ in the Mac image or source. Evidence is under
 `release-browser-review/`, capture/quality diagnostics and preservation receipts).
 The original release and experiment-runner pins remain unchanged.
 
-Mac development acceptance is now supplied above, independently of this smaller
-cloud check. Validation/test outcomes remain unrun. No new Mac collection or day
+Mac development/validation acceptance is now supplied above, independently of this
+smaller cloud check. Final test outcomes remain unrun. No new Mac collection or day
 attempt has been started; economic testing and the 24-hour gate remain outstanding.
 
 ## Dataset-quality report, 17 November 2026 PKT
