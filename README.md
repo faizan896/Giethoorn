@@ -36,6 +36,8 @@ covering per-session gaps, feed freshness and candidate spans for the fixed stud
 The [fixed signal study](docs/study.md) runs a predeclared prediction on one frozen
 partition, defaulting to development while other groups remain unrun. Its metrics
 describe predictions, with no orders or economic-performance claim.
+The [first retrospective comparison](docs/r001-results.md) is complete; costs and
+large missing-label shares still prevent a profitability conclusion.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

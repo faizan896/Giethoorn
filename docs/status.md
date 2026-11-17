@@ -8,6 +8,44 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## R001 retrospective study closed, 17 November 2026 PKT
+
+The user completed the 28-child retrospective-test partition, reporting completed
+status, unchanged source/quality and no error. Local evidence is
+`~/GiethoornData/study-20261117T150110Z-EitFd9/report`, using the same frozen quality
+snapshot. Original Mac files have not been accessed here; the supplied Terminal
+result was checked arithmetically and retained with explicit user-report provenance.
+
+Final-test counts are 1,688 samples, 1,261 directional signals and 427 abstentions.
+There are 459 labelled signals (36.3997%), 802 missing signal labels (63.6003%),
+247 hits and 188 unchanged outcomes. Hit rate is 53.8126%; the same-subset
+always-up/down controls are 29.6296%/29.4118%. Mean signed midprice movement is
+0.481330588510 bps (0.00481330588510%) before costs. Across all samples, 574 labels
+are available and 1,114 missing: 1,093 gap-rule and 21 unusable-feed cases. There
+are 323 sampling bins without an eligible BBO; no missing intervals were filled.
+
+The [three-partition comparison](r001-results.md) records 51.8141%, 56.7647% and
+53.8126% hit rates on the respective available directional subsets. Raw signed
+means remain only 0.44–0.52 bps, with 64–74% of signal labels unavailable.
+Summed eligible BBO observations equal the original quality total, 330,784.
+Count totals are integrity checks, not a pooled validation or portfolio return.
+All original partitions are now explored; none can be called untouched for new
+rules or economic-policy choices. No prediction rule or cohort was tuned.
+
+The existing illustrative IOC fee assumption is five bps per fill. Two equal-
+notional filled legs imply ten bps of fees, much larger than the reported raw
+movement. An explicit fee-hurdle worksheet is arithmetic only, not an execution
+backtest or net P&L; actual fees, spread, fills, latency and missing-exposure paths
+are not measured. The [costed-probe specification](cost-study-plan.md) is now
+prepared; its policy compiler/runner is not implemented. It requires causal
+actual-fill-sized closes and retention of rejects, partial fills and open exposure.
+
+Receipts/comparison/fee worksheet:
+`data/mac-final-study-review-20261117T150945Z-2cn_m0xu/`. No Mac runtime update or
+new collection was needed for this comparison. Future confirmatory economic
+evaluation needs separately frozen later data after its policy is locked. The
+24-hour operational gate, execution calibration and profitability remain open.
+
 ## Mac validation study accepted, 17 November 2026 PKT
 
 The user completed the unchanged fixed study on the 26 validation children,
@@ -29,9 +67,8 @@ in this separate group, while mean movement is smaller than development and most
 signal outcomes remain unavailable. Selection from missing labels, correlation
 and costs still prevent a significance, tradability or profit conclusion.
 
-Rules and cohorts remain unchanged. Next is the existing `retrospective_test`
-command on the last 28 frozen children, with no tuning or new code/download.
-Those outcomes have not yet been calculated. Arithmetic receipt:
+Rules and cohorts remained unchanged. The subsequent final 28-child retrospective
+result is now recorded above, with no tuning or new code/download. Arithmetic receipt:
 `data/mac-validation-review-20261117T143905Z-480ed7gd/terminal-observation.json`
 (user-terminal provenance, not reconstructed native evidence). Economic testing
 and the operational day gate remain outstanding.
@@ -59,8 +96,8 @@ missing-label share can select a different market/data regime. They do not
 establish significance, tradability or profitability across all signal attempts.
 
 No rule, threshold, horizon or partition changed after viewing this result.
-The subsequent 26-child validation result is recorded above; the final 28
-retrospective-test children remain unrun. No update, collection or rebuild was
+The subsequent 26-child validation and final 28-child test are recorded above.
+No update, collection or rebuild was
 required for validation. Arithmetic receipt:
 `data/mac-development-review-20261117T142816Z-ky2946j0/terminal-observation.json`
 (explicitly user-terminal provenance, not a reconstructed native study report).
@@ -113,7 +150,7 @@ in the Mac image or source. Evidence is under
 The original release and experiment-runner pins remain unchanged.
 
 Mac development/validation acceptance is now supplied above, independently of this
-smaller cloud check. Final test outcomes remain unrun. No new Mac collection or day
+smaller cloud check. All three original study groups are now evaluated. No new Mac collection or day
 attempt has been started; economic testing and the 24-hour gate remain outstanding.
 
 ## Dataset-quality report, 17 November 2026 PKT

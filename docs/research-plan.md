@@ -8,6 +8,9 @@ The economic test remains unimplemented. Existing Paper Lab replays recorded
 marks or fixed protocol scenarios; neither generates this signal. This plan
 does not change an engine, recording or paper schema. Frozen datasets retain
 their original copied protocol and fingerprints when run through the study.
+The [first retrospective results](r001-results.md) now cover all three original
+partitions. That dataset is explored; the [costed-probe plan](cost-study-plan.md)
+is a new exploratory stage and later confirmation needs new frozen recordings.
 
 The immediate input is the user's locally audited BTC archive: 133 finalized
 children and one recovered prefix, with 334,794 observations across both feeds.
