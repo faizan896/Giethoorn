@@ -5,6 +5,10 @@ behind an existing quote-window diagnostic. It compares all recorded BBO message
 with native selected-BBO quote opportunities, without new trades, prediction
 scores, P&L or a claim about order latency or real fill probabilities.
 
+The [first Mac readout](mac-cadence-results.md) is accepted. Its four selected
+recordings have matching raw/native counts and material interval tails. The next
+[short fresh recording protocol](fresh-capture-plan.md) is specified separately.
+
 ## Run the saved snapshot
 
 After installing the cadence update, open Docker Desktop and run:

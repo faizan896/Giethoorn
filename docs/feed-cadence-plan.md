@@ -3,6 +3,9 @@
 Status: implemented by `ops/cadence_core.py`, `ops/cadence_local.py` and
 `bash scripts/mac cadence EXPLAIN-ID`. See [running and reading the audit](cadence.md)
 and [decision 0013](decisions/0013-recorded-cadence.md).
+The [first Mac cadence results](mac-cadence-results.md) are accepted; a separate
+[short fresh recording protocol](fresh-capture-plan.md) is frozen for the next
+engineering check, before any new capture.
 The [first Mac expiry diagnostic](mac-expiry-results.md) explains three shared
 request timelines but cannot determine general feed behavior, order-channel
 latency, actual executable liquidity or representative fill probabilities.

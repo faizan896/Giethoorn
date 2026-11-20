@@ -54,6 +54,9 @@ next native quote arrives after the model deadline. Physical cause remains unkno
 Use `bash scripts/mac cadence EXPLAIN-ID` for the [unique-source cadence audit](docs/cadence.md),
 comparing all recorded BBO messages with native quote opportunities while retaining
 connection boundaries, unusable updates and censored source edges.
+The [first Mac cadence readout](docs/mac-cadence-results.md) reports 12,267 BBO
+observations across four five-minute recordings, with raw/native counts matching
+and 7.78% of complete within-connection intervals exceeding 250 ms.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

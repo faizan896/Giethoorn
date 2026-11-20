@@ -8,6 +8,39 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First Mac cadence readout accepted, 20 November 2026 PKT
+
+The user supplied the completed output for
+`~/GiethoornData/cadence-20261120T141248Z-s8S0zp/report`, reading diagnostic
+`explain-20261120T131432Z-o7WCIL` after the pinned `1253daf` update. It reports
+four verified unique recordings, four connections, 16,195 source records and
+12,267 BBO messages/native opportunities, with unchanged input/code and no
+unavailable/not-run groups, duplicate source copies, clock-step flags or error.
+This workspace read the supplied Terminal text, not the original private Mac
+files. See [scope and arithmetic checks](mac-cadence-results.md).
+
+Each selected child 2–5 spans about five minutes, about 20 minutes summed, rather
+than a new audit of the entire 11.5-hour archive. Every printed raw/native series
+matches, with no BBO message lacking a native opportunity. The 12,263 complete
+within-connection intervals sum to histogram counts
+`[5172,2273,3864,588,268,96,2]`. Of these, 954 exceed 250 ms (7.779499%),
+366 exceed 350 ms (2.984588%) and 98 exceed 500 ms (0.799152%). Per-child
+medians are 62.380058–72.418918 ms; p95 values are 278.634891–309.395476 ms;
+the longest printed interval is 1809.48066 ms. Decimal counts/ratios and printed
+quantiles' rank/bin consistency check, without claiming a raw-interval rerun.
+
+Usability filtering did not remove a BBO arrival in this selected sample.
+This does not identify a physical gap cause or calibrate actual IOC execution.
+Interarrival percentages are not request-conditioned fill probabilities. The
+original 13 closed losses, unresolved paper short and all policies remain intact.
+
+Receipt: `data/mac-cadence-review-20261120T141642Z-x6r49jbn/`. The next
+[120-second fresh-capture protocol](fresh-capture-plan.md) is frozen with explicit
+settings, source/output/deadline bounds, no injected faults and no automatic
+replacement attempt. Its Mac launcher is not implemented and no new capture has
+started. The full-day gate, actual execution calibration and fresh-data economic
+confirmation remain open. This acceptance changes documentation only.
+
 ## Unique recorded-feed cadence audit implemented, 20 November 2026 PKT
 
 `bash scripts/mac cadence EXPLAIN-ID` now measures the original source copies
@@ -42,9 +75,9 @@ large-integer JSON export, with no network requests or browser errors.
 
 Receipt: `data/cadence-acceptance-ffom2_x1/native-release.json`, with saved browser
 checks/screenshots and both command outputs. This is software acceptance on a
-small separate cloud sample. The actual Mac cadence run on
-`explain-20261120T131432Z-o7WCIL` is pending; its private original files were not
-accessed here. Recorded interarrival times establish neither order latency,
+small separate cloud sample. The actual Mac cadence readout on
+`explain-20261120T131432Z-o7WCIL` is recorded above; its private original files were
+not accessed here. Recorded interarrival times establish neither order latency,
 fill probability nor an economic edge. The full-day operational gate, execution
 calibration and fresh-data economic confirmation remain open.
 
