@@ -8,6 +8,26 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First Mac costed probe received, 20 November 2026 PKT
+
+The user ran the pinned cost update against frozen quality snapshot
+`quality-20261117T125619Z-mAfC1j` and original source
+`start-20261116T161743Z-8dyq7k`. Supplied Terminal output reports `completed`,
+source/quality unchanged, no error and all 24 selected cases verified. Lifecycle
+outcomes are 13 closed, one unresolved, 10 entry-rejected and zero no-entry-fill.
+No case failed, remained not-run or lacked a signal. Both count identities check.
+Local evidence is `~/GiethoornData/cost-20261120T115202Z-fKjWVP/report`.
+
+This is a receipt of the user's Terminal output; original Mac files have not
+been accessed from this workspace. Closed-case net P&L, fees, quantities, selected
+child IDs and rejection/unresolved reasons are absent from this summary. Do not
+infer profitable trades, explain rejections by an unobserved cause or claim a
+combined return. The configured suite is four recordings by six assumption
+profiles, not 24 independent market samples. The next review needs a compact
+read-only extraction from the saved `cost-report.json`, with no new collection,
+rerun or policy/limit changes. The full-day gate and fresh-data economic
+confirmation remain open.
+
 ## Costed paper probe implemented, 20 November 2026 PKT
 
 The [R001 execution probe](cost-study.md) now compiles causal entry/close requests
