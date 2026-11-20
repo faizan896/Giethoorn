@@ -100,5 +100,7 @@ embedded in simulated fill prices once. Retain partial fills, rejected orders
 and unresolved exposure; do not invent a closing price or drop a failed case.
 
 Test fixed fee, delay, liquidity and slippage assumptions as sensitivity profiles,
-not calibrated measurements. No results have been computed for this signal.
+not calibrated measurements. This original protocol predates outcomes; the
+[signal comparison](r001-results.md) and [bounded cost-probe readout](cost-probe-results.md)
+now record their completed exploratory results.
 The study cannot complete the 24-hour reliability gate or enable live execution.

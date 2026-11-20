@@ -5,6 +5,10 @@ already explored recordings. It is separate from the completed direction-score
 study and from the outstanding full-day reliability gate. It sends no live orders
 and needs no wallet, API credentials, new collection or paid server.
 
+The [first Mac readout](cost-probe-results.md) now records all 24 selected cases:
+13 closed losses, ten entry expiries and one unresolved short. Results are
+conditional on this small already explored sample and the declared assumptions.
+
 ## Run on the Mac
 
 After installing the source update, open Docker Desktop and run from your existing

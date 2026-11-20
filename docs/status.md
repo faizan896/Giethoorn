@@ -8,6 +8,43 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Mac cost-probe financial readout accepted, 20 November 2026 PKT
+
+The user supplied all 24 case rows from the same saved artifact, selected children
+2–5, explicit `code_unchanged: true` and the unchanged policy fingerprint. The
+fingerprint matches the released policy/profiles/limits. Receipt provenance is
+user-terminal output; the underlying Mac files have not been read independently
+in this workspace. Full results are in [the cost-probe readout](cost-probe-results.md).
+
+All 13 closed cases have negative net P&L. On the two recordings that close under
+baseline, results are -0.07074739965 and -0.0777168 USDC for 0.001-BTC entry/exit
+quantities. Adding fees back gives -0.0059579 and -0.0129528 USDC, matching their
+reported zero-fee controls. Spread/slippage remain embedded in those prices;
+the extraction does not independently decompose the remaining loss or verify
+complete path equality. Lowering fees alone did not make these cases profitable.
+
+All ten entry rejections report simulated IOC expiry before a usable quote.
+Recording 2's delay-stress case filled an entry but its close expired, leaving
+-0.001 BTC of paper position and 0.03227727195 USDC of fees, with no pending orders
+or closed P&L. Recording 5 closes only in delay stress, also at a loss. A later
+arrival shifts both window boundaries; the differing counts are not measured
+latency or evidence that slower delivery helps. Exact per-event causes remain
+unknown without original timestamps/trace review.
+
+Membership, lifecycle/quantity identities, signs, fee ratios and add-back-fee
+arithmetic check exactly with Decimal. No combined portfolio P&L, significance,
+positive economic evidence or generalization is claimed from four recordings.
+All original partitions remain explored. The [next expiry-review specification](expiry-review-plan.md)
+is prepared as a read-only diagnostic; its exporter is not implemented. Original
+signal/timeout/fee/limit settings and the completed results remain unchanged.
+No new capture or Mac command is required to accept this result.
+
+Evidence: `data/mac-cost-financial-review-20261120T120611Z-o_dutc8s/`.
+This update changes documentation and retains explicit user-report receipts;
+runtime behavior, schemas, native pins and original recordings are unchanged.
+The operational day gate and empirical execution/fresh-data economic validation
+remain open.
+
 ## First Mac costed probe received, 20 November 2026 PKT
 
 The user ran the pinned cost update against frozen quality snapshot
@@ -18,14 +55,15 @@ outcomes are 13 closed, one unresolved, 10 entry-rejected and zero no-entry-fill
 No case failed, remained not-run or lacked a signal. Both count identities check.
 Local evidence is `~/GiethoornData/cost-20261120T115202Z-fKjWVP/report`.
 
-This is a receipt of the user's Terminal output; original Mac files have not
-been accessed from this workspace. Closed-case net P&L, fees, quantities, selected
-child IDs and rejection/unresolved reasons are absent from this summary. Do not
+This was the initial summary receipt; original Mac files have not been accessed
+from this workspace. At that checkpoint closed-case net P&L, fees, quantities,
+selected child IDs and rejection/unresolved reasons were absent. The subsequent
+financial extraction is recorded above. Do not
 infer profitable trades, explain rejections by an unobserved cause or claim a
 combined return. The configured suite is four recordings by six assumption
-profiles, not 24 independent market samples. The next review needs a compact
-read-only extraction from the saved `cost-report.json`, with no new collection,
-rerun or policy/limit changes. The full-day gate and fresh-data economic
+profiles, not 24 independent market samples. A compact read-only extraction from
+the saved `cost-report.json` supplied that review, with no new collection, rerun
+or policy/limit changes. The full-day gate and fresh-data economic
 confirmation remain open.
 
 ## Costed paper probe implemented, 20 November 2026 PKT

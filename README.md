@@ -42,6 +42,9 @@ The [costed paper probe](docs/cost-study.md) now compiles one causal R001 entry/
 per selected development recording across six assumed execution profiles. Its
 portable report retains rejects, partial fills and unresolved exposure. These
 independent exploratory cases do not constitute portfolio returns or live trading.
+The [first Mac cost-probe readout](docs/cost-probe-results.md) reports losses in
+all 13 closed cases, ten expired entries and one unresolved short. This small
+mechanics suite establishes no positive economic evidence for the current policy.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

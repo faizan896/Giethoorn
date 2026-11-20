@@ -9,6 +9,11 @@ not a costed strategy result. All original partitions are now explored; this
 next experiment is exploratory on that data. Later confirmation needs new frozen
 recordings after the execution policy is locked.
 
+The [first Mac results](cost-probe-results.md) have been received. Its 13 closed
+cases are all negative; ten entry expiries and one open short remain explicit.
+The next [expiry review](expiry-review-plan.md) is a read-only diagnostic,
+with implementation pending; this completed probe's parameters remain fixed.
+
 ## Small acceptance suite before broader evaluation
 
 Use the earliest four development candidates in the frozen capture order, without
