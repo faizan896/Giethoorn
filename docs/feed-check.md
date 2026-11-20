@@ -1,5 +1,8 @@
 # One short fresh recording check
 
+The [first supplied Mac public-data result](mac-feed-check-results.md) completes
+all four stages with 1,256 BBO messages/native opportunities and exact replay.
+
 Open Docker Desktop, install the feed-check source update, and run:
 
 ```sh

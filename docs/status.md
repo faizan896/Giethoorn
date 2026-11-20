@@ -8,6 +8,46 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac fresh recording accepted, 20 November 2026 PKT
+
+The user supplied the completed output for
+`~/GiethoornData/feed-check-20261120T182132Z-NC9jvd/offline/report`, following the
+issued pinned `e8352c6` update. Its public-data capture requests 120 seconds,
+exits 0 without timeout/interruption and reports verified integrity, exact replay
+and cadence, unchanged input/code and no error. This workspace received the
+pasted summary, not the original private Mac files or interval receipts. See
+[the accepted result](mac-feed-check-results.md).
+
+The source spans 120.006931974 seconds over one connection: 1,654 source records,
+1,256 BBO messages/native opportunities and 1,255 complete intervals. Raw/native
+readouts match. Median is 71.769354 ms, p95 290.494621 ms, p99 455.770042 ms and
+maximum 670.114407 ms. Histogram counts `[533,216,414,55,30,7,0]` sum exactly;
+92 intervals exceed 250 ms (7.330677%), 37 exceed 350 ms (2.948207%) and seven
+exceed 500 ms (0.557769%). Decimal ratios, counts and printed quantile rank/bin
+consistency check; exact quantiles were not recomputed from raw intervals here.
+There are no reported source clock-step flags. This is a short current-path
+check, not a full-day pass, identified outage cause or measurement of actual
+order timing/executable liquidity. No further capture is needed to accept it.
+
+The [offline execution-model review](execution-model-review.md) is the next
+engineering stage. Native source and independent verifier confirm that the
+current simulated model waits for a later new quote. A proposed, separately
+versioned comparison would retain the last book known at assumed arrival as an
+explicit proxy, with unknown actual execution and no change to old outcomes.
+The official Python SDK at pinned commit
+`2fdb18f9517675ea03695a0962bd19eece9c83f0` confirms IOC request types and distinct
+public/order/fill interfaces. Its slippage-derived order limit is a different
+quantity from our assumed adverse-slippage fill price. It does not calibrate
+publication, matching or execution. GitBook semantic pages were unavailable
+(HTTP CONNECT 403); their contents are not claimed verified. The comparison
+implementation and detailed new model/version decision remain ahead.
+
+Receipts: `data/mac-feed-check-review-20261120T182656Z-zebs11k4/` and
+`data/execution-semantics-sources-lbi2mlzs/`. This acceptance changes documentation
+only. All native/runtime helpers, producer assets, policies, prior closed losses
+and unresolved exposure remain unchanged. The full-day gate, actual execution
+calibration and later frozen-data economic confirmation remain open.
+
 ## Short fresh recording launcher implemented, 20 November 2026 PKT
 
 `bash scripts/mac feed-check` now implements the separately frozen
@@ -45,9 +85,9 @@ unavailable data, inert hostile text and exact large-integer JSON export, with
 no browser errors or network requests. Receipt:
 `data/feed-check-acceptance-n51y033a/native-release.json`.
 
-This is controlled software acceptance, not the actual Mac public-data result;
-that next user-run attempt is pending. The original Mac recordings were not
-accessed here. The full-day gate, actual execution calibration and fresh-data
+This is controlled software acceptance; the subsequent Mac public-data readout
+is recorded above. The original Mac recordings were not accessed here.
+The full-day gate, actual execution calibration and fresh-data
 economic confirmation remain open. See [decision 0014](decisions/0014-fresh-capture-check.md).
 
 ## First Mac cadence readout accepted, 20 November 2026 PKT
@@ -79,8 +119,8 @@ original 13 closed losses, unresolved paper short and all policies remain intact
 Receipt: `data/mac-cadence-review-20261120T141642Z-x6r49jbn/`. The next
 [120-second fresh-capture protocol](fresh-capture-plan.md) is frozen with explicit
 settings, source/output/deadline bounds, no injected faults and no automatic
-replacement attempt. Its subsequent implementation is described above; no new
-Mac public-data attempt has been reported. The full-day gate, actual execution
+replacement attempt. Its subsequent implementation and first supplied Mac
+public-data attempt are described above. The full-day gate, actual execution
 calibration and fresh-data economic
 confirmation remain open. This acceptance changes documentation only.
 
