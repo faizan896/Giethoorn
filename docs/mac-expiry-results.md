@@ -70,8 +70,8 @@ establish an economic edge. This completed policy's settings and results stay
 frozen; any later policy change is a new exploratory version.
 
 Next is the [recorded-feed cadence calibration protocol](feed-cadence-plan.md),
-starting from the existing unique source copies. Its exporter is not implemented.
-It will measure message/opportunity intervals without changing trade outcomes or
+starting from the existing unique source copies. Its [exporter](cadence.md) is now
+implemented and measures message/opportunity intervals without changing trade outcomes or
 calling those intervals order latency/fill probability. A later bounded fresh
 capture may check recording behavior after its settings are fixed; the full-day
 reliability gate and execution calibration remain separate outstanding work.

@@ -26,6 +26,7 @@ Giethoorn on your Mac
   ./scripts/mac study ID    Test the fixed signal on a frozen quality snapshot
   ./scripts/mac cost ID     Open bounded paper execution and cost probes
   ./scripts/mac explain ID  Explain a saved cost snapshot's IOC quote windows
+  ./scripts/mac cadence ID  Measure unique feeds behind a saved explain snapshot
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -168,6 +169,39 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  cadence)
+    [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac cadence explain-ID'
+    mac_explain_id=$2
+    case "$mac_explain_id" in explain-*) ;; *) fail 'Choose the explain snapshot identifier printed by the diagnostic command.' ;; esac
+    case "$mac_explain_id" in *[!a-zA-Z0-9_-]*) fail 'Invalid explain snapshot identifier.' ;; esac
+    docker_ready; image_ready; data_ready; run_args
+    mac_explain_dir="$mac_data/$mac_explain_id/report"
+    [[ -d "$mac_explain_dir" && ! -L "$mac_explain_dir" ]] || fail 'Saved quote-window report is unavailable.'
+    for mac_required in ops/cadence_core.py ops/cadence_local.py ops/expiry_core.py ops/expiry_local.py ops/cost_core.py ops/cost_local.py ops/paper_execution.py ops/study_core.py ops/study_local.py ops/review_local.py ops/quality_local.py web/cadence.html web/expiry.html web/cost.html web/quality.html; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the cadence update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/cadence-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "Explain snapshot: $mac_explain_id" 'Scope: unique recorded BBO cadence' > "$mac_dir/source-selection.txt"
+    echo "Measuring unique recorded feeds: $mac_explain_id"
+    mac_cadence_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_explain_dir,dst=/explain,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/quality.html,dst=/quality.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/cost.html,dst=/cost.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/expiry.html,dst=/expiry.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/cadence.html,dst=/cadence.html,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 360s python3 /helpers/cadence_local.py \
+      --binary /usr/local/bin/giethoorn --input /explain --output-dir /data/report \
+      --quality-template /quality.html --cost-template /cost.html --expiry-template /expiry.html \
+      --template /cadence.html --theme /app/web/theme.css || mac_cadence_exit=$?
+    echo "Cadence evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/cadence.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/cadence.html"; else echo "$mac_dir/report/cadence.html"; fi
+    fi
+    exit "$mac_cadence_exit"
     ;;
   explain)
     [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac explain cost-ID'

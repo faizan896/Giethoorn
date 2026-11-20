@@ -126,6 +126,11 @@ if args[0]=='info':
  else:print('linux')
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
 if args[:2]==['image','inspect']:sys.exit(0)
+if args[0]=='run' and '/helpers/cadence_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=target.split('src=',1)[1].split(',dst=',1)[0]
+ view=Path(source)/'report/cadence.html';view.parent.mkdir();view.write_text('synthetic cadence orchestration view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='cadence-failure' else 0)
 if args[0]=='run' and '/helpers/expiry_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=target.split('src=',1)[1].split(',dst=',1)[0]
@@ -328,6 +333,36 @@ if args[0]=='run' and '--name' in args:
             self.assertFalse((root/'calls.jsonl').exists())
             env['GIETHOORN_TEST_CASE']='expiry-failure'
             result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'explain','cost-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
+
+    def cadence_setup(self,root,project):
+        self.explain_setup(root,project)
+        for name in ('ops/cadence_core.py','ops/cadence_local.py','web/cadence.html'):
+            (project/name).write_text('synthetic cadence orchestration asset')
+        (root/'saved data/explain-fixture/report').mkdir(parents=True)
+
+    def test_cadence_binds_explain_snapshot_readonly_without_collector_or_image_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.cadence_setup(root,project)
+            (root/'saved data/last-run').write_text('unrelated-run\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'cadence','explain-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[call for call in calls if call[0]=='run'];self.assertEqual(len(runs),1);run=runs[0]
+            self.assertTrue(any('explain-fixture/report,dst=/explain,readonly' in item for item in run))
+            self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run)
+            self.assertIn('360s',run)
+            self.assertFalse(any(call[0] in ('build','stop','rm') or '--detach' in call for call in calls))
+
+    def test_cadence_refuses_wrong_or_unsafe_snapshot_and_preserves_failures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.cadence_setup(root,project)
+            for args in ([],['explain-../escape'],['cost-fixture'],['explain-fixture','extra']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'cadence',*args],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+            env['GIETHOORN_TEST_CASE']='cadence-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'cadence','explain-fixture'],env=env,capture_output=True,text=True)
             self.assertEqual(result.returncode,1)
 
     def test_study_refuses_unsafe_snapshot_or_implicit_all_partitions(self):

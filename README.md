@@ -51,6 +51,9 @@ order expiries while preserving every historical case outcome.
 The [first Mac diagnostic readout](docs/mac-expiry-results.md) verifies the reported
 38 orders and explains all 11 expiries as three shared request timelines whose
 next native quote arrives after the model deadline. Physical cause remains unknown.
+Use `bash scripts/mac cadence EXPLAIN-ID` for the [unique-source cadence audit](docs/cadence.md),
+comparing all recorded BBO messages with native quote opportunities while retaining
+connection boundaries, unusable updates and censored source edges.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

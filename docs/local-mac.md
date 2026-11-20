@@ -227,6 +227,21 @@ windows, original quote opportunities and observed expiry events. It preserves
 existing outcomes and starts no new collector or trading-policy run. See
 [viewing and interpreting the diagnostic](expiry-review.md).
 
+## Measure recorded quote cadence
+
+After the cadence source update, use the **explain snapshot** identifier:
+
+```sh
+bash scripts/mac cadence explain-20261120T131432Z-o7WCIL
+```
+
+This opens the offline cadence report for the unique native source copies behind
+that diagnostic. Raw BBO messages and fresh native opportunities have separate
+interval distributions. Repeated profiles/sources are deduplicated; connection
+boundaries, unusable data and censored silence remain visible. The current image
+is reused with read-only input and no networking. See [cadence interpretation](cadence.md).
+This measures recorded observations rather than order latency or profitability.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

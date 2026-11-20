@@ -8,6 +8,46 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Unique recorded-feed cadence audit implemented, 20 November 2026 PKT
+
+`bash scripts/mac cadence EXPLAIN-ID` now measures the original source copies
+behind a preserved quote-window diagnostic. See [running and reading the audit](cadence.md)
+and [decision 0013](decisions/0013-recorded-cadence.md). The new version-1 report
+groups native recording identities once, retaining aliases and unavailable
+children. Fresh native mark-only replay must reproduce each saved source report
+and stream; no trading scenario, signal score or financial outcome is recomputed.
+The original binary, producer helpers/assets and all previous policies stay pinned.
+
+Raw BBO messages and native selected-BBO opportunities have separate interval
+series. Repeated, older and valid unusable messages remain in the raw series.
+Intervals never cross connections; recording-level statistics pool already formed
+within-connection samples. Empty/single-observation series retain unavailable
+quantiles, genuine zero intervals remain zero, and observed connection edges are
+censored rather than treated as hypothetical completed gaps. Wall/monotonic clock
+steps are flagged without dropping intervals. Integer nearest-rank percentiles,
+fixed histogram bins, five longest references and complete interval exports stay
+exact. The portable view filters recording/connection/series and exports raw JSON.
+
+Validation passes all 232 Python tests, including four new native-source checks.
+Golden tests cover distinct raw/native series, reconnects, sparse/zero intervals,
+clock steps, exact timestamps and quantile/bin boundaries. Admission checks cover
+source deduplication, corruption, mutation, budgets and explicit unavailable data.
+The ordinary-user Docker command passes twice on the separate saved cloud software
+sample: four unique recordings, 560 source records, 363 BBO messages and 363 native
+opportunities across four connections. Measurement JSON and complete interval
+exports match exactly between runs; source inventories and producer pins are
+unchanged. Offline Chromium checks pass at desktop, 390 and 320 pixels, including
+distinct/sparse synthetic series, unavailable evidence, hostile text and exact
+large-integer JSON export, with no network requests or browser errors.
+
+Receipt: `data/cadence-acceptance-ffom2_x1/native-release.json`, with saved browser
+checks/screenshots and both command outputs. This is software acceptance on a
+small separate cloud sample. The actual Mac cadence run on
+`explain-20261120T131432Z-o7WCIL` is pending; its private original files were not
+accessed here. Recorded interarrival times establish neither order latency,
+fill probability nor an economic edge. The full-day operational gate, execution
+calibration and fresh-data economic confirmation remain open.
+
 ## First Mac quote-window diagnostic accepted, 20 November 2026 PKT
 
 The user supplied the completed diagnostic transcript for
@@ -38,12 +78,13 @@ transport/Internet/machine cause. Quiet feed behavior remains one unproven
 hypothesis. The earlier 13 closed losses and negative zero-fee controls remain
 unchanged; expiry analysis establishes no economic edge.
 
-The next [recorded-feed cadence protocol](feed-cadence-plan.md) is prepared,
-starting with the existing unique source copies. Its exporter is not implemented.
-It separates raw BBO message intervals from native opportunity intervals, retains
-duplicate/unusable/connection/censoring context and will not alter the completed
-policy or select outcomes by profitability. No new Mac command/capture is needed
-to accept this diagnostic. Runtime behavior, schemas and all old pins are unchanged.
+The [recorded-feed cadence protocol](feed-cadence-plan.md) prepared at this stage
+starts with the existing unique source copies; its implementation is described
+above. It separates raw BBO message intervals from native opportunity intervals,
+retains duplicate/unusable/connection/censoring context and does not alter the
+completed policy or select outcomes by profitability. Accepting the diagnostic
+required no new capture or command. Its runtime behavior, schemas and old pins
+remain unchanged.
 Receipt: `data/mac-expiry-review-20261120T132011Z-6vcr3rr5/`. The full-day operational
 gate, execution calibration and fresh-data economic confirmation remain open.
 

@@ -1,6 +1,8 @@
 # Recorded-feed cadence calibration
 
-Status: specification only; a dedicated cadence exporter is not implemented.
+Status: implemented by `ops/cadence_core.py`, `ops/cadence_local.py` and
+`bash scripts/mac cadence EXPLAIN-ID`. See [running and reading the audit](cadence.md)
+and [decision 0013](decisions/0013-recorded-cadence.md).
 The [first Mac expiry diagnostic](mac-expiry-results.md) explains three shared
 request timelines but cannot determine general feed behavior, order-channel
 latency, actual executable liquidity or representative fill probabilities.
