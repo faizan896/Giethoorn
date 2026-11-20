@@ -126,6 +126,11 @@ if args[0]=='info':
  else:print('linux')
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
 if args[:2]==['image','inspect']:sys.exit(0)
+if args[0]=='run' and '/helpers/expiry_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=target.split('src=',1)[1].split(',dst=',1)[0]
+ view=Path(source)/'report/expiry.html';view.parent.mkdir();view.write_text('synthetic expiry orchestration view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='expiry-failure' else 0)
 if args[0]=='run' and '/helpers/cost_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=target.split('src=',1)[1].split(',dst=',1)[0]
@@ -293,6 +298,36 @@ if args[0]=='run' and '--name' in args:
             self.assertFalse((root/'calls.jsonl').exists())
             env['GIETHOORN_TEST_CASE']='cost-failure'
             result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'cost','quality-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
+
+    def explain_setup(self,root,project):
+        self.cost_setup(root,project)
+        for name in ('ops/expiry_core.py','ops/expiry_local.py','web/expiry.html'):
+            (project/name).write_text('synthetic expiry orchestration asset')
+        (root/'saved data/cost-fixture/report').mkdir(parents=True)
+
+    def test_explain_uses_saved_cost_artifact_without_network_or_collector_mutations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.explain_setup(root,project)
+            (root/'saved data/last-run').write_text('unrelated-live-run\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'explain','cost-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[c for c in calls if c[0]=='run'];self.assertEqual(len(runs),1);run=runs[0]
+            self.assertTrue(any('cost-fixture/report,dst=/cost,readonly' in item for item in run))
+            self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run)
+            self.assertIn('660s',run)
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+
+    def test_explain_refuses_unsafe_identifiers_and_preserves_failure_status(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.explain_setup(root,project)
+            for args in ([],['cost-../escape'],['quality-fixture'],['cost-fixture','extra']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'explain',*args],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+            env['GIETHOORN_TEST_CASE']='expiry-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'explain','cost-fixture'],env=env,capture_output=True,text=True)
             self.assertEqual(result.returncode,1)
 
     def test_study_refuses_unsafe_snapshot_or_implicit_all_partitions(self):

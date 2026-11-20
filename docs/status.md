@@ -8,6 +8,57 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Quote-opportunity diagnostic implemented, 20 November 2026 PKT
+
+`bash scripts/mac explain COST-ID` now opens the [saved quote-window review](expiry-review.md).
+The new version-1 exporter checks a preserved cost snapshot and exposes each
+original entry/close's request, assumed arrival, exclusive expiry, native source
+opportunities and observed resolution. It retains original risk/rejection state,
+partial/no fills, ending positions and pending orders, without a new policy run,
+invented clock/ACK/fill or newly estimated profit. Exact nanosecond strings and
+integer millisecond formatting preserve source time precision in the portable view.
+
+Admission binds the original full bundle, frozen quality/source manifest,
+policy/profile grid, original verifier/assets and installed binary. Fresh native
+mark-only replay/normalization runs once per selected child. Every saved control
+and final case gets exact native ledger replay and independent Decimal cost
+checks. Derived market inputs must match the fresh native source, risk/account
+configuration must match the scenario, and feature/causal-plan/metric receipts
+must agree with their originals. Input/code/binary changes invalidate diagnostics.
+The old cost helper, policy, templates, theme and binary remain unchanged.
+
+Validation passes 195 Python tests, including eight new native saved-case checks
+and the previous native suite. Golden lifecycle tests cover exact-expiry quotes,
+stale requests, equal exchange times and source-end pending orders. Native tests
+show a +400-ms quote missing the baseline [100,350) window while falling inside
+the delayed [250,500) window, preserve partial quantities and catch source/ledger/
+causal tampering. Admission tests cover corrupt bundles, unsafe inputs, changed
+evidence, native failures and exhausted budgets with no fabricated diagnoses.
+
+The ordinary-user Docker launcher passes twice on the separate saved cloud
+software sample: 24 verified cases and 48 original orders, comprising 38 full
+fills, five partial-fill cancellations and five expired closes. All five expiries
+in that sample first encounter the next native opportunity at +499.75891 ms,
+past their +350-ms expiry. The original bundle stays unchanged, and repeated
+per-case timing/classification receipts match exactly. These are software checks;
+the user's Mac has a different reported 13-closed/10-entry-expired/one-open result,
+whose original detailed timestamps have not been read here. No network/exchange/
+power root cause is assigned from a recording gap.
+
+The offline report supports recording/diagnosis filters, source timelines, exact
+JSON download and unavailable cases. Browser acceptance checks desktop and
+390/320-pixel layouts, inert hostile text, large integer preservation and zero
+network requests/script errors. Terminal readout now includes expired-order
+timings so the next local review needs no separate extraction command.
+Evidence: `data/expiry-acceptance-5up1_2d1/`. See
+[decision 0012](decisions/0012-expiry-diagnostics.md) for schema and admission rules.
+
+The existing image is reused with read-only input/helpers, no networking, bounded
+native children, output/disk admission and an outer timeout. No collector or
+historical order result is changed. Mac execution of the diagnostic is the next
+local step; funded/live integration, execution calibration, the operational day
+gate and fresh-data economic confirmation remain open.
+
 ## Mac cost-probe financial readout accepted, 20 November 2026 PKT
 
 The user supplied all 24 case rows from the same saved artifact, selected children
@@ -34,8 +85,8 @@ unknown without original timestamps/trace review.
 Membership, lifecycle/quantity identities, signs, fee ratios and add-back-fee
 arithmetic check exactly with Decimal. No combined portfolio P&L, significance,
 positive economic evidence or generalization is claimed from four recordings.
-All original partitions remain explored. The [next expiry-review specification](expiry-review-plan.md)
-is prepared as a read-only diagnostic; its exporter is not implemented. Original
+All original partitions remain explored. At that checkpoint the [expiry-review specification](expiry-review-plan.md)
+was prepared; its subsequent read-only implementation is recorded above. Original
 signal/timeout/fee/limit settings and the completed results remain unchanged.
 No new capture or Mac command is required to accept this result.
 

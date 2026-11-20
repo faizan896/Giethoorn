@@ -45,6 +45,9 @@ independent exploratory cases do not constitute portfolio returns or live tradin
 The [first Mac cost-probe readout](docs/cost-probe-results.md) reports losses in
 all 13 closed cases, ten expired entries and one unresolved short. This small
 mechanics suite establishes no positive economic evidence for the current policy.
+Use `bash scripts/mac explain COST-ID` for the [read-only quote-window diagnostic](docs/expiry-review.md)
+on a saved cost snapshot. It checks original source/ledger evidence and explains
+order expiries while preserving every historical case outcome.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

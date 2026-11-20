@@ -1,6 +1,8 @@
 # Quote-opportunity and expiry review
 
-Status: specification only; the diagnostic exporter is not implemented.
+Status: implemented by `ops/expiry_core.py`, `ops/expiry_local.py` and the
+`bash scripts/mac explain COST-ID` launcher. See [running and reading the review](expiry-review.md)
+and [decision 0012](decisions/0012-expiry-diagnostics.md).
 This is the next engineering step after the [first Mac cost-probe readout](cost-probe-results.md).
 It explains recorded paper execution opportunities without running a new trading
 policy, changing completed outcomes or estimating profitability.

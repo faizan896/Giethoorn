@@ -213,6 +213,20 @@ without networking; originals remain read-only and no new collector is started.
 See [running and reading the cost probe](cost-study.md). These independent cases
 do not produce a portfolio return or prove profitability.
 
+## Explain the saved cost snapshot's quote windows
+
+After installing the diagnostic update, run:
+
+```sh
+bash scripts/mac explain cost-20261120T115202Z-fKjWVP
+```
+
+This reuses the existing image and reads that cost snapshot's private recorded
+source/ledger artifacts. The portable diagnostic and Terminal readout show arrival
+windows, original quote opportunities and observed expiry events. It preserves
+existing outcomes and starts no new collector or trading-policy run. See
+[viewing and interpreting the diagnostic](expiry-review.md).
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

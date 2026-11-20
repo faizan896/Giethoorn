@@ -11,8 +11,8 @@ recordings after the execution policy is locked.
 
 The [first Mac results](cost-probe-results.md) have been received. Its 13 closed
 cases are all negative; ten entry expiries and one open short remain explicit.
-The next [expiry review](expiry-review-plan.md) is a read-only diagnostic,
-with implementation pending; this completed probe's parameters remain fixed.
+The [expiry review](expiry-review.md) is now implemented as a read-only diagnostic;
+this completed probe's parameters remain fixed.
 
 ## Small acceptance suite before broader evaluation
 

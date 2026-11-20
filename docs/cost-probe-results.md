@@ -98,8 +98,9 @@ improves a strategy. Recording 2's delay case retains an open short and an entry
 fee, not an inferred flat return.
 
 Next is the [read-only quote-opportunity and expiry diagnostic](expiry-review-plan.md).
-It will explain these cases using existing original/derived timestamps and
-explicit source references. Its implementation is still pending. Do not widen
+The diagnostic is now implemented with existing original/derived timestamps and
+explicit source references; its [Mac execution](expiry-review.md) is the next local
+step. The actual Mac timelines have not been read in this workspace. Do not widen
 timeouts, replace expired attempts, alter fees or force-close the open case to
 improve this completed probe. Any later policy/hypothesis changes are exploratory
 on this already exposed archive and need separately frozen data for confirmation.
