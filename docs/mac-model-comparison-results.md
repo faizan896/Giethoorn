@@ -85,8 +85,10 @@ with its declared contract. Next is a separately versioned
 [causal proxy policy experiment](causal-proxy-policy-plan.md), where exit quantity
 comes from that model's own simulated position at the declared decision prefix.
 Its purpose is complete, causal policy mechanics, not improving these already
-observed results by tuning deadlines, fees or the signal. That implementation is
-pending; no new capture or order run is required to accept this readout.
+observed results by tuning deadlines, fees or the signal. That implementation and
+its [subsequent supplied Mac result](mac-causal-policy-results.md) are now
+accepted: 24 conditional closes, all negative. This fixed-plan comparison remains
+unchanged; no new capture or order run is required to accept its readout.
 
 The existing R001 evidence remains exploratory and non-profitable under these
 declared assumptions. The operational day gate, actual execution calibration

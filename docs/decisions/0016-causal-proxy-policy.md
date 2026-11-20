@@ -73,4 +73,6 @@ browser checks pass. The 19 new native policy cases cover the declared causal,
 quantity, accounting and unresolved-state boundaries. Exact repeated artifacts
 and unchanged original assets are recorded in
 `data/causal-policy-acceptance-vtgegra5/native-release.json`.
-The actual Mac policy run is pending; use the [operator guide](../causal-proxy-policy.md).
+The [actual supplied Mac policy readout](../mac-causal-policy-results.md) is now
+accepted, with 24 conditional closes, all negative. Its private native receipts
+were not independently replayed here. See the [operator guide](../causal-proxy-policy.md).

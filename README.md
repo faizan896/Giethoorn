@@ -74,6 +74,11 @@ decision prefix, with partial fills, pending orders and rejected exits retained.
 This is a new exploratory policy experiment; prior results stay separate and
 actual execution remains unknown.
 
+The [first Mac causal policy result](docs/mac-causal-policy-results.md) reports
+all 24 cases flat after their own closes, with every conditional net result
+negative, including zero-fee controls. Mechanics pass in this bounded sample;
+an economic edge remains unestablished.
+
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
 Python 3.9+ and Bash are required for the operations checks/helpers.

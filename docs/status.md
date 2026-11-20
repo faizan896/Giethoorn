@@ -8,6 +8,37 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac causal policy accepted, 21 November 2026 PKT
+
+The supplied readout for `policy-20261120T205853Z-yJVYPu/report`, following the
+issued `099faeb` update, reports all 24 cases verified and conditionally closed,
+24 entries/24 own-position closes, unchanged input/code and no error. Every
+entry/close fills 0.001 BTC and ends flat without pending orders; all causal
+prefixes are reported verified. See [the accepted result](mac-causal-policy-results.md).
+This workspace read the user's Terminal text, not original private Mac source,
+ledgers or prefix receipts, and did not independently replay them.
+
+Exact Decimal checks verify cohort, reported own-position/close quantities,
+per-order fee rates and totals, and printed prices/net using the reported
+decision-position direction. All 24 net results are negative, including all
+four zero-fee controls. Zero-fee results for recordings 2–5 are `-0.0059115`,
+`-0.0059579`, `-0.0139527` and `-0.0139369` USDC; these retain spread/assumed
+slippage. This provides no positive economic evidence for the current policy in four
+selected source cycles, not 24 independent markets or a portfolio return.
+
+The previous fixed-plan proxy's 14 common closed results/order values remain
+exact. Its ten open hypothetical cases now have own-position closes in this
+separate new policy, all negative; old fixed-plan results remain unchanged and
+their unavailable closed P&L is not a return comparator. Actual venue execution
+stays unknown. No additional Mac command or capture is needed for acceptance.
+The next stage is a separately specified broader development economic evaluation
+with fixed policy/cohort/outcome handling, followed by new frozen data for any
+confirmation. The full-day gate and actual execution calibration remain open.
+
+Receipt: `data/mac-causal-policy-review-20261120T212334Z-w1k7xswr/`.
+This acceptance changes documentation only; runtime, original assets and all
+prior economic results stay fixed.
+
 ## Causal proxy policy implemented, 21 November 2026 PKT
 
 `bash scripts/mac policy COST-ID` now runs the separately versioned
@@ -51,8 +82,8 @@ states, changed-evidence hiding, inert hostile text and large integer export.
 No browser errors or network requests occur. Receipt:
 `data/causal-policy-acceptance-vtgegra5/native-release.json`.
 See [decision 0016](decisions/0016-causal-proxy-policy.md).
-The actual Mac causal policy readout is next. The full-day gate, actual execution
-calibration and later frozen-data economic confirmation remain open.
+The actual Mac causal policy readout is now accepted above. The full-day gate,
+actual execution calibration and later frozen-data economic confirmation remain open.
 
 ## First supplied Mac model comparison accepted, 21 November 2026 PKT
 

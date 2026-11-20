@@ -1,5 +1,9 @@
 # Test exits from the proxy's own position
 
+The [first supplied Mac result](mac-causal-policy-results.md) is accepted:
+24 verified conditional closes, no remaining exposure and all net results
+negative, including zero-fee controls. No rerun is needed to accept that result.
+
 Open Docker Desktop, install the causal policy source update, and run:
 
 ```sh

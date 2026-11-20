@@ -14,6 +14,10 @@ known-book proxy remain separate unchanged versions. The detailed implementation
 version decision and golden fixtures preceded new runtime artifacts. The
 original requirements below remain the acceptance contract.
 
+The [first supplied Mac policy readout](mac-causal-policy-results.md) is now
+accepted: 24 conditionally closed cases, all negative, with no reported pending
+orders or ending position. Prior fixed-plan outcomes remain their own results.
+
 ## Fixed cohort and assumptions
 
 Reuse the original frozen cost snapshot's same first four selected development
