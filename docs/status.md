@@ -8,6 +8,55 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Broader development evaluation implemented, 21 November 2026 PKT
+
+`bash scripts/mac evaluate QUALITY-ID` implements the
+[predeclared broader evaluation](development-evaluation-plan.md), frozen in
+commit `dfd7055` before implementation or broader results. It selects all frozen
+development children in order, refuses cohorts over 128 without truncation,
+and replicates the unchanged first directional R001 cycle under the same six
+profiles. The actual supplied Mac cohort has 79 children/474 planned cases;
+its subsequent result is pending. See [the operator guide](development-evaluation.md).
+
+Fresh native archive integrity and unchanged quality measurements must reproduce
+the original source/partitions/span hashes. Each selected source gets fresh
+native market replay/normalization, and its causal feature is saved before any
+profile executes. Entry eligibility never filters on a future label. Existing
+proxy, own-position close, native ledger, risk and independent cost checks remain
+unchanged. The first four cost-probed children stay labelled. Every no-signal,
+no-fill, failed/not-run and unresolved case remains in its selected denominator.
+
+Exact financial totals stay separate by profile and are unavailable unless all
+planned cases are accounted for, none retains exposure/pending orders, and at
+least one cycle closes. No profile pooling, continuous portfolio claim or
+fabricated zero return is introduced. All fills remain manual simulation;
+actual execution is unknown and old negative/open artifacts remain unchanged.
+Global admission is 16 GiB output, 1 GiB free reserve and 3,600 seconds, with
+unchanged stricter per-source/native/per-case bounds. The image is reused offline.
+An independently bound artifact inventory keeps the larger list outside HTML.
+
+All 354 Python tests pass, including new cohort/denominator/Decimal checks,
+native source-to-cycle integration, quality-candidate forgery rejection,
+source/quality/protocol/producer mutation, active source and budget refusal,
+artifact inventory and read-only/no-network Mac wrapper checks. Two final
+ordinary-user Docker trials pass on a separate saved cloud sample with five
+development children/30 verified, conditionally closed negative cases. The
+original four-child policy metrics, complete case results and profile totals
+repeat exactly. All 1,344 artifact hashes verify; 1,343 repeat byte for byte,
+with only the review receipt's `reviewed_at_utc` changing. Every other receipt
+field matches. Original producer/native/image fingerprints remain unchanged.
+
+Offline Chromium checks pass at desktop and 390/320 pixels, including exact
+financial strings/export, all profiles, a synthetic 79-child/474-case layout,
+missing/unresolved states, incomplete total hiding, inert hostile text and large
+integer export, without errors or network requests. Receipt:
+`data/development-evaluation-acceptance-86c2uuwn/native-release.json`.
+See [decision 0017](decisions/0017-development-evaluation.md).
+Actual Mac files were not accessed, and no new public capture was performed.
+The full-day gate, actual execution calibration and later new-data confirmation
+remain open. The next user step is the fixed Mac evaluation, without retuning
+the negative four-cycle policy.
+
 ## First supplied Mac causal policy accepted, 21 November 2026 PKT
 
 The supplied readout for `policy-20261120T205853Z-yJVYPu/report`, following the

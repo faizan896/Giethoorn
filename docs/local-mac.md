@@ -286,6 +286,22 @@ orders and rejected exits retain their exposure. The command opens a new
 It runs offline using the existing image; no new capture or rebuild is needed.
 Old cost/comparison results remain separate, and actual execution stays unknown.
 
+## Evaluate the full development cohort
+
+After installing the evaluation source update, open Docker Desktop and run:
+
+```sh
+bash scripts/mac evaluate quality-20261117T125619Z-mAfC1j
+```
+
+This uses the original quality snapshot's frozen source and all 79 development
+recordings, with one cycle per child under six unchanged profiles: 474 planned
+cases. No new capture or image rebuild is needed. Keep Terminal open for progress;
+the [evaluation report](development-evaluation.md) opens when finished.
+The larger output has a 16-GiB cap, 1-GiB free reserve and one-hour admission
+budget. Failed/not-run/unresolved cases remain visible and prevent an apparently
+complete profile total. Old results and collector/monitor/`last-run` stay fixed.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

@@ -79,6 +79,12 @@ all 24 cases flat after their own closes, with every conditional net result
 negative, including zero-fee controls. Mechanics pass in this bounded sample;
 an economic edge remains unestablished.
 
+Use `bash scripts/mac evaluate QUALITY-ID` for the
+[broader development evaluation](docs/development-evaluation.md). It replicates
+the unchanged causal cycle across the full frozen development cohort and six
+profiles. Every selected attempt remains visible; incomplete or unresolved
+profiles have unavailable financial totals. This remains exploratory paper work.
+
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
 Python 3.9+ and Bash are required for the operations checks/helpers.

@@ -1,6 +1,6 @@
 # Decision: broader independent-cycle development evaluation, version 1
 
-Status: implementation contract. Freeze
+Status: implemented and accepted. Freeze
 [the evaluation protocol](../development-evaluation-plan.md) before the broader
 run. New namespaces are `development_evaluation_version: 1` and
 `evaluation_policy_version: 1`, evaluation ID `r001-development-evaluation-001`.
@@ -37,3 +37,12 @@ Acceptance follows the protocol's numerical, admission, native-repeat and offlin
 browser requirements. Preserve all prior negative/open economic results and
 native schemas. The operational day gate and actual execution calibration remain
 independent outstanding requirements.
+
+All 354 Python tests, two final ordinary-user Docker trials and offline browser
+checks pass. The saved software cohort has five development children/30 cases;
+actual Mac evaluation remains pending. Native case results/financial values and
+1,343 of 1,344 bound artifacts repeat exactly. Only the operational review
+receipt's `reviewed_at_utc` differs; its other fields match. A separate bound
+audit inventory keeps the larger artifact list outside the portable report.
+See [the operator guide](../development-evaluation.md) and
+`data/development-evaluation-acceptance-86c2uuwn/native-release.json`.
