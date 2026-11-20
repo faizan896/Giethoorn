@@ -128,6 +128,11 @@ if args[0]=='info':
 if args[:2]==['image','inspect']:
  if '--format' in args:print('sha256:'+'a'*64)
  sys.exit(0)
+if args[0]=='run' and '/helpers/proxy_policy_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
+ (source/'report').mkdir();(source/'report/policy.html').write_text('synthetic causal policy orchestration view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='policy-failure' else 0)
 if args[0]=='run' and '/helpers/model_compare_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
@@ -375,6 +380,35 @@ if args[0]=='run' and '--name' in args:
         self.explain_setup(root,project)
         for name in ('ops/model_compare_core.py','ops/model_compare_verify.py','ops/model_compare_local.py','web/comparison.html'):
             (project/name).write_text('synthetic comparison orchestration asset')
+
+    def policy_setup(self,root,project):
+        self.comparison_setup(root,project)
+        for name in ('ops/proxy_policy_core.py','ops/proxy_policy_local.py','web/policy.html'):
+            (project/name).write_text('synthetic causal policy orchestration asset')
+
+    def test_policy_uses_explicit_readonly_cost_snapshot_without_network_or_collector_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.policy_setup(root,project)
+            (root/'saved data/last-run').write_text('unrelated-current-run\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'policy','cost-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[c for c in calls if c[0]=='run'];self.assertEqual(len(runs),1);run=runs[0]
+            self.assertTrue(any('cost-fixture/report,dst=/cost,readonly' in item for item in run))
+            self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run);self.assertIn('960s',run)
+            self.assertEqual((root/'saved data/last-run').read_text(),'unrelated-current-run\n')
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+
+    def test_policy_refuses_wrong_unsafe_extra_ids_and_preserves_failure_exit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.policy_setup(root,project)
+            for args in ([],['compare-fixture'],['cost-../unsafe'],['cost-fixture','extra']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'policy',*args],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+            env['GIETHOORN_TEST_CASE']='policy-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'policy','cost-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
 
     def test_comparison_uses_explicit_cost_bundle_readonly_without_network_or_collector_changes(self):
         with tempfile.TemporaryDirectory() as directory:

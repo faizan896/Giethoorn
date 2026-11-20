@@ -29,6 +29,7 @@ Giethoorn on your Mac
   ./scripts/mac cadence ID  Measure unique feeds behind a saved explain snapshot
   ./scripts/mac feed-check  Capture 120 seconds once, then verify replay offline
   ./scripts/mac compare ID  Compare saved cost cases with assumed arrival books
+  ./scripts/mac policy ID   Test causal proxy exits from their own entry positions
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -195,6 +196,37 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  policy)
+    [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac policy cost-ID'
+    mac_cost_id=$2
+    case "$mac_cost_id" in cost-*) ;; *) fail 'Choose the saved cost snapshot identifier.' ;; esac
+    case "$mac_cost_id" in *[!a-zA-Z0-9_-]*) fail 'Invalid cost snapshot identifier.' ;; esac
+    docker_ready; image_ready; data_ready; run_args
+    mac_cost_dir="$mac_data/$mac_cost_id/report"
+    [[ -d "$mac_cost_dir" && ! -L "$mac_cost_dir" ]] || fail 'Saved cost snapshot is unavailable.'
+    for mac_required in ops/proxy_policy_core.py ops/proxy_policy_local.py ops/model_compare_core.py ops/model_compare_verify.py ops/model_compare_local.py ops/expiry_core.py ops/expiry_local.py ops/cost_core.py ops/cost_local.py ops/paper_execution.py ops/study_core.py ops/study_local.py ops/review_local.py ops/quality_local.py web/policy.html web/cost.html web/quality.html; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the causal policy update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/policy-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "Cost snapshot: $mac_cost_id" 'Policy: r001-known-book-causal-001' > "$mac_dir/source-selection.txt"
+    echo "Running causal paper policy: $mac_cost_id"
+    mac_policy_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_cost_dir,dst=/cost,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/quality.html,dst=/quality.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/cost.html,dst=/cost.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/policy.html,dst=/policy.html,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 960s python3 /helpers/proxy_policy_local.py \
+      --binary /usr/local/bin/giethoorn --input /cost --output-dir /data/report \
+      --quality-template /quality.html --cost-template /cost.html --template /policy.html --theme /app/web/theme.css || mac_policy_exit=$?
+    echo "Policy evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/policy.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/policy.html" || true; else echo "$mac_dir/report/policy.html"; fi
+    fi
+    exit "$mac_policy_exit"
     ;;
   compare)
     [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac compare cost-ID'

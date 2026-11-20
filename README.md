@@ -68,6 +68,11 @@ manual simulation using the book known at assumed arrival. Actual execution rema
 The [first Mac comparison readout](docs/mac-model-comparison-results.md) reports
 14 negative conditionally closed cases and ten open hypothetical positions;
 the fixed-request comparison provides no positive economic evidence.
+Use `bash scripts/mac policy COST-ID` for the [causal proxy policy](docs/causal-proxy-policy.md).
+It derives each close from that proxy's own native entry position at the fixed
+decision prefix, with partial fills, pending orders and rejected exits retained.
+This is a new exploratory policy experiment; prior results stay separate and
+actual execution remains unknown.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

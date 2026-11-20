@@ -8,6 +8,52 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Causal proxy policy implemented, 21 November 2026 PKT
+
+`bash scripts/mac policy COST-ID` now runs the separately versioned
+[causal proxy policy](causal-proxy-policy.md) from the
+[predeclared protocol](causal-proxy-policy-plan.md). It reproduces the original
+entry-only scenario through the unchanged known-book proxy/native ledger, then
+compiles at most one close from its own settled native position at the original
+source decision. The complete control and final prefixes before that request
+must match. Partial entry quantity, pending entry, missing decision, partial or
+pending exit and native risk/loss rejections remain explicit; no later fill,
+forced price or retry repairs an earlier decision.
+
+The original selected cost cohort, signal, horizon, target, costs/risk, producer
+assets and native binary stay fixed. Input/source/producer and original ledgers
+are revalidated, then bound before/after. Changed evidence invalidates all new
+metrics. Failed/not-run cases stay selected without replacement. New output is
+private, bounded and offline; the existing Docker image is reused. The report
+keeps decision-time state separate from ending exposure and labels every proxy
+fill as manual simulation with unknown actual venue execution. Previous negative
+and open fixed-plan cases retain their historical results.
+
+All 315 Python tests pass. Nineteen new native tests cover full/partial long and
+short entries, exact fees/net accounting, no fill, stale and native risk rejection,
+pending entry/exit, missing/late decisions, equal-time source/arrival boundaries,
+partial exits, loss halt, future-price/fill independence, tampering and exact
+repeat. Ten admission checks cover source/producer corruption, original-ledger
+failure, budget/output refusal and unavailable-case retention; two Mac wrapper
+checks verify explicit read-only input, no network and preserved failure status.
+
+Two ordinary-user Docker trials pass on the separate saved cloud software sample:
+24 verified cases, 24 entry requests and 24 own-position closes, all conditionally
+closed and all negative. Complete case results and all 1,228 audit files repeat
+exactly. Original input, producer assets, installed native image and cloud native
+pins remain unchanged. These counts are not the actual Mac policy result; Mac
+files were not accessed and no new public capture was performed. Its original
+cost snapshot remains 13 closed/ten entry rejections/one unresolved short.
+
+Offline Chromium checks pass at desktop and 390/320 pixels, including exact
+decision/ending financial strings, raw JSON export, partial/pending/missing
+states, changed-evidence hiding, inert hostile text and large integer export.
+No browser errors or network requests occur. Receipt:
+`data/causal-policy-acceptance-vtgegra5/native-release.json`.
+See [decision 0016](decisions/0016-causal-proxy-policy.md).
+The actual Mac causal policy readout is next. The full-day gate, actual execution
+calibration and later frozen-data economic confirmation remain open.
+
 ## First supplied Mac model comparison accepted, 21 November 2026 PKT
 
 The user supplied the completed readout for
@@ -41,7 +87,8 @@ unknown and this is not an alternative strategy evaluation.
 Receipt: `data/mac-model-compare-review-20261120T194754Z-xsl_rkcv/`. The next
 [causal proxy policy protocol](causal-proxy-policy-plan.md) specifies exits from
 the model's own native position at the unchanged decision prefix. Signal,
-timing, size, costs/risk and cohort remain frozen; the implementation is pending.
+timing, size, costs/risk and cohort remain frozen. Implementation and software
+acceptance are now recorded above.
 Its purpose is causal policy mechanics, not tuning these exposed outcomes into
 a positive result. This acceptance changes documentation only, and requires no
 new capture or replay from the user. Native/helper/assets and all old economic

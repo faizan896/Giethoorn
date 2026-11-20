@@ -1,15 +1,18 @@
 # Causal known-book proxy policy experiment
 
-Status: protocol specified before a new policy run; not implemented. This follows
+Status: protocol specified before implementation; now implemented under
+[decision 0016](decisions/0016-causal-proxy-policy.md). See the
+[operator guide and software acceptance](causal-proxy-policy.md). This follows
 the [accepted fixed-scenario comparison](mac-model-comparison-results.md).
 The current comparison remains valid: ten hypothetical positions stay open
 because the frozen original scenarios contain no close for their rejected entry.
 Do not change those scenarios, add inferred exits or relabel their results.
 
-Proposed policy ID: `r001-known-book-causal-001`, with a new
+Policy ID: `r001-known-book-causal-001`, with a new
 `causal_proxy_policy_version: 1` output namespace. The signal and the existing
-known-book proxy remain separate unchanged versions. A detailed implementation/
-version decision and golden fixtures must precede new runtime artifacts.
+known-book proxy remain separate unchanged versions. The detailed implementation/
+version decision and golden fixtures preceded new runtime artifacts. The
+original requirements below remain the acceptance contract.
 
 ## Fixed cohort and assumptions
 

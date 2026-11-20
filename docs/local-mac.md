@@ -271,6 +271,21 @@ the existing image, runs offline and opens a new comparison view. Actual venue
 execution remains unknown. Retain open exposure and unavailable results;
 see [the comparison guide](model-comparison.md) for interpretation and bounds.
 
+## Test causal proxy exits
+
+After installing the causal policy source update, reuse the original cost snapshot:
+
+```sh
+bash scripts/mac policy cost-20261120T115202Z-fKjWVP
+```
+
+The [causal policy report](causal-proxy-policy.md) derives each close from the
+proxy's own native position at the fixed decision time. Partial fills, pending
+orders and rejected exits retain their exposure. The command opens a new
+`policy-.../report/policy.html` and prints its per-case results for review.
+It runs offline using the existing image; no new capture or rebuild is needed.
+Old cost/comparison results remain separate, and actual execution stays unknown.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:
