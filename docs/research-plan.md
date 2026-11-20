@@ -4,8 +4,9 @@ Status: specification prepared before signal results. The [dataset-quality
 report](quality.md) now implements the inventory, cadence-span diagnostics and
 candidate partition manifest. The [fixed signal runner](study.md) now implements
 the prediction study on one explicit partition, defaulting to development.
-The economic test remains unimplemented. Existing Paper Lab replays recorded
-marks or fixed protocol scenarios; neither generates this signal. This plan
+The [bounded costed probe](cost-study.md) now compiles causal signal-driven paper
+requests through the existing fixed-scenario replay. It is an exploratory mechanics
+suite; broader economic validation remains open. This original signal plan
 does not change an engine, recording or paper schema. Frozen datasets retain
 their original copied protocol and fingerprints when run through the study.
 The [first retrospective results](r001-results.md) now cover all three original

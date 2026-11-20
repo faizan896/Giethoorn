@@ -8,6 +8,49 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Costed paper probe implemented, 20 November 2026 PKT
+
+The [R001 execution probe](cost-study.md) now compiles causal entry/close requests
+using the unchanged native version-3 IOC model. `bash scripts/mac cost QUALITY-ID`
+selects up to four earliest frozen development candidates across six profiles,
+with one attempt per child/profile and independent flat starts. Close quantities
+come only from the control's actual position at the recorded decision boundary;
+the compiled replay must preserve its complete entry prefix. Missing labels do
+not filter entry attempts. Rejects, partial fills, missing/late closes, open
+positions and pending orders remain visible with no fabricated closed P&L.
+
+The new portable Giethoorn report shows every case, risk/rejection details, exact
+cost components, historical open exposure and same-child baseline comparisons.
+There is no combined portfolio return. Fees, fill capacity, delays, risk caps and
+protective limits are fixed illustrative assumptions, not venue calibration.
+See [policy](cost-study-plan.md) and [decision 0011](decisions/0011-costed-policy-probe.md).
+
+Validation passes 159 Python tests, including 18 actual native synthetic execution
+cases. Hand-calculated full/partial long and short round trips, no over-close,
+no-fill/expiry/risk rejection, loss-halted close, pending/missing source-end
+exposure, late decisions, future-price independence and exact repetition pass.
+Admission tests retain failures/not-run cases and invalidate changed evidence.
+
+The ordinary-user Docker launcher passes on the separate saved cloud integration
+sample with the same pinned native binary as the Mac image. All 24 cases verify:
+19 close and five remain exposed after their close IOC expires without a usable
+quote. The five are retained as unresolved, not silently removed or given closed
+returns. Original source, frozen quality and code/asset hashes verify unchanged.
+Repeated runs produce identical selected features, scenarios, causal receipts,
+case metrics and costs. These are small-sample software acceptance results; the
+user's 11.5-hour Mac archive has not been accessed or run through this probe here.
+
+Offline browser checks cover outcome/recording filters, case inspection including
+rejection details, unavailable P&L, exact raw JSON download, synthetic origin,
+hostile text and large integers. Desktop and 390/320-pixel layouts avoid page
+overflow, with no script errors or network requests. Source/quality/verifier,
+image and original release/reliability-runner pins remain unchanged. No new live
+collection, funded execution or cloud-environment publication was performed.
+
+Acceptance evidence: `data/cost-acceptance-20261117T164508Z-vxyrm2m_/`, with final
+release checks dated 20 November. The 24-hour operational gate, execution
+calibration and fresh-data confirmatory economic validation remain open.
+
 ## R001 retrospective study closed, 17 November 2026 PKT
 
 The user completed the 28-child retrospective-test partition, reporting completed
@@ -36,8 +79,8 @@ The existing illustrative IOC fee assumption is five bps per fill. Two equal-
 notional filled legs imply ten bps of fees, much larger than the reported raw
 movement. An explicit fee-hurdle worksheet is arithmetic only, not an execution
 backtest or net P&L; actual fees, spread, fills, latency and missing-exposure paths
-are not measured. The [costed-probe specification](cost-study-plan.md) is now
-prepared; its policy compiler/runner is not implemented. It requires causal
+are not measured. At that checkpoint the [costed-probe specification](cost-study-plan.md)
+was prepared; implementation and its software acceptance are recorded above. It requires causal
 actual-fill-sized closes and retention of rejects, partial fills and open exposure.
 
 Receipts/comparison/fee worksheet:

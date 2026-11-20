@@ -13,10 +13,10 @@ The full 24-hour gate remains pending. See
 [status](docs/status.md) for the current result.
 Explicit schema-2 profiles separate BBO and
 depth freshness; legacy capture output remains the default. No wallet, private keys,
-live order placement, or strategy execution exists in this version. An isolated
+live order placement, or live-feed strategy execution exists in this version. An isolated
 offline paper model and Paper Lab support synthetic lifecycle/accounting scenarios
 and source-traceable replay of recorded market marks; live-feed integration and
-strategy evaluation remain ahead.
+broader strategy evaluation remain ahead.
 Controlled version-3 IOC scenarios now test simulated orders and explicit
 fee/slippage/liquidity assumptions on saved recordings, without live execution.
 
@@ -38,6 +38,10 @@ partition, defaulting to development while other groups remain unrun. Its metric
 describe predictions, with no orders or economic-performance claim.
 The [first retrospective comparison](docs/r001-results.md) is complete; costs and
 large missing-label shares still prevent a profitability conclusion.
+The [costed paper probe](docs/cost-study.md) now compiles one causal R001 entry/close
+per selected development recording across six assumed execution profiles. Its
+portable report retains rejects, partial fills and unresolved exposure. These
+independent exploratory cases do not constitute portfolio returns or live trading.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

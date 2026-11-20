@@ -1,6 +1,8 @@
 # First costed execution probe
 
-Status: specification only; the policy compiler/runner is not implemented.
+Status: implemented by `ops/cost_core.py` and `ops/cost_local.py`, with the Mac
+launcher and portable browser report. See [running and reading the probe](cost-study.md)
+and [decision 0011](decisions/0011-costed-policy-probe.md).
 Existing version-3 fixed IOC replay and its independent cost/ledger checks are
 available. The [R001 results](r001-results.md) are conditional price predictions,
 not a costed strategy result. All original partitions are now explored; this
@@ -21,7 +23,7 @@ Do not select only signals with available future prediction labels. Prospective
 entry eligibility uses information available at the feature only. Missing future
 data must remain part of exposure/outcome accounting after an entry attempt.
 
-## Proposed paper assumptions
+## Fixed paper assumptions
 
 Starting paper collateral is 10,000 USDC, target quantity 0.001 BTC, order notional
 cap 100 USDC, maximum absolute position 0.001 BTC, maximum one working order and
@@ -53,14 +55,15 @@ operational clock/ACK/fill into a missing recorded interval. Report late decisio
 Close only the actual position already known at that decision, with the opposite
 side and no reversal. An unfilled entry does not create an exit trade.
 
-The existing native engine accepts fixed scenarios, not an adaptive policy. A
-compiler may materialize the two-order case using an entry-only control replay,
-but must read only fills/state at or before the close-decision sequence. Keep
-that control, its prefix boundary and the compiled scenario. Prove future-price
-independence and that adding the close leaves the entry prefix unchanged. An
-actual entry fill quantity inferred later in the recording cannot size an earlier
-close. Otherwise a separate policy adapter is required; do not silently change
-native version-3 semantics.
+The existing native engine accepts fixed scenarios. The compiler materializes
+the two-order case using an entry-only control replay. It reads only fills/state
+at or before the close-decision sequence and retains that control, the prefix
+boundary and compiled scenario. The compiled replay must produce identical
+account/risk/event/order transitions through that boundary before the close
+request, except for its necessarily different scenario hash. Tests perturb
+future prices after the decision and require identical requests. An actual entry
+fill quantity inferred later in the recording cannot size an earlier close.
+Native version-3 semantics remain unchanged.
 
 Exit quantity can differ across profiles because entry fills differ. Compare a
 fixed policy fingerprint with explicit path/exposure changes rather than claiming
@@ -89,3 +92,11 @@ Acceptance needs hand-calculated full/partial/no-fill cases, no over-close after
 partial entry, missing-data/source-end exposure, expiry and risk rejection,
 reproducibility, source preservation and future independence. The raw fee-hurdle
 worksheet cannot substitute for these execution checks.
+
+The runner admits at most four frozen development children and six profiles,
+with a 900-second internal deadline, a 2-GiB output limit and a 1-GiB free-space
+reserve. Individual native calls are capped at 30 seconds. A 256-MiB conservative
+reservation is required before each two-pass case; failed/not-admitted cases stay
+visible. Native recording/event/decimal bounds are preserved without truncation
+or replacing an oversized selected child. The Mac wrapper adds a 960-second
+outer timeout and runs without network access.

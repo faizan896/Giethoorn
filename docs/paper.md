@@ -15,6 +15,12 @@ costs. It keeps live strategy/order capabilities disabled. See
 [the execution decision](decisions/0005-controlled-execution.md) for timing,
 liquidity, cancellation, cost and unresolved-exposure semantics.
 
+The [R001 costed policy probe](cost-study.md) now uses that unchanged native model
+to compile causal entry/close requests on a small frozen development suite. Close
+size depends on actual known entry fills, so its invariant is a fixed policy,
+distinct from the fixed order lists in the batch runner below. It retains every
+unresolved, rejected and unrun case and evaluates no combined portfolio return.
+
 ## Batch sensitivity testing
 
 Use `python3 ops/paper_batch.py --binary target/debug/giethoorn --manifest

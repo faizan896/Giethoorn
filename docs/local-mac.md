@@ -198,6 +198,21 @@ saved browser report shows prediction counts, missing labels and same-sample
 directional baselines. Validation/test outcomes stay unrun. Source and quality
 evidence are read-only; the existing image is reused. See [study instructions](study.md).
 
+## Test the signal with assumed execution costs
+
+After the cost update, use the same frozen quality identifier:
+
+```sh
+bash scripts/mac cost quality-20261117T125619Z-mAfC1j
+```
+
+This opens the offline paper execution report for up to four development recordings
+and six profiles. Fees, spread/slippage, causal partial-fill-sized closes, risk
+rejections and remaining exposure stay explicit. The existing image is reused
+without networking; originals remain read-only and no new collector is started.
+See [running and reading the cost probe](cost-study.md). These independent cases
+do not produce a portfolio return or prove profitability.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:
