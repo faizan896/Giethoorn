@@ -242,6 +242,21 @@ boundaries, unusable data and censored silence remain visible. The current image
 is reused with read-only input and no networking. See [cadence interpretation](cadence.md).
 This measures recorded observations rather than order latency or profitability.
 
+## Check a short fresh recording
+
+After the feed-check source update, open Docker Desktop and run:
+
+```sh
+bash scripts/mac feed-check
+```
+
+Keep the Mac plugged in with its lid open. This requests 120 seconds once, then
+checks source integrity, exact live/replay equality and quote cadence offline.
+It opens `~/GiethoornData/feed-check-ID/offline/report/feed-check.html` and prints
+the result to paste for review. A failed attempt stays explicit and is not
+automatically replaced. Existing collector/monitor state and `last-run` remain
+untouched. See [the check guide](feed-check.md) for evidence and bounds.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

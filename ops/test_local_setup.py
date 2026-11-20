@@ -125,7 +125,23 @@ if args[0]=='info':
  elif args[-1]=='{{json .SecurityOptions}}':print('[]')
  else:print('linux')
  sys.exit(int(os.environ.get('GIETHOORN_TEST_ENGINE','0')))
-if args[:2]==['image','inspect']:sys.exit(0)
+if args[:2]==['image','inspect']:
+ if '--format' in args:print('sha256:'+'a'*64)
+ sys.exit(0)
+if args[0]=='run' and '/helpers/feed_check.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
+ mode=args[args.index('/helpers/feed_check.py')+1]
+ if os.environ.get('GIETHOORN_TEST_CASE')=='feed-check-deadline' and mode=='capture':
+  import time
+  Path(args[args.index('--cidfile')+1]).write_text('c'*64)
+  (source/'test-client-pid').write_text(str(os.getpid()))
+  time.sleep(10)
+ if mode=='capture':
+  (source/'capture').mkdir();(source/'capture/request.json').write_text('{"origin":"synthetic_fixture"}')
+ else:
+  (source/'report').mkdir();(source/'report/feed-check.html').write_text('synthetic feed-check orchestration view')
+ sys.exit(7 if os.environ.get('GIETHOORN_TEST_CASE')=='feed-check-'+mode+'-failure' else 0)
 if args[0]=='run' and '/helpers/cadence_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=target.split('src=',1)[1].split(',dst=',1)[0]
@@ -159,6 +175,9 @@ if args[0]=='run' and '/app/ops/paper_market.py' in args:
  view=Path(source)/'lab/paper-lab.html';view.parent.mkdir();view.write_text('synthetic orchestration view')
  sys.exit(0)
 if args[0]=='inspect':
+ if os.environ.get('GIETHOORN_TEST_CASE')=='feed-check-deadline':
+  folder=next(Path(os.environ['GIETHOORN_DATA_DIR']).glob('feed-check-*'))
+  print(folder.name);sys.exit(0)
  if os.environ.get('GIETHOORN_TEST_CASE')=='active-review':
   if '--format' in args:print('true')
   sys.exit(0)
@@ -166,6 +185,12 @@ if args[0]=='inspect':
   if '--format' in args:print('false')
   sys.exit(0)
  sys.exit(1)
+if args[0]=='stop' and os.environ.get('GIETHOORN_TEST_CASE')=='feed-check-deadline':
+ import signal
+ folder=next(Path(os.environ['GIETHOORN_DATA_DIR']).glob('feed-check-*'))
+ try:os.kill(int((folder/'test-client-pid').read_text()),signal.SIGTERM)
+ except ProcessLookupError:pass
+ sys.exit(0)
 if args[0]=='run' and '--name' in args:
  name=args[args.index('--name')+1]
  if 'monitor' in name and os.environ.get('GIETHOORN_TEST_CASE')=='monitor-failure':sys.exit(1)
@@ -340,6 +365,64 @@ if args[0]=='run' and '--name' in args:
         for name in ('ops/cadence_core.py','ops/cadence_local.py','web/cadence.html'):
             (project/name).write_text('synthetic cadence orchestration asset')
         (root/'saved data/explain-fixture/report').mkdir(parents=True)
+
+    def feed_check_setup(self,root,project):
+        for folder in ('ops','web'):(project/folder).mkdir(exist_ok=True)
+        for name in ('ops/feed_check.py','ops/cadence_core.py','ops/expiry_core.py','ops/quality_local.py','ops/review_local.py','web/feed-check.html'):
+            (project/name).write_text('synthetic feed-check orchestration asset')
+        data=root/'saved data';data.mkdir()
+        (data/'last-run').write_text('original-stopped-run\n')
+
+    def test_feed_check_uses_two_network_scopes_and_preserves_existing_run(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.feed_check_setup(root,project)
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'feed-check'],env=env,capture_output=True,text=True,timeout=15)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertEqual((root/'saved data/last-run').read_text(),'original-stopped-run\n')
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[c for c in calls if c[0]=='run'];self.assertEqual(len(runs),2)
+            capture,audit=runs
+            self.assertEqual(capture[capture.index('--network')+1],'bridge')
+            self.assertEqual(audit[audit.index('--network')+1],'none')
+            self.assertTrue(any('dst=/capture,readonly' in item for item in audit))
+            output=next(audit[i+1] for i,v in enumerate(audit) if v=='--mount' and 'dst=/data' in audit[i+1])
+            self.assertIn('/offline,dst=/data',output)
+            self.assertIn('--read-only',capture);self.assertIn('--read-only',audit)
+            self.assertIn('190s',capture);self.assertIn('130s',audit)
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+            self.assertFalse(any('giethoorn-local-collector' in v or 'giethoorn-local-monitor' in v for c in calls for v in c))
+
+    def test_feed_check_retains_capture_and_audit_failure_exit_codes_without_retry(self):
+        for phase in ('capture','audit'):
+            with self.subTest(phase=phase),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);project,env=self.prepare(root);self.feed_check_setup(root,project)
+                env['GIETHOORN_TEST_CASE']='feed-check-'+phase+'-failure'
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'feed-check'],env=env,capture_output=True,text=True,timeout=15)
+                self.assertEqual(result.returncode,7,result.stderr)
+                calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+                self.assertEqual(sum(c[0]=='run' for c in calls),2)
+                self.assertEqual((root/'saved data/last-run').read_text(),'original-stopped-run\n')
+
+    def test_feed_check_rejects_extra_arguments_before_docker_or_data_creation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root)
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'feed-check','120'],env=env,capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+
+    def test_feed_check_watchdog_targets_only_its_private_container_and_retains_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.feed_check_setup(root,project)
+            env['GIETHOORN_TEST_CASE']='feed-check-deadline'
+            sleeper=root/'bin/sleep';sleeper.write_text('#!/bin/sh\nexec /bin/sleep 0.4\n');sleeper.chmod(0o755)
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'feed-check'],env=env,capture_output=True,text=True,timeout=8)
+            self.assertEqual(result.returncode,124,result.stderr)
+            folder=next((root/'saved data').glob('feed-check-*'))
+            self.assertTrue((folder/'deadline-reached').exists())
+            self.assertTrue((folder/'capture-container.log').exists())
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            self.assertTrue(any(c[0]=='stop' and c[-1]=='c'*64 for c in calls))
+            self.assertEqual((root/'saved data/last-run').read_text(),'original-stopped-run\n')
 
     def test_cadence_binds_explain_snapshot_readonly_without_collector_or_image_changes(self):
         with tempfile.TemporaryDirectory() as directory:

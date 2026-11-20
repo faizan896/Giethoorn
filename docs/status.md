@@ -8,6 +8,48 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Short fresh recording launcher implemented, 20 November 2026 PKT
+
+`bash scripts/mac feed-check` now implements the separately frozen
+[120-second recording check](feed-check.md). It creates a private request receipt,
+captures public BTC/mainnet once using the original native runtime, then runs
+source inspection, exact live/replay comparison and native BBO cadence in a
+separate offline container. Existing collector/monitor state and `last-run` stay
+unchanged. Completed, failed and not-run stages remain distinct; valid incomplete
+source can pass integrity diagnosis without passing the overall check. No signal,
+order, fee or previous economic outcome is recomputed.
+
+New request/capture/policy/report versions are 1; all old schemas, helper/assets
+and the native executable remain pinned. Source/code/binary/image identity is
+bound before/after. The audit gets read-only capture evidence and disjoint
+writable output, with no networking. Disk/output admission, per-file limits,
+bounded subprocess groups, native/stage deadlines, private-container watchdog
+cleanup and macOS `caffeinate` support finite foreground operation. Failures
+retain their original attempt, diagnostics and nonzero exit without replacement.
+
+All 253 Python tests pass. New native checks use a local CONNECT/TLS/WebSocket
+peer with an explicit ephemeral test CA, without changing production transport
+or disabling verification. They cover successful/empty/denied feeds, timeout,
+actual output-budget termination, low-disk refusal, source corruption, input/
+producer/image changes, preservation and untrusted-certificate rejection.
+Mac orchestration tests cover network scopes, disjoint mounts, retained exit
+codes, no existing-run mutation and watchdog cleanup of only its private ID.
+
+A full 120-second controlled capture uses the exact original Mac native binary
+and no external exchange: 5,079 source records, 2,299 raw BBO messages/native
+opportunities and one connection/capture process. Two ordinary-user Docker
+offline audits pass with exact original live/replay equality, identical complete
+interval exports/metrics and unchanged source/producer fingerprints. Offline
+Chromium checks pass on desktop and 390/320-pixel screens, including sparse/
+unavailable data, inert hostile text and exact large-integer JSON export, with
+no browser errors or network requests. Receipt:
+`data/feed-check-acceptance-n51y033a/native-release.json`.
+
+This is controlled software acceptance, not the actual Mac public-data result;
+that next user-run attempt is pending. The original Mac recordings were not
+accessed here. The full-day gate, actual execution calibration and fresh-data
+economic confirmation remain open. See [decision 0014](decisions/0014-fresh-capture-check.md).
+
 ## First Mac cadence readout accepted, 20 November 2026 PKT
 
 The user supplied the completed output for
@@ -37,8 +79,9 @@ original 13 closed losses, unresolved paper short and all policies remain intact
 Receipt: `data/mac-cadence-review-20261120T141642Z-x6r49jbn/`. The next
 [120-second fresh-capture protocol](fresh-capture-plan.md) is frozen with explicit
 settings, source/output/deadline bounds, no injected faults and no automatic
-replacement attempt. Its Mac launcher is not implemented and no new capture has
-started. The full-day gate, actual execution calibration and fresh-data economic
+replacement attempt. Its subsequent implementation is described above; no new
+Mac public-data attempt has been reported. The full-day gate, actual execution
+calibration and fresh-data economic
 confirmation remain open. This acceptance changes documentation only.
 
 ## Unique recorded-feed cadence audit implemented, 20 November 2026 PKT

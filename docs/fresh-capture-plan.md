@@ -1,7 +1,8 @@
 # Short fresh recording check
 
-Status: protocol frozen before a new attempt. A dedicated Mac launcher is not
-implemented and no new capture has been started for this protocol. This follows
+Status: protocol frozen before a new attempt, now implemented by
+`bash scripts/mac feed-check`. See [running and reading the check](feed-check.md)
+and [decision 0014](decisions/0014-fresh-capture-check.md). This follows
 the [accepted Mac cadence readout](mac-cadence-results.md), which describes four
 already explored five-minute recordings.
 
@@ -18,7 +19,8 @@ market activity and network conditions prevent a causal before/after comparison.
   fingerprint `ed10624d0bc6a660e1aa6f8689ef0f42529b3e3d9dff76c5edcf9be93694ba1e`.
 - Run one direct public BTC/mainnet `collect` process for 120 seconds, with an
   explicit combined profile, depth freshness 15,000 ms, BBO freshness 2,000 ms
-  and feed timer 250 ms. Retain all channels and native connection transitions.
+  and feed timer 250 ms, with at most three native reconnects. Retain all channels
+  and native connection transitions.
 - Freeze 1-MiB segments, 16-MiB whole-session journal budget and a 1-GiB minimum
   free-disk reserve. Additional stdout, audits and exports need independent
   create-new file/total-output bounds; a journal cap alone does not cover them.
@@ -28,7 +30,8 @@ market activity and network conditions prevent a causal before/after comparison.
 - Reuse ordinary-user Docker limits: read-only root, capability drop, isolated
   writable output/tmp, 768-MiB memory, two CPUs and 64 processes. Keep the Mac
   plugged in with its lid open; the eventual foreground launcher should hold
-  `caffeinate` for its own process. Do not stop or claim ownership of another run.
+  `caffeinate` for its own process, as the implemented launcher now does. Do not
+  stop or claim ownership of another run.
 - Inject no disconnect, crash or scheduled restart. Native bounded reconnects
   caused by actual events remain recorded. Do not automatically rerun the entire
   capture or substitute a quieter/busier sample after seeing its outcome.

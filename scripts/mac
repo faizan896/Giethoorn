@@ -27,6 +27,7 @@ Giethoorn on your Mac
   ./scripts/mac cost ID     Open bounded paper execution and cost probes
   ./scripts/mac explain ID  Explain a saved cost snapshot's IOC quote windows
   ./scripts/mac cadence ID  Measure unique feeds behind a saved explain snapshot
+  ./scripts/mac feed-check  Capture 120 seconds once, then verify replay offline
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -100,6 +101,30 @@ watch_run() {
   return "$mac_exit"
 }
 
+feed_check_stop() {
+  for mac_check_phase in capture audit; do
+    if [[ -f "$mac_dir/$mac_check_phase.cid" && ! -L "$mac_dir/$mac_check_phase.cid" ]]; then
+      IFS= read -r mac_check_cid < "$mac_dir/$mac_check_phase.cid" || true
+      if [[ "${mac_check_cid:-}" =~ ^[0-9a-f]{64}$ ]] &&
+        [[ "$(docker inspect --format '{{index .Config.Labels "com.giethoorn.feed-check"}}' "$mac_check_cid" 2>/dev/null)" = "$mac_check_id" ]]; then
+        docker stop --time 5 "$mac_check_cid" >/dev/null 2>&1 || true
+      fi
+    fi
+  done
+}
+feed_check_cleanup() {
+  mac_check_saved_exit=$?
+  trap - EXIT INT TERM HUP
+  if [[ -n "${mac_check_watchdog:-}" ]]; then
+    kill "$mac_check_watchdog" 2>/dev/null || true
+    wait "$mac_check_watchdog" 2>/dev/null || true
+  fi
+  feed_check_stop
+  if [[ -n "${mac_check_awake:-}" ]]; then kill "$mac_check_awake" 2>/dev/null || true; fi
+  if [[ "${mac_check_reported:-0}" = 0 ]]; then echo "Feed-check evidence: $mac_dir"; fi
+  exit "$mac_check_saved_exit"
+}
+
 case "${1:-help}" in
   help|--help|-h) usage ;;
   setup)
@@ -169,6 +194,66 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  feed-check)
+    [[ "$#" -eq 1 ]] || fail 'Usage: bash scripts/mac feed-check'
+    docker_ready; image_ready; data_ready; run_args
+    for mac_required in ops/feed_check.py ops/cadence_core.py ops/expiry_core.py ops/quality_local.py ops/review_local.py web/feed-check.html; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the feed-check update first; missing $mac_required."
+    done
+    mac_check_image=$(docker image inspect --format '{{.Id}}' "$mac_image")
+    [[ "$mac_check_image" =~ ^sha256:[0-9a-f]{64}$ ]] || fail 'Docker image identity is unavailable.'
+    mac_dir=$(mktemp -d "$mac_data/feed-check-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    mac_check_id=${mac_dir##*/}
+    printf '%s\n' 'Check: btc-feed-check-001' 'Requested duration: 120 seconds' "Docker image: $mac_check_image" > "$mac_dir/launch-request.txt"
+    mac_check_reported=0
+    mac_check_parent=$$
+    trap feed_check_cleanup EXIT
+    trap 'exit 130' INT
+    trap 'if [[ -f "$mac_dir/deadline-reached" ]]; then exit 124; else exit 143; fi' TERM
+    trap 'exit 129' HUP
+    (
+      trap 'kill "$mac_check_sleep" 2>/dev/null || true; exit' TERM INT HUP
+      sleep 360 & mac_check_sleep=$!
+      wait "$mac_check_sleep" || exit
+      : > "$mac_dir/deadline-reached"
+      kill -TERM "$mac_check_parent" 2>/dev/null || true
+      feed_check_stop
+    ) & mac_check_watchdog=$!
+    if [[ "$(uname -s)" = Darwin ]]; then caffeinate -ims -w "$$" & mac_check_awake=$!; fi
+    echo 'Recording BTC public data for 120 seconds. Keep this Terminal open.'
+    echo "Feed-check evidence: $mac_dir"
+    mac_capture_exit=0
+    (ulimit -f 1024; docker run --rm "${mac_args[@]}" --network bridge \
+      --cidfile "$mac_dir/capture.cid" --label "com.giethoorn.feed-check=$mac_check_id" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/feed-check.html,dst=/feed-check.html,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_check_image" \
+      timeout --signal=TERM --kill-after=10s 190s python3 /helpers/feed_check.py capture \
+      --binary /usr/local/bin/giethoorn --output-dir /data/capture --image-id "$mac_check_image" \
+      --template /feed-check.html --theme /app/web/theme.css) > "$mac_dir/capture-container.log" 2>&1 || mac_capture_exit=$?
+    cat "$mac_dir/capture-container.log"
+    mac_check_image_after=$(docker image inspect --format '{{.Id}}' "$mac_image")
+    mac_audit_exit=0
+    echo 'Checking the retained recording offline.'
+    mkdir "$mac_dir/offline"
+    (ulimit -f 1024; docker run --rm "${mac_args[@]}" --network none \
+      --cidfile "$mac_dir/audit.cid" --label "com.giethoorn.feed-check=$mac_check_id" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/feed-check.html,dst=/feed-check.html,readonly" \
+      --mount "type=bind,src=$mac_dir/capture,dst=/capture,readonly" \
+      --mount "type=bind,src=$mac_dir/offline,dst=/data" "$mac_check_image" \
+      timeout --signal=TERM --kill-after=10s 130s python3 /helpers/feed_check.py audit \
+      --binary /usr/local/bin/giethoorn --input /capture --output-dir /data/report --image-id "$mac_check_image_after" \
+      --template /feed-check.html --theme /app/web/theme.css) > "$mac_dir/audit-container.log" 2>&1 || mac_audit_exit=$?
+    cat "$mac_dir/audit-container.log"
+    echo "Feed-check evidence: $mac_dir"
+    mac_check_reported=1
+    if [[ -f "$mac_dir/offline/report/feed-check.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/offline/report/feed-check.html" || true; else echo "$mac_dir/offline/report/feed-check.html"; fi
+    fi
+    if [[ "$mac_capture_exit" -ne 0 ]]; then exit "$mac_capture_exit"; fi
+    exit "$mac_audit_exit"
     ;;
   cadence)
     [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac cadence explain-ID'

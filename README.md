@@ -57,6 +57,9 @@ connection boundaries, unusable updates and censored source edges.
 The [first Mac cadence readout](docs/mac-cadence-results.md) reports 12,267 BBO
 observations across four five-minute recordings, with raw/native counts matching
 and 7.78% of complete within-connection intervals exceeding 250 ms.
+Use `bash scripts/mac feed-check` for a [new 120-second recording check](docs/feed-check.md),
+followed by independent offline integrity/replay/cadence verification. The first
+attempt is retained even if it fails; existing collection evidence stays separate.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
