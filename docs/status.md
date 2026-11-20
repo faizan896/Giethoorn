@@ -8,6 +8,46 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac model comparison accepted, 21 November 2026 PKT
+
+The user supplied the completed readout for
+`~/GiethoornData/compare-20261120T192726Z-H1ZPNb/report`, reading original cost
+snapshot `cost-20261120T115202Z-fKjWVP` after the issued `3ff61a0` update. All
+24 cases are reported verified with unchanged input/code, no unavailable/not-run
+cases and no error. This workspace read the supplied Terminal text, not the
+original private Mac files, source or complete native receipts. See
+[the accepted comparison](mac-model-comparison-results.md).
+
+The same children 2–5/six profiles contain 38 frozen requests: 24 entries and
+14 closes. All have eligible known references and assumed full 0.001-BTC fills.
+Original outcomes remain ten entry rejections, one unresolved close and 13
+closed cases. The proxy reports 14 conditionally closed cases, all negative,
+and ten open hypothetical shorts. Each open case has -0.001 BTC, no pending order
+and unavailable closed P&L; its original fixed scenario has only an entry and
+therefore no close to execute under the alternative assumption. These are
+independent starts, not simultaneous real positions or a pooled portfolio.
+
+Among the 13 common closed cases, eight net values are unchanged and five worse;
+none improves. The additional conditionally closed case is recording 2 delay
+stress, originally unresolved, with `-0.07046899965` USDC net and `0.06455749965`
+fees; no return improvement can be computed against its original unavailable
+P&L. All 14 closed proxy cases remain negative after adding back their assumed
+fees. Zero-fee controls for recordings 3/4 are `-0.0059579`/`-0.0139527` USDC.
+Displayed order fees sum exactly and match price × quantity × profile rate;
+closed net/fees and absolute fill-price differences are consistent. Original
+order sides/full source were not reverified here. Actual execution remains
+unknown and this is not an alternative strategy evaluation.
+
+Receipt: `data/mac-model-compare-review-20261120T194754Z-xsl_rkcv/`. The next
+[causal proxy policy protocol](causal-proxy-policy-plan.md) specifies exits from
+the model's own native position at the unchanged decision prefix. Signal,
+timing, size, costs/risk and cohort remain frozen; the implementation is pending.
+Its purpose is causal policy mechanics, not tuning these exposed outcomes into
+a positive result. This acceptance changes documentation only, and requires no
+new capture or replay from the user. Native/helper/assets and all old economic
+results remain unchanged. The full-day gate, actual execution calibration and
+later frozen-data economic confirmation remain open.
+
 ## Offline fill-assumption comparison implemented
 
 `bash scripts/mac compare COST-ID` now opens the [model comparison](model-comparison.md).
@@ -50,8 +90,9 @@ text and exact large-integer JSON export, without browser errors/network request
 Receipt: `data/model-compare-acceptance-a7j88e6w/native-release.json`.
 
 This software sample differs from the actual Mac's 13-closed/ten-expired-entry/
-one-open result. Original Mac files were not accessed; its new comparison remains
-pending. The existing image is reused with read-only input, bounded private
+one-open result; the subsequent supplied Mac comparison is recorded above.
+Original Mac files were not accessed. The existing image is reused with read-only
+input, bounded private
 output and no networking. See [decision 0015](decisions/0015-execution-model-comparison.md).
 The full-day gate, actual execution calibration and later frozen-data economic
 confirmation remain open.

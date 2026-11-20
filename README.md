@@ -65,6 +65,9 @@ with 1,256 BBO observations and exact replay over the requested two minutes.
 Use `bash scripts/mac compare COST-ID` for the [offline fill-assumption comparison](docs/model-comparison.md).
 It preserves original scenarios/results and contrasts a separately labelled
 manual simulation using the book known at assumed arrival. Actual execution remains unknown.
+The [first Mac comparison readout](docs/mac-model-comparison-results.md) reports
+14 negative conditionally closed cases and ten open hypothetical positions;
+the fixed-request comparison provides no positive economic evidence.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

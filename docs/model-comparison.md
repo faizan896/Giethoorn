@@ -1,5 +1,9 @@
 # Compare offline fill assumptions
 
+The [first supplied Mac comparison](mac-model-comparison-results.md) is accepted:
+24 verified cases, 14 negative conditionally closed results and ten open
+hypothetical positions explained by the unchanged fixed request plans.
+
 After the comparison source update, open Docker Desktop and run:
 
 ```sh
