@@ -1,5 +1,10 @@
 # Evaluate the fixed policy across development recordings
 
+The [first supplied Mac evaluation](mac-development-evaluation-results.md) is
+accepted: 474 verified cases, 461 conditional closes, 12 unresolved and one no
+fill. All baseline closes are negative; complete profile totals remain
+unavailable. No rerun is needed to accept that result.
+
 Open Docker Desktop, install the evaluation source update and run:
 
 ```sh

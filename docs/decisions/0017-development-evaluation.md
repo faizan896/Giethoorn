@@ -40,7 +40,9 @@ independent outstanding requirements.
 
 All 354 Python tests, two final ordinary-user Docker trials and offline browser
 checks pass. The saved software cohort has five development children/30 cases;
-actual Mac evaluation remains pending. Native case results/financial values and
+the subsequent [supplied Mac evaluation](../mac-development-evaluation-results.md)
+is now accepted with 474 verified cases, 12 unresolved and unavailable complete
+profile totals. Native case results/financial values in the software repeats and
 1,343 of 1,344 bound artifacts repeat exactly. Only the operational review
 receipt's `reviewed_at_utc` differs; its other fields match. A separate bound
 audit inventory keeps the larger artifact list outside the portable report.

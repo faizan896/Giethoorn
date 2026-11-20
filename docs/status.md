@@ -8,6 +8,43 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac broader evaluation accepted, 21 November 2026 PKT
+
+The supplied output for `evaluation-20261120T220630Z-oyufiA/report`, following
+the issued `c9cd960` update, reports all 474 cases verified over development
+children 2–80, with unchanged source/quality/code and no error. All 79 progress
+rows contain six verified cases. There are 461 conditional closes, 12 unresolved
+cases and one no-fill case; 474 entries and 473 close requests. See
+[the accepted result](mac-development-evaluation-results.md).
+
+The baseline has 77 closed cases, all negative, and two open cases. Lower-fee,
+delay and liquidity profiles also have 77 negative closes and two unresolved.
+Zero fee has two positive/75 negative closes and two unresolved; slippage stress
+has 76 negative closes, two unresolved and one no fill. All six complete profile
+net totals correctly remain unavailable. No financial total pools profiles or
+omits unknown exposure. Actual venue execution is unknown.
+
+Baseline child 8 retains `-0.001` BTC with `0.03232776690` USDC fees; child 56
+retains `-0.0007025` BTC with `0.042117962024250` fees. Both have no pending order
+and unavailable closed P&L. Their exact exit cause and other profiles' individual
+exception IDs are absent from the compact output. These are independent manual
+simulation cases, not simultaneous funded exposure. Do not infer a rejection,
+partial close or network cause before reading retained receipts.
+
+This workspace verified supplied-text membership/counts, baseline states/signs,
+Decimal add-back arithmetic and unchanged first-four baseline values. Original
+private Mac ledgers, source, control prefixes and artifact hashes were not
+independently replayed here. Older Terminal history embedded in the supplied
+file was retained but not counted as another evaluation. Receipt:
+`data/mac-development-evaluation-review-20261120T230136Z-93exwndg/`.
+
+Accept the broader evaluation milestone while retaining its negative economic
+result. Next is a read-only inspection of the 12 unresolved/one no-fill case;
+no new capture or policy replay is needed to accept the output. This acceptance
+changes documentation only. Original runtime/producer/native assets and all
+prior outcomes stay unchanged. The full-day gate, actual execution calibration
+and later new-data strategy confirmation remain open.
+
 ## Broader development evaluation implemented, 21 November 2026 PKT
 
 `bash scripts/mac evaluate QUALITY-ID` implements the
@@ -16,7 +53,7 @@ commit `dfd7055` before implementation or broader results. It selects all frozen
 development children in order, refuses cohorts over 128 without truncation,
 and replicates the unchanged first directional R001 cycle under the same six
 profiles. The actual supplied Mac cohort has 79 children/474 planned cases;
-its subsequent result is pending. See [the operator guide](development-evaluation.md).
+its subsequent supplied result is now accepted above. See [the operator guide](development-evaluation.md).
 
 Fresh native archive integrity and unchanged quality measurements must reproduce
 the original source/partitions/span hashes. Each selected source gets fresh

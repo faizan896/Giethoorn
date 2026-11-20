@@ -84,6 +84,10 @@ Use `bash scripts/mac evaluate QUALITY-ID` for the
 the unchanged causal cycle across the full frozen development cohort and six
 profiles. Every selected attempt remains visible; incomplete or unresolved
 profiles have unavailable financial totals. This remains exploratory paper work.
+The [first Mac broader result](docs/mac-development-evaluation-results.md) reports
+474 verified cases: 461 conditional closes, 12 unresolved and one no fill.
+All 77 baseline closes are negative, and every complete profile total remains
+unavailable because of unresolved exposure. Actual execution is still unknown.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
