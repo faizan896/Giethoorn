@@ -48,6 +48,9 @@ mechanics suite establishes no positive economic evidence for the current policy
 Use `bash scripts/mac explain COST-ID` for the [read-only quote-window diagnostic](docs/expiry-review.md)
 on a saved cost snapshot. It checks original source/ledger evidence and explains
 order expiries while preserving every historical case outcome.
+The [first Mac diagnostic readout](docs/mac-expiry-results.md) verifies the reported
+38 orders and explains all 11 expiries as three shared request timelines whose
+next native quote arrives after the model deadline. Physical cause remains unknown.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

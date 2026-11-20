@@ -91,16 +91,17 @@ At request time `t`, baseline arrival is `t + 100 ms`, with opportunity window
 `[t + 100 ms, t + 350 ms)`. Delay stress changes it to
 `[t + 250 ms, t + 500 ms)`. Both keep a 250-ms quote wait. A later simulated
 arrival can therefore encounter a different quote opportunity instead of being
-a simple nested degradation of the earlier case. The actual opportunity times
-were not included in the extraction; these window formulas are model semantics.
+a simple nested degradation of the earlier case. The original financial extraction
+omitted actual opportunity times; the later [Mac diagnostic readout](mac-expiry-results.md)
+supplies their reported offsets. These window formulas are model semantics.
 The additional delay-stress entry on recording 5 does not prove slower delivery
 improves a strategy. Recording 2's delay case retains an open short and an entry
 fee, not an inferred flat return.
 
 Next is the [read-only quote-opportunity and expiry diagnostic](expiry-review-plan.md).
 The diagnostic is now implemented with existing original/derived timestamps and
-explicit source references; its [Mac execution](expiry-review.md) is the next local
-step. The actual Mac timelines have not been read in this workspace. Do not widen
+explicit source references, and its [Mac readout](mac-expiry-results.md) is now
+recorded. Original Mac files have not been read independently here. Do not widen
 timeouts, replace expired attempts, alter fees or force-close the open case to
 improve this completed probe. Any later policy/hypothesis changes are exploratory
 on this already exposed archive and need separately frozen data for confirmation.

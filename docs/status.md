@@ -8,6 +8,45 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First Mac quote-window diagnostic accepted, 20 November 2026 PKT
+
+The user supplied the completed diagnostic transcript for
+`~/GiethoornData/explain-20261120T131432Z-o7WCIL/report`, reading original cost
+snapshot `cost-20261120T115202Z-fKjWVP` with pinned release `04dd2d2`. It reports
+24 verified cases, 38 original orders, 27 full fills and 11 expiries, unchanged
+input/code and no unavailable/not-run cases or error. This workspace read the
+uploaded text, not the original Mac files. See [the accepted readout](mac-expiry-results.md).
+
+The totals match the earlier paper lifecycle: 24 entries plus 14 closes, with
+14 entry fills plus 13 close fills, and ten entry expiries plus one close expiry.
+All 11 expiry rows have zero recorded BBO messages/native opportunities inside
+the declared windows. Their first post-arrival native quote also observes expiry.
+
+Five recording-2 entry profiles share sequence 67, a [100,350)-ms window and a
+first usable quote at +457.340925 ms: 107.340925 ms beyond expiry. Five recording-5
+entry profiles share sequence 66 and the same window, with the quote at
++399.731028 ms: 49.731028 ms beyond expiry. Recording 2's delay-stress close uses
+sequence 83 and [250,500) ms; its first quote at +515.613957 ms misses by
+15.613957 ms. Eleven rows therefore represent three shared request timelines,
+not 11 independent market gaps. Decimal arithmetic and all count identities check.
+
+Those entry offsets fit the shifted delay-stress window, consistent with its
+reported entry fills. The close misses its later deadline and the paper short
+stays unresolved. The model behaves as declared; the offsets do not measure
+order-channel latency, prove absent standing liquidity or identify a venue/
+transport/Internet/machine cause. Quiet feed behavior remains one unproven
+hypothesis. The earlier 13 closed losses and negative zero-fee controls remain
+unchanged; expiry analysis establishes no economic edge.
+
+The next [recorded-feed cadence protocol](feed-cadence-plan.md) is prepared,
+starting with the existing unique source copies. Its exporter is not implemented.
+It separates raw BBO message intervals from native opportunity intervals, retains
+duplicate/unusable/connection/censoring context and will not alter the completed
+policy or select outcomes by profitability. No new Mac command/capture is needed
+to accept this diagnostic. Runtime behavior, schemas and all old pins are unchanged.
+Receipt: `data/mac-expiry-review-20261120T132011Z-6vcr3rr5/`. The full-day operational
+gate, execution calibration and fresh-data economic confirmation remain open.
+
 ## Quote-opportunity diagnostic implemented, 20 November 2026 PKT
 
 `bash scripts/mac explain COST-ID` now opens the [saved quote-window review](expiry-review.md).
@@ -41,8 +80,9 @@ fills, five partial-fill cancellations and five expired closes. All five expirie
 in that sample first encounter the next native opportunity at +499.75891 ms,
 past their +350-ms expiry. The original bundle stays unchanged, and repeated
 per-case timing/classification receipts match exactly. These are software checks;
-the user's Mac has a different reported 13-closed/10-entry-expired/one-open result,
-whose original detailed timestamps have not been read here. No network/exchange/
+the user's Mac has a different 13-closed/10-entry-expired/one-open result. Its
+subsequent supplied timing readout is recorded above; original Mac files have
+not been read here. No network/exchange/
 power root cause is assigned from a recording gap.
 
 The offline report supports recording/diagnosis filters, source timelines, exact
@@ -55,8 +95,8 @@ Evidence: `data/expiry-acceptance-5up1_2d1/`. See
 
 The existing image is reused with read-only input/helpers, no networking, bounded
 native children, output/disk admission and an outer timeout. No collector or
-historical order result is changed. Mac execution of the diagnostic is the next
-local step; funded/live integration, execution calibration, the operational day
+historical order result is changed. Subsequent Mac execution is recorded above;
+funded/live integration, execution calibration, the operational day
 gate and fresh-data economic confirmation remain open.
 
 ## Mac cost-probe financial readout accepted, 20 November 2026 PKT

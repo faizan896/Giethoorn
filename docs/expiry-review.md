@@ -94,6 +94,8 @@ The tool executes the installed matching binary, not a program from the snapshot
 See [decision 0012](decisions/0012-expiry-diagnostics.md) and the
 [original diagnostic protocol](expiry-review-plan.md). Software acceptance uses a
 separate small saved cloud sample plus synthetic boundary/risk/source-end cases.
-The actual Mac diagnostic remains pending until that saved artifact is inspected
-on the Mac. It does not complete the operational day gate, calibrate execution or
-confirm an economic edge.
+The [first Mac diagnostic readout](mac-expiry-results.md) has now been supplied:
+24 verified cases and 38 original orders, with 11 expiries explained by three
+shared request timelines. This workspace has read the supplied transcript, not
+the original Mac files. The diagnostic does not complete the operational day gate,
+calibrate execution or confirm an economic edge.
