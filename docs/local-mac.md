@@ -257,6 +257,20 @@ the result to paste for review. A failed attempt stays explicit and is not
 automatically replaced. Existing collector/monitor state and `last-run` remain
 untouched. See [the check guide](feed-check.md) for evidence and bounds.
 
+## Compare paper fill assumptions
+
+After the comparison source update, use the original **cost snapshot** ID:
+
+```sh
+bash scripts/mac compare cost-20261120T115202Z-fKjWVP
+```
+
+This revalidates the saved cases and compares their fixed requests with an
+explicit manual simulation using the book known at assumed arrival. It reuses
+the existing image, runs offline and opens a new comparison view. Actual venue
+execution remains unknown. Retain open exposure and unavailable results;
+see [the comparison guide](model-comparison.md) for interpretation and bounds.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

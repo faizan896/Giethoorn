@@ -1,7 +1,8 @@
 # Offline execution-model assumption review
 
-Status: initial source/interface review completed; a separate arrival-book
-comparison is proposed and not implemented. The existing native binary, paper
+Status: initial source/interface review completed; the separate arrival-book
+comparison is now [implemented](model-comparison.md) under
+[decision 0015](decisions/0015-execution-model-comparison.md). The existing native binary, paper
 versions, original policy and all saved economic outcomes remain unchanged.
 This follows the [completed short Mac recording check](mac-feed-check-results.md).
 
@@ -51,7 +52,7 @@ claimed verified. Source snapshots/hashes and failed access receipts are retaine
 under the path at the end. Verified venue documentation and actual execution
 telemetry remain separate calibration work.
 
-## Proposed next implementation
+## Comparison contract
 
 Build an offline model-comparison view from a frozen scenario and original
 source, with explicit source hashes and a new model/version decision. Keep the

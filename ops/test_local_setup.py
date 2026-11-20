@@ -128,6 +128,11 @@ if args[0]=='info':
 if args[:2]==['image','inspect']:
  if '--format' in args:print('sha256:'+'a'*64)
  sys.exit(0)
+if args[0]=='run' and '/helpers/model_compare_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
+ (source/'report').mkdir();(source/'report/comparison.html').write_text('synthetic comparison orchestration view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='compare-failure' else 0)
 if args[0]=='run' and '/helpers/feed_check.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
@@ -365,6 +370,35 @@ if args[0]=='run' and '--name' in args:
         for name in ('ops/cadence_core.py','ops/cadence_local.py','web/cadence.html'):
             (project/name).write_text('synthetic cadence orchestration asset')
         (root/'saved data/explain-fixture/report').mkdir(parents=True)
+
+    def comparison_setup(self,root,project):
+        self.explain_setup(root,project)
+        for name in ('ops/model_compare_core.py','ops/model_compare_verify.py','ops/model_compare_local.py','web/comparison.html'):
+            (project/name).write_text('synthetic comparison orchestration asset')
+
+    def test_comparison_uses_explicit_cost_bundle_readonly_without_network_or_collector_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.comparison_setup(root,project)
+            (root/'saved data/last-run').write_text('unrelated-current-run\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'compare','cost-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[call for call in calls if call[0]=='run'];self.assertEqual(len(runs),1);run=runs[0]
+            self.assertTrue(any('cost-fixture/report,dst=/cost,readonly' in item for item in run))
+            self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run);self.assertIn('960s',run)
+            self.assertEqual((root/'saved data/last-run').read_text(),'unrelated-current-run\n')
+            self.assertFalse(any(call[0] in ('build','stop','rm') or '--detach' in call for call in calls))
+
+    def test_comparison_rejects_unsafe_or_wrong_snapshot_ids_and_preserves_failure_exit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.comparison_setup(root,project)
+            for args in ([],['quality-fixture'],['cost-../unsafe'],['cost-fixture','extra']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'compare',*args],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+            env['GIETHOORN_TEST_CASE']='compare-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'compare','cost-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
 
     def feed_check_setup(self,root,project):
         for folder in ('ops','web'):(project/folder).mkdir(exist_ok=True)

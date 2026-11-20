@@ -28,6 +28,7 @@ Giethoorn on your Mac
   ./scripts/mac explain ID  Explain a saved cost snapshot's IOC quote windows
   ./scripts/mac cadence ID  Measure unique feeds behind a saved explain snapshot
   ./scripts/mac feed-check  Capture 120 seconds once, then verify replay offline
+  ./scripts/mac compare ID  Compare saved cost cases with assumed arrival books
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -194,6 +195,37 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  compare)
+    [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac compare cost-ID'
+    mac_cost_id=$2
+    case "$mac_cost_id" in cost-*) ;; *) fail 'Choose the cost snapshot identifier printed by the cost command.' ;; esac
+    case "$mac_cost_id" in *[!a-zA-Z0-9_-]*) fail 'Invalid cost snapshot identifier.' ;; esac
+    docker_ready; image_ready; data_ready; run_args
+    mac_cost_dir="$mac_data/$mac_cost_id/report"
+    [[ -d "$mac_cost_dir" && ! -L "$mac_cost_dir" ]] || fail 'Saved cost snapshot is unavailable.'
+    for mac_required in ops/model_compare_core.py ops/model_compare_verify.py ops/model_compare_local.py ops/expiry_core.py ops/expiry_local.py ops/cost_core.py ops/cost_local.py ops/paper_execution.py ops/study_core.py ops/study_local.py ops/review_local.py ops/quality_local.py web/comparison.html web/cost.html web/quality.html; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the comparison update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/compare-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "Cost snapshot: $mac_cost_id" 'Scope: frozen requests, hypothetical model comparison' > "$mac_dir/source-selection.txt"
+    echo "Comparing frozen paper requests: $mac_cost_id"
+    mac_compare_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_cost_dir,dst=/cost,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/quality.html,dst=/quality.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/cost.html,dst=/cost.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/comparison.html,dst=/comparison.html,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 960s python3 /helpers/model_compare_local.py \
+      --binary /usr/local/bin/giethoorn --input /cost --output-dir /data/report \
+      --quality-template /quality.html --cost-template /cost.html --template /comparison.html --theme /app/web/theme.css || mac_compare_exit=$?
+    echo "Comparison evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/comparison.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/comparison.html" || true; else echo "$mac_dir/report/comparison.html"; fi
+    fi
+    exit "$mac_compare_exit"
     ;;
   feed-check)
     [[ "$#" -eq 1 ]] || fail 'Usage: bash scripts/mac feed-check'

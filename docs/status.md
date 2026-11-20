@@ -8,6 +8,54 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Offline fill-assumption comparison implemented
+
+`bash scripts/mac compare COST-ID` now opens the [model comparison](model-comparison.md).
+It verifies the preserved cost/source/quality/policy and original exact native
+ledgers, then compares the same compiled requests against a separate
+`assumed_known_book_at_arrival_v1` proxy. Both models use the original six
+profiles and fixed quantities. A later close is not recompiled for alternative
+entry fills, so hypothetical exposure may remain or reverse; it is shown rather
+than flattened. This is a fixed-scenario assumption check, not an alternative
+causal-policy evaluation or a new R001 result. Actual execution stays unknown.
+
+The pure compiler persists labelled manual-simulation paper inputs before native
+prefix replay. The unchanged Rust ledger owns request risk, reservations, loss
+halts, exact accounting and fees. A final complete replay must reproduce every
+retained checkpoint prefix. Independent source/Decimal checks bind eligibility,
+prices, shared size, assumed costs, positions and balance identities. Source
+references remain original; scheduled action times are explicitly hypothetical.
+The new report/policy/proxy/link versions are 1; all native versions, binaries,
+previous producer assets and historical outcomes remain unchanged.
+
+All 284 Python tests pass. Eighteen new native checks cover quiet-window contrast,
+hand-calculated round-trip costs, zero/tied arrivals, equal-time liquidity,
+shared/partial capacity, stale/empty/reconnected data, EOF, fixed close quantity,
+native loss halt, in-flight fills, future-price independence, exact repeat and
+tampered fee/reference rejection. Admission checks cover changed bundles/assets,
+source/ledger failures, output refusal, no replacement cohort and prefix mismatch.
+Mac tests verify explicit read-only input, no network, retained failure status
+and no collector/monitor/last-run changes.
+
+Two ordinary-user Docker runs pass on the separate previously saved cloud sample:
+24 verified comparisons and 48 frozen requests, all with eligible known references.
+Its historical 19 closed/five unresolved outcomes remain exact; the proxy has
+23 conditionally closed cases and one open exposure. Those counts describe
+hypothetical lifecycle states, not profitable trades or actual venue fills.
+All comparison rows, complete alternative ledgers/links/decisions, prefix receipts
+and costs repeat exactly. Source and old helper/binary fingerprints are unchanged.
+Offline Chromium checks pass at desktop and 390/320 pixels, including exact
+financial strings, unknown execution, open/unavailable exposure, inert hostile
+text and exact large-integer JSON export, without browser errors/network requests.
+Receipt: `data/model-compare-acceptance-a7j88e6w/native-release.json`.
+
+This software sample differs from the actual Mac's 13-closed/ten-expired-entry/
+one-open result. Original Mac files were not accessed; its new comparison remains
+pending. The existing image is reused with read-only input, bounded private
+output and no networking. See [decision 0015](decisions/0015-execution-model-comparison.md).
+The full-day gate, actual execution calibration and later frozen-data economic
+confirmation remain open.
+
 ## First supplied Mac fresh recording accepted, 20 November 2026 PKT
 
 The user supplied the completed output for
@@ -40,7 +88,7 @@ public/order/fill interfaces. Its slippage-derived order limit is a different
 quantity from our assumed adverse-slippage fill price. It does not calibrate
 publication, matching or execution. GitBook semantic pages were unavailable
 (HTTP CONNECT 403); their contents are not claimed verified. The comparison
-implementation and detailed new model/version decision remain ahead.
+implementation and model/version decision are now described above.
 
 Receipts: `data/mac-feed-check-review-20261120T182656Z-zebs11k4/` and
 `data/execution-semantics-sources-lbi2mlzs/`. This acceptance changes documentation
