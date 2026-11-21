@@ -68,9 +68,11 @@ The next separately declared safety experiment is
 [one bounded additional close](bounded-exit-plan.md), sized only from its own
 known residual position after the first close settles. Its purpose is exposure
 handling, not making the current strategy profitable. Its
-[implementation and software acceptance](bounded-exit.md) are now complete;
-the actual Mac evaluation is pending. It will not guarantee flat inventory under
-missing data, native risk rejection or insufficient assumed capacity.
+[implementation and software acceptance](bounded-exit.md) are now complete.
+The [supplied Mac result](mac-bounded-exit-results.md) is also accepted: ten
+partial retries retain exposure and only two delay-stress cases newly close,
+both negative. The extra attempt does not guarantee flat inventory under missing
+data, native risk rejection or insufficient assumed capacity.
 
 ## Provenance and software check
 

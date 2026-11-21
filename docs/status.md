@@ -8,6 +8,43 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac bounded-exit readout accepted, 21 November 2026 PKT
+
+The supplied output for `bounded-exit-20261121T162831Z-JMVRwJ/report`, following
+the issued `564fd18` update, reports 474 verified cases over development children
+2–80. All 79 progress rows contain six verified cases, source/quality/code remain
+unchanged and no case/error is omitted. Original control totals exactly match the
+accepted one-close evaluation. See [the accepted result](mac-bounded-exit-results.md).
+
+Twelve extra requests give two full and ten partial fills. Closed cases rise from
+461 to 463; unresolved cases fall from 12 to ten; one no-fill case remains.
+Baseline still has 77 negative closes and two open cases, whose positions shrink
+to `-0.00063` and `-0.00046` BTC. Its 77 closed net/fee/position values remain
+exactly unchanged. Baseline extra assumed fees are `0.011966441524500` and
+`0.007873064727750` USDC; both open cases retain unavailable closed P&L.
+
+Both new closes occur in delay stress and are negative. That profile now has 79
+negative closes and a reported complete conditional net of `-5.551578761947125`
+USDC. Other profiles keep two unresolved cases and unavailable complete totals.
+The result does not establish that more delay is preferable, a positive R001 edge
+or measured venue fills. Original open P&L remains unavailable as a comparator.
+
+Exact cohort, progress, count, known-residual sizing, signed fill conservation,
+baseline continuity and fee-ratio checks pass on supplied text. Original Mac
+recordings, quotes, limits, full native ledgers and artifact hashes were not
+independently replayed here; local integrity/prefix claims remain reported by the
+runner. Older embedded diagnostic history matches its accepted receipt and is
+excluded from the new experiment. Receipt:
+`data/mac-bounded-exit-review-20261121T183909Z-wpn2g4g6/review.json`.
+
+Accept the bounded research experiment with its negative economic result and
+persistent residual-exposure limitation. No further Mac command or capture is
+needed for acceptance. Further strategy research requires a separately fixed
+hypothesis and cost rules, with later frozen new-data confirmation. The operational
+day gate, execution calibration and remaining production stages stay open. This
+acceptance changes documentation only; runtime, protocols, native/producer assets
+and all old reports remain unchanged.
+
 ## Bounded additional close implemented, 21 November 2026 PKT
 
 `bash scripts/mac bounded-exit QUALITY-ID` now implements the separately versioned
@@ -38,10 +75,10 @@ failed, pending and risk states keep unavailable totals; no browser errors or
 network requests occur. Desktop fixture/mobile screenshots were visually reviewed.
 Receipt: `data/bounded-exit-acceptance-ecwx2mrn/native-release.json`.
 
-The next step is the actual Mac experiment on the original quality snapshot:
-79 development children/474 planned cases. It runs offline using the installed
+The subsequent actual Mac experiment is now accepted above on the original quality
+snapshot: 79 development children/474 cases. It runs offline using the installed
 image and new private output, with a 16-GiB cap, 1-GiB reserve and one-hour suite
-admission. The actual Mac result is pending. More closes would establish exposure
+admission. More closes establish only exposure
 handling under assumptions, not an economic edge. Case net differences require
 both cases to close; no unavailable control P&L becomes a zero comparator. Previous
 negative results, the full-day reliability gate, actual execution calibration
@@ -82,9 +119,9 @@ implementation/results. It allows at most one fresh-quote retry after a settled
 first close, sized from contemporaneous residual position with unchanged price/
 cost/risk rules. This addresses exposure handling and does not imply a profitable
 signal or guarantee flat inventory. The subsequent implementation and software
-acceptance are recorded above; the actual Mac evaluation remains pending.
+acceptance and the supplied Mac result are recorded above.
 Current runtime, native schemas, producer assets and old negative/open results
-are unchanged. Full profile returns stay unavailable; the day gate, actual
+are unchanged. Original one-close profile returns stay unavailable; the day gate, actual
 execution calibration and new-data economic confirmation remain open.
 
 ## First supplied Mac broader evaluation accepted, 21 November 2026 PKT

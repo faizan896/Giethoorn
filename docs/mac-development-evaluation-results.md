@@ -87,8 +87,9 @@ were not independently paired with those baseline values.
 ## Decision and next step
 
 The subsequent [13-case diagnostic](mac-development-exceptions.md) is now
-accepted, and the [bounded additional-close protocol](bounded-exit-plan.md) is
-specified before implementation. Original evaluation results remain unchanged.
+accepted. The [bounded additional-close protocol](bounded-exit-plan.md) was
+specified before implementation; its [supplied Mac result](mac-bounded-exit-results.md)
+is now accepted separately. Original evaluation results remain unchanged.
 
 Accept the broader software/evaluation milestone and preserve R001's negative
 economic result under these assumptions. A profitable edge has not been
@@ -100,8 +101,9 @@ a separately approved small real-money pilot.
 The read-only extraction below has since completed for all 12 unresolved cases
 and the one no-fill case. Its accepted diagnostic explains the existing limit
 and partial-fill outcomes; it does not rerun or alter them. The bounded additional
-close is the next separately specified experiment, with implementation/results
-pending. No further Mac command or capture is needed to accept these readouts.
+close experiment has since completed, with its negative baseline evidence and
+remaining exposure recorded separately. No further Mac command or capture is
+needed to accept these readouts.
 Any later strategy revision needs its own declared protocol and separately
 frozen new-data confirmation.
 

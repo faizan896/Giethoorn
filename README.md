@@ -93,9 +93,11 @@ six open cases to the model's price-limit test and six to partial IOC closes;
 one entry also fails that limit test. Use `bash scripts/mac bounded-exit QUALITY-ID`
 for the separately declared [bounded additional-close experiment](docs/bounded-exit.md).
 It permits one extra fresh-quote close sized only from the settled residual
-position, with unchanged protective limits and risk rules. Software checks pass;
-the actual Mac evaluation is pending. This does not guarantee flat inventory or
-change R001's previous negative economic result.
+position, with unchanged protective limits and risk rules. The
+[first Mac bounded-exit result](docs/mac-bounded-exit-results.md) reports 474
+verified cases, 12 extra attempts, 463 conditional closes, ten unresolved and one
+no fill. Both newly closed cases are negative delay-stress cases; baseline still
+has 77 negative closes and two open cases. R001's economic edge remains unestablished.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

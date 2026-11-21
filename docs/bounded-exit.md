@@ -1,5 +1,10 @@
 # Test one additional close for residual inventory
 
+The [first supplied Mac result](mac-bounded-exit-results.md) is accepted: 474
+verified cases, 12 extra attempts, 463 closes, ten unresolved and one no fill.
+Both new closes are negative delay-stress cases; baseline retains two open cases.
+No rerun is needed to accept that result.
+
 The [frozen protocol](bounded-exit-plan.md), experiment
 `r001-bounded-exit-002`, permits at most one extra close after the original close
 has settled. It uses the position already known at the next eligible native BBO.
@@ -23,8 +28,8 @@ image is reused offline; no new capture, image rebuild or credentials are needed
 Keep Terminal open. Progress prints per selected recording, followed by summary,
 baseline and extra-close case results. macOS opens the portable report at
 `~/GiethoornData/bounded-exit-TIMESTAMP-SUFFIX/report/bounded-exit.html`.
-Paste the final output to review the actual Mac result. Its evaluation is pending;
-the earlier [single-close result](mac-development-evaluation-results.md) remains
+The first supplied output is now [accepted](mac-bounded-exit-results.md). The
+earlier [single-close result](mac-development-evaluation-results.md) remains
 461 closed, 12 unresolved and one no-fill case with negative baseline closes.
 
 The runner reads stopped source/quality without writing them and leaves existing
@@ -95,4 +100,5 @@ totals, with no browser errors or network requests. Desktop fixture and mobile
 screenshots were visually reviewed. Receipt:
 `data/bounded-exit-acceptance-ecwx2mrn/native-release.json`.
 No private Mac recording was accessed and no new public data was captured here.
+The subsequent supplied Mac readout is accepted separately above.
 See [decision 0018](decisions/0018-bounded-exit-experiment.md).

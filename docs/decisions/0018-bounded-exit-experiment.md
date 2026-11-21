@@ -1,7 +1,7 @@
 # Decision: separately versioned bounded additional-close experiment
 
-Status: implementation and software acceptance complete; supplied Mac evaluation
-pending. Follow the
+Status: implementation, software acceptance and first supplied Mac readout accepted.
+Follow the
 [predeclared bounded-exit protocol](../bounded-exit-plan.md), experiment
 `r001-bounded-exit-002`, with new policy/report namespaces at version 1.
 
@@ -45,6 +45,22 @@ is `reviewed_at_utc`, with every other receipt field exact.
 Offline desktop/mobile checks pass for native output, exact export, a labelled
 synthetic 474-case layout and unavailable outcomes/totals without errors or
 network requests. Source/quality/native/image and old producers are unchanged.
-No private Mac source was accessed or new capture performed. The actual Mac
-79-child/474-case result remains pending. See [the operator guide](../bounded-exit.md)
+No private Mac source was accessed or new capture performed. See [the operator guide](../bounded-exit.md)
 and `data/bounded-exit-acceptance-ecwx2mrn/native-release.json`.
+
+The [supplied Mac result](../mac-bounded-exit-results.md), accepted on
+21 November 2026 PKT, reports all 79 children/474 cases verified, unchanged
+source/quality/code and exactly reproduced old control totals. Twelve extra
+requests produce ten partial and two full fills. Closes rise from 461 to 463,
+unresolved cases fall from 12 to ten, and one no-fill case remains. Both new
+closes are negative delay-stress cases. Baseline retains two open cases and its
+77 closed values remain exactly unchanged and negative. Delay stress alone now
+has a complete conditional total, reported as `-5.551578761947125` USDC; all other
+profile totals remain unavailable. Its original control total remains unavailable.
+
+Exact text-level membership/count/position/fee checks pass, without independent
+access to private native ledgers or source quotes. Accept the bounded experiment
+while retaining residual inventory, the one-extra-attempt cap and the negative
+economic conclusion. The result does not demonstrate a preferable delay profile
+or complete a production gate. No further capture/replay is needed for acceptance.
+Receipt: `data/mac-bounded-exit-review-20261121T183909Z-wpn2g4g6/review.json`.
