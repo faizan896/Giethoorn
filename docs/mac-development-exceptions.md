@@ -67,9 +67,10 @@ needed to accept this diagnostic. R001 still has no demonstrated economic edge.
 The next separately declared safety experiment is
 [one bounded additional close](bounded-exit-plan.md), sized only from its own
 known residual position after the first close settles. Its purpose is exposure
-handling, not making the current strategy profitable. It is not implemented or
-evaluated yet, and will not guarantee flat inventory under missing data, native
-risk rejection or insufficient assumed capacity.
+handling, not making the current strategy profitable. Its
+[implementation and software acceptance](bounded-exit.md) are now complete;
+the actual Mac evaluation is pending. It will not guarantee flat inventory under
+missing data, native risk rejection or insufficient assumed capacity.
 
 ## Provenance and software check
 

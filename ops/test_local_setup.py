@@ -128,6 +128,11 @@ if args[0]=='info':
 if args[:2]==['image','inspect']:
  if '--format' in args:print('sha256:'+'a'*64)
  sys.exit(0)
+if args[0]=='run' and '/helpers/bounded_exit_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
+ (source/'report').mkdir();(source/'report/bounded-exit.html').write_text('synthetic bounded-exit view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='bounded-failure' else 0)
 if args[0]=='run' and '/helpers/evaluation_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
@@ -396,6 +401,37 @@ if args[0]=='run' and '--name' in args:
         for name in ('ops/evaluation_core.py','ops/evaluation_local.py','web/evaluation.html','docs/development-evaluation-plan.md'):
             (project/name).parent.mkdir(exist_ok=True)
             (project/name).write_text('synthetic evaluation orchestration asset')
+
+    def bounded_setup(self,root,project):
+        self.evaluation_setup(root,project)
+        for name in ('ops/bounded_exit_core.py','ops/bounded_exit_local.py','web/bounded-exit.html','docs/bounded-exit-plan.md'):
+            (project/name).write_text('synthetic bounded-exit orchestration asset')
+
+    def test_bounded_exit_binds_frozen_parent_and_protocol_readonly_without_network_or_collector_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.bounded_setup(root,project)
+            (root/'saved data/last-run').write_text('unrelated-current-run\n')
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'bounded-exit','quality-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            runs=[c for c in calls if c[0]=='run'];self.assertEqual(len(runs),1);run=runs[0]
+            self.assertTrue(any('start-fixture,dst=/source,readonly' in v for v in run))
+            self.assertTrue(any('quality-fixture/report,dst=/quality,readonly' in v for v in run))
+            self.assertTrue(any('bounded-exit-plan.md,dst=/protocol.md,readonly' in v for v in run))
+            self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run);self.assertIn('3660s',run)
+            self.assertEqual((root/'saved data/last-run').read_text(),'unrelated-current-run\n')
+            self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+
+    def test_bounded_exit_refuses_unsafe_ids_and_preserves_failure_status(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.bounded_setup(root,project)
+            for args in ([],['evaluation-fixture'],['quality-../unsafe'],['quality-fixture','extra']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'bounded-exit',*args],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+            env['GIETHOORN_TEST_CASE']='bounded-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'bounded-exit','quality-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
 
     def test_evaluation_uses_explicit_quality_parent_readonly_and_keeps_last_run(self):
         with tempfile.TemporaryDirectory() as directory:

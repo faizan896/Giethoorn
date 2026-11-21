@@ -8,6 +8,46 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Bounded additional close implemented, 21 November 2026 PKT
+
+`bash scripts/mac bounded-exit QUALITY-ID` now implements the separately versioned
+[bounded-exit experiment](bounded-exit.md), following the byte-identical
+[protocol frozen before implementation](bounded-exit-plan.md). It reuses the
+entire development cohort and six profiles, reproduces original one-close controls
+and permits one optional request from contemporaneously known residual inventory.
+The first close must settle without pending orders/cancellation. A fresh native
+BBO supplies the unchanged protective limit; native risk halt stops a retry.
+Complete control/new prefixes, exact size/side/anchor/limit and retained control
+hashes are checked. Missing, rejected, partial or EOF-pending execution retains
+exposure. Old helpers, templates, native schemas and historical results stay fixed.
+
+All 405 Python tests pass. The 28 new native checks also pass inside the unchanged
+Mac image, including a retained synthetic partial-close fixture that requests only
+its 0.00075-BTC residual, ends flat and has negative conditional net. Two final
+ordinary-user Docker trials on the separate saved five-child/30-case cloud sample
+pass; all original controls already close and zero extra requests are issued.
+All 30 controls equal the accepted original evaluation. Complete case/totals repeat
+exactly, and all 1,464 bound artifacts verify per trial. Of these, 1,463 repeat
+byte for byte; only the quality review receipt's `reviewed_at_utc` differs.
+All other receipt fields, input/source/quality, prior producer/native/image pins
+and frozen protocol match.
+
+Offline browser checks pass for exact strings/export, the native partial fixture,
+desktop and 390/320-pixel layouts, and a labelled synthetic 474-case layout. Open,
+failed, pending and risk states keep unavailable totals; no browser errors or
+network requests occur. Desktop fixture/mobile screenshots were visually reviewed.
+Receipt: `data/bounded-exit-acceptance-ecwx2mrn/native-release.json`.
+
+The next step is the actual Mac experiment on the original quality snapshot:
+79 development children/474 planned cases. It runs offline using the installed
+image and new private output, with a 16-GiB cap, 1-GiB reserve and one-hour suite
+admission. The actual Mac result is pending. More closes would establish exposure
+handling under assumptions, not an economic edge. Case net differences require
+both cases to close; no unavailable control P&L becomes a zero comparator. Previous
+negative results, the full-day reliability gate, actual execution calibration
+and later frozen new-data confirmation remain separate. See
+[decision 0018](decisions/0018-bounded-exit-experiment.md).
+
 ## Supplied development exceptions diagnosed, 21 November 2026 PKT
 
 The read-only Mac diagnostic reports 13 retained case hashes verified for
@@ -41,7 +81,8 @@ with [decision 0018](decisions/0018-bounded-exit-experiment.md), before any new
 implementation/results. It allows at most one fresh-quote retry after a settled
 first close, sized from contemporaneous residual position with unchanged price/
 cost/risk rules. This addresses exposure handling and does not imply a profitable
-signal or guarantee flat inventory. Implementation/evaluation remain pending.
+signal or guarantee flat inventory. The subsequent implementation and software
+acceptance are recorded above; the actual Mac evaluation remains pending.
 Current runtime, native schemas, producer assets and old negative/open results
 are unchanged. Full profile returns stay unavailable; the day gate, actual
 execution calibration and new-data economic confirmation remain open.

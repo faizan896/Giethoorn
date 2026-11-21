@@ -302,6 +302,23 @@ The larger output has a 16-GiB cap, 1-GiB free reserve and one-hour admission
 budget. Failed/not-run/unresolved cases remain visible and prevent an apparently
 complete profile total. Old results and collector/monitor/`last-run` stay fixed.
 
+## Test one additional residual close
+
+After installing the bounded-exit source update, keep Docker Desktop open and run:
+
+```sh
+bash scripts/mac bounded-exit quality-20261117T125619Z-mAfC1j
+```
+
+This tests the same 79 development recordings/474 cases, retaining the original
+one-close result and allowing at most one extra fresh-quote close from settled
+residual inventory. Price protection, signal, costs and risk rules stay fixed.
+The [new comparison view](bounded-exit.md) opens when finished; paste the final
+Terminal output for review. Keep Terminal open during the offline run. The image
+is reused, with no new capture or rebuild. The larger output has a 16-GiB cap,
+1-GiB reserve and one-hour admission budget. Partial/pending exposure remains
+explicit, and old negative/open results stay separate.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

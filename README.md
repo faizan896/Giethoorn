@@ -90,9 +90,12 @@ All 77 baseline closes are negative, and every complete profile total remains
 unavailable because of unresolved exposure. Actual execution is still unknown.
 The [supplied exception diagnostic](docs/mac-development-exceptions.md) attributes
 six open cases to the model's price-limit test and six to partial IOC closes;
-one entry also fails that limit test. The separately declared
-[bounded additional-close experiment](docs/bounded-exit-plan.md) is specified,
-with implementation pending and no change to R001's negative economic result.
+one entry also fails that limit test. Use `bash scripts/mac bounded-exit QUALITY-ID`
+for the separately declared [bounded additional-close experiment](docs/bounded-exit.md).
+It permits one extra fresh-quote close sized only from the settled residual
+position, with unchanged protective limits and risk rules. Software checks pass;
+the actual Mac evaluation is pending. This does not guarantee flat inventory or
+change R001's previous negative economic result.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
