@@ -8,14 +8,61 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac R002 readout accepted, 22 November 2026 PKT
+
+The supplied readout for `momentum-20261121T221741Z-XgpqRI/report`, following the
+issued `4a1d0c6` update, reports all 79 development recordings processed with
+unchanged source/quality/code and no error/unavailable/not-run case. Fourteen
+recordings select a signal, producing 84 verified cases across six profiles;
+65 no-signal recordings retain 390 slots. All 79 progress rows reconcile. Older
+diagnostic/R001 history in the pasted file matches its accepted receipts and is
+not counted as another R002 result. See [the accepted result](mac-r002-results.md).
+
+There are 71 conditional closes, 12 open cases and one no fill. Baseline has
+12 closed cases, all negative, and two open cases; all six complete profile totals
+remain unavailable. Lower/zero-fee controls each have two positive/ten negative
+closes, without passing the primary baseline rule. Requests total 84 entries,
+77 first closes and 12 extra closes. Counts describe assumptions on 14 recordings,
+not independent market samples or a pooled financial return.
+
+Child 2 has no qualifying original close decision under all six profiles and
+retains 0.001 BTC. Child 32 closes partly twice: baseline retains 0.00068 BTC,
+delay stress 0.00084 and liquidity stress 0.000872. Other profiles match baseline
+quantity. None has pending orders and each has unavailable closed P&L. Child 30
+slippage stress is the separate zero-fill/zero-fee/flat entry. The compact
+`unresolved_cases` list includes that no-fill exception alongside the 12 open cases.
+Exact source-end/quote/capacity/rejection causes are not independently established
+from this text. Baseline child 18 correctly closes its partial 0.000375 entry
+using 0.0000975 first and 0.0002775 extra, retaining its negative net result.
+
+All 14 feature moves, cost hurdles, reference windows and displayed rounding
+reproduce independently. Ten forward labels yield three same-direction and seven
+against-direction moves; four labels stay unavailable. Fee add-back still leaves
+ten of the 12 baseline closed cases negative; the two positives also become
+negative after baseline fees. These are descriptive, correlated subsets. Baseline
+thirds retain 26/26/27 members, 5/4/5 signals and 4/3/5 closes. The final third's
+five negative closes sum exactly to its reported `-0.53855340735` USDC; earlier
+thirds and all full-profile totals remain unavailable due to open exposure.
+
+The prescribed classification remains incomplete because required profiles retain
+exposure. Closed-count/third sample thresholds are independently unmet, and the
+observed closed baseline has no positive economic evidence. Keep the fixed R002
+rules and this result; no live-stage advancement or parameter adjustment follows.
+No further Mac command/capture/replay is needed for acceptance. Original private
+recordings, native ledgers and audit hashes were not independently read/replayed;
+native verification remains reported by the user's runner. Receipt:
+`data/mac-r002-review-20261121T224503Z-r_uqrwp8/review.json`.
+This acceptance changes documentation only. Runtime, schemas, frozen protocols,
+old producers and prior outcomes stay unchanged; production gates remain open.
+
 ## R002 offline runner implemented, 22 November 2026 PKT
 
 `bash scripts/mac momentum QUALITY-ID` now implements the
 [fixed R002 protocol](r002-cost-momentum-plan.md) through separate selector/runner
 helpers and a [portable report](r002-cost-momentum.md). Both frozen specification
 files remain byte-identical to `5b70337`. Original R001 helpers, native schemas,
-binary/image and historical results remain unchanged. The actual Mac 79-child/
-474-case evaluation is pending; the existing image is reused offline.
+binary/image and historical results remain unchanged. The subsequent Mac 79-child/
+474-slot readout is now accepted above; the existing image is reused offline.
 
 Native normalization and raw prices bind causal history/reference selection.
 The first qualifying feature is saved before labels or profile execution. Native
@@ -48,9 +95,9 @@ open/pending/risk states and incomplete totals remain visible; hostile text stay
 inert and large integers export exactly, without browser errors or network
 requests. Native desktop/mobile screenshots were visually reviewed. Receipt:
 `data/momentum-acceptance-1511jj3c/native-release.json`.
-No private Mac data was accessed or capture started. Next is the actual Mac run
-on the existing quality snapshot; the day gate, actual execution calibration,
-new-data confirmation and all production stages remain open.
+No private Mac data was accessed or capture started for these software checks.
+The subsequent actual Mac readout is accepted above; the day gate, actual
+execution calibration, new-data confirmation and production stages remain open.
 
 ## R002 research specification frozen, 22 November 2026 PKT
 
@@ -84,8 +131,8 @@ are recorded in [decision 0019](decisions/0019-r002-cost-momentum.md). Receipt:
 `data/r002-specification-review-20261121T200749Z-axvez5nh/review.json`.
 No R002 source outcomes were evaluated, no native executable or old producer was
 changed, and no capture was started. Implementation and native/browser acceptance
-were subsequent work at this specification stage. The implementation is now
-recorded above; the actual Mac evaluation remains pending.
+were subsequent work at this specification stage. The implementation and supplied
+Mac readout are now recorded above.
 
 ## First supplied Mac bounded-exit readout accepted, 21 November 2026 PKT
 

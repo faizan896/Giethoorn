@@ -1,7 +1,7 @@
 # Decision: a separately declared cost-screened momentum study
 
 Status: specification frozen before implementation; software/native/browser
-acceptance complete on 22 November 2026 PKT; actual Mac evaluation pending.
+acceptance and first supplied Mac readout accepted on 22 November 2026 PKT.
 Signal `btc-bbo-cost-momentum-002`; experiment
 `r002-cost-momentum-001`; new feature/policy/report namespaces at version 1.
 This introduces no native event, recording or execution-schema change.
@@ -66,7 +66,24 @@ stress checks pass with exact export and unavailable-state handling, without
 browser errors or network requests. Native desktop/mobile screenshots were reviewed.
 Receipt: `data/momentum-acceptance-1511jj3c/native-release.json`.
 
-The next step is the actual Mac evaluation using the original quality snapshot;
-no new capture or image build is required. See [the operator guide](../r002-cost-momentum.md).
+The [first supplied Mac readout](../mac-r002-results.md), for
+`momentum-20261121T221741Z-XgpqRI/report` after the issued `4a1d0c6` update,
+reports complete processing: 14 selected recordings/84 verified child-profile
+cases and 65 no-signal recordings/390 slots. Source/quality/code are unchanged,
+with no unavailable/not-run case. There are 71 closes, 12 open cases and one
+no fill; all six complete profile totals remain unavailable. Baseline has
+12 negative closes and two open cases. The frozen gate correctly stays incomplete.
+
+Exact text-level feature/reference/hurdle/label arithmetic, counts, signed fills,
+fee consistency and chronological baseline coverage checks pass. Ten forward
+labels include seven moves against the signal; missing labels remain missing.
+Fee add-back leaves ten baseline closes negative and two positive, while all
+12 are negative after baseline fees. These small descriptive subsets establish
+no calibrated edge. Original private source, ledgers and prefix hashes were not
+independently replayed here. Receipt:
+`data/mac-r002-review-20261121T224503Z-r_uqrwp8/review.json`.
+
+Keep R002 at research stage under its frozen rules. No further capture/replay is
+needed to accept this readout. See [the operator guide](../r002-cost-momentum.md).
 Actual execution is unknown, orders remain disabled, and the day gate,
 execution calibration, new-data confirmation and production stages remain open.

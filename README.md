@@ -105,7 +105,10 @@ fees/slippage. Its cohort, costs, exit rules and research gates are declared
 before implementation or results. Use `bash scripts/mac momentum QUALITY-ID` for
 the [offline R002 runner](docs/r002-cost-momentum.md), which preserves missing
 signals, partial/pending fills and incomplete economic coverage. Software/native/
-browser checks pass; actual Mac results and economic confirmation remain pending.
+browser checks pass. The [first Mac R002 readout](docs/mac-r002-results.md) reports
+14 selected recordings/84 verified cases and 65 recordings without a signal.
+Baseline has 12 negative closes and two open cases; the research gate remains
+incomplete. Actual execution and a positive economic edge remain unestablished.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

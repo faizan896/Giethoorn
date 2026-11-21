@@ -4,9 +4,13 @@ R002 now has a causal selector, native paper execution runner and portable repor
 The [protocol](r002-cost-momentum-plan.md) and [constants](r002-cost-momentum-policy.json)
 remain byte-identical to their preimplementation versions in `5b70337`. Their
 historical status text records that freeze; this page describes the implementation.
-Actual Mac results are pending. Software acceptance does not establish an edge.
+The [first supplied Mac result](mac-r002-results.md) is accepted: 14 selected
+recordings/84 verified cases, 65 no-signal recordings, 12 negative baseline closes
+and two open baseline cases. The research gate remains incomplete. No rerun is
+needed to accept this result; software completion does not establish an edge.
 
-Open Docker Desktop, install the momentum source update and run:
+To reproduce the experiment, open Docker Desktop, install the momentum source
+update and run:
 
 ```sh
 bash scripts/mac momentum quality-20261117T125619Z-mAfC1j
