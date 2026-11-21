@@ -32,6 +32,7 @@ Giethoorn on your Mac
   ./scripts/mac policy ID   Test causal proxy exits from their own entry positions
   ./scripts/mac evaluate ID Evaluate fixed cycles across a quality development cohort
   ./scripts/mac bounded-exit ID Test one residual close on a frozen quality cohort
+  ./scripts/mac momentum ID Run the fixed R002 cost-screened momentum study
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -198,6 +199,47 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  momentum)
+    [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac momentum quality-ID'
+    mac_quality_id=$2
+    case "$mac_quality_id" in quality-*) ;; *) fail 'Choose the frozen quality snapshot identifier.' ;; esac
+    case "$mac_quality_id" in *[!a-zA-Z0-9_-]*) fail 'Invalid quality snapshot identifier.' ;; esac
+    docker_ready; image_ready; data_ready; run_args; stopped_collector
+    mac_quality_dir="$mac_data/$mac_quality_id/report"
+    mac_selection_file="$mac_data/$mac_quality_id/source-selection.txt"
+    [[ -f "$mac_selection_file" && ! -L "$mac_selection_file" ]] || fail 'Frozen quality source selection is unavailable.'
+    IFS= read -r mac_selection < "$mac_selection_file"
+    case "$mac_selection" in 'Source run: '*) mac_run=${mac_selection#Source run: } ;; *) fail 'Invalid quality source selection.' ;; esac
+    case "$mac_run" in *[!a-zA-Z0-9_-]*|'') fail 'Invalid frozen source identifier.' ;; esac
+    [[ -d "$mac_data/$mac_run" && -d "$mac_quality_dir" ]] || fail 'Frozen source or quality report is unavailable.'
+    for mac_required in ops/momentum_core.py ops/momentum_local.py ops/bounded_exit_core.py ops/bounded_exit_local.py ops/evaluation_core.py ops/evaluation_local.py ops/proxy_policy_core.py ops/proxy_policy_local.py ops/model_compare_core.py ops/model_compare_verify.py ops/model_compare_local.py ops/expiry_core.py ops/expiry_local.py ops/cost_core.py ops/cost_local.py ops/paper_execution.py ops/study_core.py ops/study_local.py ops/review_local.py ops/quality_local.py web/momentum.html web/quality.html web/cost.html docs/r002-cost-momentum-plan.md docs/r002-cost-momentum-policy.json; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the momentum update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/momentum-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "$mac_selection" "Quality snapshot: $mac_quality_id" 'Experiment: r002-cost-momentum-001' > "$mac_dir/source-selection.txt"
+    echo 'Running fixed R002 momentum cases offline. Keep this Terminal open; progress prints per recording.'
+    echo "R002 evidence: $mac_dir"
+    mac_momentum_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_data/$mac_run,dst=/source,readonly" \
+      --mount "type=bind,src=$mac_quality_dir,dst=/quality,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web/quality.html,dst=/quality.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/cost.html,dst=/cost.html,readonly" \
+      --mount "type=bind,src=$mac_project/web/momentum.html,dst=/momentum.html,readonly" \
+      --mount "type=bind,src=$mac_project/docs/r002-cost-momentum-plan.md,dst=/protocol.md,readonly" \
+      --mount "type=bind,src=$mac_project/docs/r002-cost-momentum-policy.json,dst=/policy.json,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 3660s python3 /helpers/momentum_local.py \
+      --binary /usr/local/bin/giethoorn --experiment /source/run/experiment --quality /quality \
+      --output-dir /data/report --origin captured-public-data --quality-template /quality.html \
+      --cost-template /cost.html --template /momentum.html --theme /app/web/theme.css --protocol /protocol.md --policy-spec /policy.json || mac_momentum_exit=$?
+    echo "R002 evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/momentum.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/momentum.html" || true; else echo "$mac_dir/report/momentum.html"; fi
+    fi
+    exit "$mac_momentum_exit"
     ;;
   bounded-exit)
     [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac bounded-exit quality-ID'

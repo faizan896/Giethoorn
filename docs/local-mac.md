@@ -319,6 +319,22 @@ is reused, with no new capture or rebuild. The larger output has a 16-GiB cap,
 1-GiB reserve and one-hour admission budget. Partial/pending exposure remains
 explicit, and old negative/open results stay separate.
 
+## Run the fixed R002 momentum study
+
+After installing the momentum source update, keep Docker Desktop open and run:
+
+```sh
+bash scripts/mac momentum quality-20261117T125619Z-mAfC1j
+```
+
+The [R002 report](r002-cost-momentum.md) selects the first qualifying 30-second
+momentum feature per recording before reading its outcome. It uses all 79 frozen
+development children and six unchanged profiles, preserving missing signals,
+partial/pending fills and unavailable financial totals. Keep Terminal open; the
+portable report opens when finished. Paste the final output for review. The
+existing image is reused offline with no new capture or rebuild, under the same
+16-GiB cap, 1-GiB reserve and one-hour suite admission budget.
+
 ## Control and stop
 
 In a second Terminal in the same source directory:

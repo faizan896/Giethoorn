@@ -1,7 +1,8 @@
 # Decision: a separately declared cost-screened momentum study
 
-Status: specification frozen on 22 November 2026 PKT, before R002 implementation
-or results. Signal `btc-bbo-cost-momentum-002`; experiment
+Status: specification frozen before implementation; software/native/browser
+acceptance complete on 22 November 2026 PKT; actual Mac evaluation pending.
+Signal `btc-bbo-cost-momentum-002`; experiment
 `r002-cost-momentum-001`; new feature/policy/report namespaces at version 1.
 This introduces no native event, recording or execution-schema change.
 
@@ -48,8 +49,24 @@ constants equal existing values, and the 79-child chronological thirds have
 checks, not native acceptance or R002 market results. Receipt:
 `data/r002-specification-review-20261121T200749Z-axvez5nh/review.json`.
 
-The next work is the causal feature selector, separate native execution compiler,
-offline runner and portable report, followed by the protocol's software acceptance
-before any Mac evaluation. There is no R002 command or implementation yet. No new
-capture is needed for that development; actual orders remain disabled. The day
-gate, execution calibration and production stages remain open.
+`bash scripts/mac momentum QUALITY-ID` now implements the causal selector,
+separate native close compiler, bounded residual close and portable offline report.
+Complete control prefixes and retained artifact hashes are checked without
+changing old helpers, native schemas, protocol, constants or executable/image.
+All 479 Python tests pass, including 23 native checks also passing inside the
+unchanged Mac image. Six retained synthetic native profile cases exercise the
+30-second signal and exact residual/cost accounting. These are software results.
+
+Two ordinary-user full-wrapper repeats preserve five saved cloud development
+sources/30 no-signal slots. Their roughly 12-second duration is below R002 warmup;
+the correct result is insufficient data, with no economic evaluation. All cases/
+counts/gates repeat exactly. Of 104 bound artifacts per trial, 103 repeat byte for
+byte; only the review timestamp differs. Offline desktop/mobile/native/474-case
+stress checks pass with exact export and unavailable-state handling, without
+browser errors or network requests. Native desktop/mobile screenshots were reviewed.
+Receipt: `data/momentum-acceptance-1511jj3c/native-release.json`.
+
+The next step is the actual Mac evaluation using the original quality snapshot;
+no new capture or image build is required. See [the operator guide](../r002-cost-momentum.md).
+Actual execution is unknown, orders remain disabled, and the day gate,
+execution calibration, new-data confirmation and production stages remain open.

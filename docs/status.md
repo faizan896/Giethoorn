@@ -8,6 +8,50 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## R002 offline runner implemented, 22 November 2026 PKT
+
+`bash scripts/mac momentum QUALITY-ID` now implements the
+[fixed R002 protocol](r002-cost-momentum-plan.md) through separate selector/runner
+helpers and a [portable report](r002-cost-momentum.md). Both frozen specification
+files remain byte-identical to `5b70337`. Original R001 helpers, native schemas,
+binary/image and historical results remain unchanged. The actual Mac 79-child/
+474-case evaluation is pending; the existing image is reused offline.
+
+Native normalization and raw prices bind causal history/reference selection.
+The first qualifying feature is saved before labels or profile execution. Native
+control prefixes determine close quantities, with risk/pending/EOF states retained
+and at most one residual retry. Every retained control artifact is hashed before
+later replays and rechecked, including reused entry controls. Changed evidence or
+failed verification invalidates economics; budgets preserve not-run cases.
+Full cohort/profile denominators and prescribed chronological gates remain fixed.
+
+All 479 Python tests pass: 405 prior checks plus 31 signal/gate, 23 native,
+18 admission and two Mac-wrapper checks. The 23 native checks also pass inside
+the unchanged Mac image. A retained synthetic source exercises selection and
+all six native profiles; baseline first close 0.00025 BTC plus residual retry
+0.00075 finishes flat with exact conditional net `-0.000140240001` USDC.
+Future independence, missing/duplicate/reconnected/clock histories, equal-time
+decisions, risk rejection, partial/pending exposure, mutation and exact repeat
+remain checked. These synthetic results establish software mechanics, not alpha.
+
+Two ordinary-user full-wrapper trials pass on the separate saved cloud sample:
+five development sources, 30 no-signal slots, no entry and `insufficient_data`.
+Each source lasts about 12 seconds, below the 30-second warmup, so these trials
+cannot evaluate R002 economics. Cases/selection/counts/screen repeat exactly.
+All 104 audit artifacts verify per trial; 103 repeat byte for byte. The only
+difference is quality review `reviewed_at_utc`, with all other receipt fields
+identical. Source, quality, old producers/native/image and specifications match.
+
+Offline browser checks pass for exact values/export, native fixtures, desktop
+and 390/320-pixel views, and a labelled synthetic 474-case layout. No-signal/no-fill,
+open/pending/risk states and incomplete totals remain visible; hostile text stays
+inert and large integers export exactly, without browser errors or network
+requests. Native desktop/mobile screenshots were visually reviewed. Receipt:
+`data/momentum-acceptance-1511jj3c/native-release.json`.
+No private Mac data was accessed or capture started. Next is the actual Mac run
+on the existing quality snapshot; the day gate, actual execution calibration,
+new-data confirmation and all production stages remain open.
+
 ## R002 research specification frozen, 22 November 2026 PKT
 
 The next [R002 protocol](r002-cost-momentum-plan.md) and
@@ -40,8 +84,8 @@ are recorded in [decision 0019](decisions/0019-r002-cost-momentum.md). Receipt:
 `data/r002-specification-review-20261121T200749Z-axvez5nh/review.json`.
 No R002 source outcomes were evaluated, no native executable or old producer was
 changed, and no capture was started. Implementation and native/browser acceptance
-are next; there is no runnable R002 Mac command yet. Existing tools/results remain
-available and the user needs no Terminal action for this specification.
+were subsequent work at this specification stage. The implementation is now
+recorded above; the actual Mac evaluation remains pending.
 
 ## First supplied Mac bounded-exit readout accepted, 21 November 2026 PKT
 
