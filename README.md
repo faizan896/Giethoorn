@@ -99,6 +99,12 @@ verified cases, 12 extra attempts, 463 conditional closes, ten unresolved and on
 no fill. Both newly closed cases are negative delay-stress cases; baseline still
 has 77 negative closes and two open cases. R001's economic edge remains unestablished.
 
+The next [R002 research specification](docs/r002-cost-momentum-plan.md) fixes a
+30-second momentum signal screened against current spread and baseline assumed
+fees/slippage. Its cohort, costs, exit rules and research gates are declared
+before implementation or results. No R002 runner or Mac command exists yet;
+this plan supplies no profitability evidence or new trading readiness.
+
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
 Python 3.9+ and Bash are required for the operations checks/helpers.

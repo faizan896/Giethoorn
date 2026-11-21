@@ -8,6 +8,41 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## R002 research specification frozen, 22 November 2026 PKT
+
+The next [R002 protocol](r002-cost-momentum-plan.md) and
+[policy constants](r002-cost-momentum-policy.json) are frozen before new
+implementation/results. Experiment `r002-cost-momentum-001` tests whether a
+30-second price move beyond current spread plus 14 bps of assumed fees/slippage/
+buffer continues enough over the next 30 seconds to produce positive conditional
+IOC results. Past movement is a filter, not an expected future return. The
+screen is not charged again in native fill accounting.
+
+Use all original development members and the same six profiles, with one first
+qualifying feature per child selected before labels or execution. Missing bins,
+history and exits remain visible; there is no parameter search or replacement
+after a rejection/loss. The new history-gap rule has separate receipts and leaves
+old R001 span rules fixed. First close uses contemporaneous native position at an
+observed fresh quote from +30 through +31 seconds; one optional residual close
+uses the existing settled-state safety rules. Native risk, source EOF, partial
+fills and unavailable closed P&L stay authoritative.
+
+Positive complete baseline/stress totals, at least 30 closed cases in each required
+profile, and ten baseline closes/positive net in each chronological third are
+fixed feasibility screens. Fewer signals means insufficient data; unknown exposure
+prevents advancement. A passing result would justify only a separately predeclared
+new-data confirmation. Existing partitions are explored, actual execution is
+unknown and all production gates remain separate.
+
+Seven synthetic rational-arithmetic examples, unchanged profile/risk constants,
+26/26/27 chronological membership and bound checks pass. Protocol and policy SHA256
+are recorded in [decision 0019](decisions/0019-r002-cost-momentum.md). Receipt:
+`data/r002-specification-review-20261121T200749Z-axvez5nh/review.json`.
+No R002 source outcomes were evaluated, no native executable or old producer was
+changed, and no capture was started. Implementation and native/browser acceptance
+are next; there is no runnable R002 Mac command yet. Existing tools/results remain
+available and the user needs no Terminal action for this specification.
+
 ## First supplied Mac bounded-exit readout accepted, 21 November 2026 PKT
 
 The supplied output for `bounded-exit-20261121T162831Z-JMVRwJ/report`, following

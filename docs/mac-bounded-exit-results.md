@@ -91,10 +91,11 @@ flat inventory. Persistent residual exposure remains a limitation for later live
 use. The existing R001 policy retains negative baseline evidence and is not ready
 for promotion to funded trading.
 
-Further strategy research needs its own fixed hypothesis, causal signal and
-cost/exit rules before outcome inspection, followed by separately frozen new-data
-confirmation if development evidence warrants it. All original partitions are
-already explored. The operational day gate, actual fill calibration, forward
+The next [R002 cost-screened momentum protocol](r002-cost-momentum-plan.md) now
+fixes a different hypothesis, causal signal and cost/exit rules before its own
+implementation or results. Later separately frozen new-data confirmation is
+required if development evidence warrants it. All original partitions are already
+explored. The operational day gate, actual fill calibration, forward
 paper integration, exchange/testnet reconciliation and separately approved funded
 pilot remain open. This research result does not advance another production gate.
 
