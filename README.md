@@ -88,6 +88,11 @@ The [first Mac broader result](docs/mac-development-evaluation-results.md) repor
 474 verified cases: 461 conditional closes, 12 unresolved and one no fill.
 All 77 baseline closes are negative, and every complete profile total remains
 unavailable because of unresolved exposure. Actual execution is still unknown.
+The [supplied exception diagnostic](docs/mac-development-exceptions.md) attributes
+six open cases to the model's price-limit test and six to partial IOC closes;
+one entry also fails that limit test. The separately declared
+[bounded additional-close experiment](docs/bounded-exit-plan.md) is specified,
+with implementation pending and no change to R001's negative economic result.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

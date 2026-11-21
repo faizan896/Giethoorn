@@ -59,6 +59,10 @@ economic resolution or profitable strategy validation.
 
 ## Baseline exposure and limits of this readout
 
+The later [supplied exception diagnostic](mac-development-exceptions.md) now
+explains these cases. The statements below describe what the original compact
+evaluation output alone could establish.
+
 The baseline explicitly reports these two independent hypothetical open cases:
 
 | Case | Ending position, BTC | Assumed fees, USDC | Pending orders | Closed P&L |
@@ -82,6 +86,10 @@ were not independently paired with those baseline values.
 
 ## Decision and next step
 
+The subsequent [13-case diagnostic](mac-development-exceptions.md) is now
+accepted, and the [bounded additional-close protocol](bounded-exit-plan.md) is
+specified before implementation. Original evaluation results remain unchanged.
+
 Accept the broader software/evaluation milestone and preserve R001's negative
 economic result under these assumptions. A profitable edge has not been
 established. The broader evaluation completes the eighth milestone in the chat's
@@ -89,13 +97,13 @@ established. The broader evaluation completes the eighth milestone in the chat's
 strategy confirmation, live-data paper work, exchange/testnet integration and
 a separately approved small real-money pilot.
 
-Next inspect the 12 unresolved cases and one no-fill case from retained evidence,
-including exact requested/filled quantities, close decisions, risk and rejection
-details. A read-only extraction can verify their case receipts against the saved
-artifact inventory and report their existing state. It must not rerun the policy,
-resize a close, choose a favorable profile or manufacture flattening. No new
-capture is needed to accept this result. Any later strategy revision needs its
-own declared protocol and separately frozen new-data confirmation.
+The read-only extraction below has since completed for all 12 unresolved cases
+and the one no-fill case. Its accepted diagnostic explains the existing limit
+and partial-fill outcomes; it does not rerun or alter them. The bounded additional
+close is the next separately specified experiment, with implementation/results
+pending. No further Mac command or capture is needed to accept these readouts.
+Any later strategy revision needs its own declared protocol and separately
+frozen new-data confirmation.
 
 The operational day gate and actual execution calibration remain open. This
 acceptance changes documentation only; runtime/native/helper/producer assets and
@@ -103,9 +111,10 @@ all prior negative or open reports remain unchanged.
 
 Receipt: `data/mac-development-evaluation-review-20261120T230136Z-93exwndg/`.
 
-## Read the retained exceptions without running another experiment
+## Reproduce the already accepted read-only diagnostic
 
-This extracts the existing 12 unresolved cases and one no-fill case. It checks
+This extraction has already completed and its output is accepted. The command
+is retained for reproducibility; no rerun is needed. It checks
 the saved audit-inventory hash and each selected full case receipt, preserving
 native order rejection details and exact entry/close quantities. It does not
 replay native source, alter the policy or send orders. Keep Docker Desktop open

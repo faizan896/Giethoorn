@@ -8,6 +8,44 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Supplied development exceptions diagnosed, 21 November 2026 PKT
+
+The read-only Mac diagnostic reports 13 retained case hashes verified for
+`evaluation-20261120T220630Z-oyufiA/report`. All exceptions reconcile: child 8
+under all six profiles has a nonmarketable close; child 56 under all six has
+a partial close with IOC remainder cancellation; child 71 slippage stress has
+a nonmarketable entry, flat/no close and zero fees. See
+[the accepted diagnostic](mac-development-exceptions.md).
+
+The model's adverse assumed price must satisfy the submitted protective limit.
+Partial fills use its fixed fraction of displayed top size, so they demonstrate
+a model capacity limit, not that an actual venue lacked executable liquidity.
+Child 56 baseline closes `0.0002975` of `0.001` BTC and retains `-0.0007025`;
+delay stress closes `0.0002425` and retains `-0.0007575`; liquidity stress closes
+`0.000119` and retains `-0.000881`. Other profiles match the baseline quantity.
+Child 8 closes zero and retains `-0.001` in every profile. No case has pending
+orders; all report no decision-time risk halt or native order rejection.
+
+Exact Decimal checks match signed fills to all ending positions, own-position
+close quantities, previous baseline values and fixed fee/fraction ratios. No
+quantity/accounting bug is demonstrated. Three existing native contract checks
+pass, and a separate labelled synthetic example reproduces the price-limit
+nonfill with exact retained inventory. Original private Mac source, quote/limit/
+capacity receipts and native ledgers were not independently replayed here;
+case-hash verification was reported by the Mac reader. Receipt:
+`data/mac-exception-review-20261121T154057Z-ghgu00f7/`.
+
+No further Mac command or replay is needed to accept this diagnostic. The next
+[bounded additional-close protocol](bounded-exit-plan.md) is now specified,
+with [decision 0018](decisions/0018-bounded-exit-experiment.md), before any new
+implementation/results. It allows at most one fresh-quote retry after a settled
+first close, sized from contemporaneous residual position with unchanged price/
+cost/risk rules. This addresses exposure handling and does not imply a profitable
+signal or guarantee flat inventory. Implementation/evaluation remain pending.
+Current runtime, native schemas, producer assets and old negative/open results
+are unchanged. Full profile returns stay unavailable; the day gate, actual
+execution calibration and new-data economic confirmation remain open.
+
 ## First supplied Mac broader evaluation accepted, 21 November 2026 PKT
 
 The supplied output for `evaluation-20261120T220630Z-oyufiA/report`, following
@@ -29,7 +67,9 @@ retains `-0.0007025` BTC with `0.042117962024250` fees. Both have no pending ord
 and unavailable closed P&L. Their exact exit cause and other profiles' individual
 exception IDs are absent from the compact output. These are independent manual
 simulation cases, not simultaneous funded exposure. Do not infer a rejection,
-partial close or network cause before reading retained receipts.
+partial close or network cause from that compact readout. The subsequent
+[case diagnostic](mac-development-exceptions.md) now identifies the declared
+price-limit and partial-fill outcomes.
 
 This workspace verified supplied-text membership/counts, baseline states/signs,
 Decimal add-back arithmetic and unchanged first-four baseline values. Original
@@ -39,7 +79,7 @@ file was retained but not counted as another evaluation. Receipt:
 `data/mac-development-evaluation-review-20261120T230136Z-93exwndg/`.
 
 Accept the broader evaluation milestone while retaining its negative economic
-result. Next is a read-only inspection of the 12 unresolved/one no-fill case;
+result. The subsequent read-only case diagnostic is now accepted above;
 no new capture or policy replay is needed to accept the output. This acceptance
 changes documentation only. Original runtime/producer/native assets and all
 prior outcomes stay unchanged. The full-day gate, actual execution calibration
