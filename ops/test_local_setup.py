@@ -128,6 +128,11 @@ if args[0]=='info':
 if args[:2]==['image','inspect']:
  if '--format' in args:print('sha256:'+'a'*64)
  sys.exit(0)
+if args[0]=='run' and '/helpers/momentum_explain_local.py' in args:
+ target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
+ source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
+ (source/'report').mkdir();(source/'report/momentum-explain.html').write_text('synthetic retained diagnostic view')
+ sys.exit(1 if os.environ.get('GIETHOORN_TEST_CASE')=='momentum-explain-failure' else 0)
 if args[0]=='run' and '/helpers/momentum_local.py' in args:
  target=next(args[i+1] for i,v in enumerate(args) if v=='--mount' and 'dst=/data' in args[i+1])
  source=Path(target.split('src=',1)[1].split(',dst=',1)[0])
@@ -431,6 +436,44 @@ if args[0]=='run' and '--name' in args:
             self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run);self.assertIn('3660s',run)
             self.assertEqual((root/'saved data/last-run').read_text(),'unrelated-current-run\n')
             self.assertFalse(any(c[0] in ('build','stop','rm') or '--detach' in c for c in calls))
+
+    def diagnostic_setup(self,root,project):
+        self.momentum_setup(root,project)
+        for name in ('ops/momentum_explain_core.py','ops/momentum_explain_local.py','web/momentum-explain.html','docs/momentum-explain-plan.md'):
+            (project/name).write_text('synthetic diagnostic asset')
+        original=root/'saved data/momentum-fixture/report';original.mkdir(parents=True)
+        (original/'momentum-report.json').write_text('synthetic original bundle')
+
+    def test_momentum_diagnostic_mounts_only_saved_bundle_and_reuses_image_offline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.diagnostic_setup(root,project)
+            env['GIETHOORN_TEST_CASE']='active-review'
+            (root/'saved data/last-run').write_text('unrelated-active-run\n')
+            original=root/'saved data/momentum-fixture/report/momentum-report.json'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'momentum-explain','momentum-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            calls=[json.loads(line) for line in (root/'calls.jsonl').read_text().splitlines()]
+            run=next(c for c in calls if c[0]=='run');self.assertEqual(sum(c[0]=='run' for c in calls),1)
+            for mounted in ('momentum-fixture/report,dst=/source,readonly','/ops,dst=/helpers,readonly','/web,dst=/assets,readonly','/docs,dst=/specs,readonly'):
+                self.assertTrue(any(mounted in v for v in run),mounted)
+            self.assertEqual(run[run.index('--network')+1],'none');self.assertIn('--read-only',run);self.assertIn('3660s',run)
+            self.assertFalse(any('dst=/quality' in v for v in run));self.assertIn('giethoorn-local:0.1.0',run)
+            self.assertEqual(original.read_text(),'synthetic original bundle')
+            self.assertEqual((root/'saved data/last-run').read_text(),'unrelated-active-run\n')
+            self.assertFalse(any(c[0] in ('inspect','build','stop','rm') or '--detach' in c for c in calls))
+
+    def test_momentum_diagnostic_rejects_bad_ids_and_preserves_failed_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);project,env=self.prepare(root);self.diagnostic_setup(root,project)
+            for args in ([],['quality-fixture'],['momentum-../unsafe'],['momentum-fixture','extra']):
+                result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'momentum-explain',*args],env=env,capture_output=True,text=True)
+                self.assertNotEqual(result.returncode,0)
+            self.assertFalse((root/'calls.jsonl').exists())
+            env['GIETHOORN_TEST_CASE']='momentum-explain-failure'
+            result=subprocess.run(['/bin/bash',str(project/'scripts/mac'),'momentum-explain','momentum-fixture'],env=env,capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
+            outputs=list((root/'saved data').glob('momentum-explain-*/report/momentum-explain.html'))
+            self.assertEqual(len(outputs),1)
 
     def test_momentum_refuses_unsafe_ids_and_keeps_failed_exit(self):
         with tempfile.TemporaryDirectory() as directory:

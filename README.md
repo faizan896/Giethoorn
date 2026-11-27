@@ -110,6 +110,12 @@ browser checks pass. The [first Mac R002 readout](docs/mac-r002-results.md) repo
 Baseline has 12 negative closes and two open cases; the research gate remains
 incomplete. Actual execution and a positive economic edge remain unestablished.
 
+Use `bash scripts/mac momentum-explain MOMENTUM-ID` for the
+[retained R002 diagnostic](docs/momentum-explain.md): independently revalidate
+saved native inputs, distinguish missing close windows and assumed capacity,
+and check each closed case's exact price/cost identity. This preserves the
+original R002 result and requires no new capture or image build.
+
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
 Python 3.9+ and Bash are required for the operations checks/helpers.

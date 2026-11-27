@@ -8,6 +8,57 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## Retained R002 diagnostic implemented, 28 November 2026 PKT
+
+`bash scripts/mac momentum-explain MOMENTUM-ID` now revalidates a completed saved
+R002 bundle and produces a separate [evidence report](momentum-explain.md).
+The [version-1 diagnostic contract](momentum-explain-plan.md) and
+[decision 0020](decisions/0020-r002-retained-diagnostic.md) preserve the original
+R002 protocol/policy, native schemas, old producer bodies, installed binary/image
+and historical results. No collection, build, account or live exchange action is
+performed. The Mac's actual failure causes remain pending this diagnostic run.
+
+Admission binds the complete original artifact inventory, installed executable,
+original producer/specification hashes and copied admitted quality inputs. Every
+selected copied source is replayed through the original native adapter and
+normalizer; every distinct retained manual ledger is independently replayed.
+Byte equality, source/Decimal accounting, checkpoint hashes, original selections,
+entry/close/retry prefixes, compact cases, totals and classification must agree.
+The copied collection-wide quality audit remains a historical bound receipt;
+this tool independently replays selected copied recordings and manual ledgers.
+It never executes a bundle-supplied binary or invokes the strategy producer.
+
+Actual source boundaries distinguish EOF before/inside the fixed close window
+from an observed window lacking an eligible quote. Order receipts expose assumed
+remaining capacity, price/limit, reference age, marketability and native rejection.
+Closed cases must satisfy an exact midpoint-cashflow/arrival-change/spread/
+slippage/fee identity against native conditional net. This benchmark conditions
+on original assumed fills; it is not a midpoint strategy or expected return.
+Open positions retain known fill costs and unavailable closed P&L. Any diagnostic
+failure suppresses admitted analysis in the new report and leaves originals intact.
+
+All 521 Python tests pass, including 42 new checks: 14 pure window/cost, ten native,
+16 admission/mutation and two launcher checks. The ten new native checks also pass
+inside the unchanged Mac image. A retained synthetic component proof replays five
+sources and 48 distinct saved ledgers across 24 verified manual cases and six
+no-signal slots: six exact closed-cost identities, twelve open cases and six
+no-fill cases. That proof covers software mechanics, not the private Mac result.
+
+Two ordinary-user complete launcher trials independently verify the existing
+separate cloud sample's five frozen development recordings and 30 no-signal slots.
+All eight diagnostic audit artifacts repeat byte for byte; reports match except
+creation time. That short sample cannot evaluate R002 economics. Offline browser
+checks pass for exact values/JSON export, open/no-fill/no-signal states, all six
+profiles, a labelled synthetic 474-slot layout, desktop and 390/320-pixel views,
+inert hostile text and failed-verification suppression, with no network requests
+or browser errors. Managed Chrome blocks file navigation, so the same standalone
+documents are tested in memory. Proofs:
+`data/momentum-explain-acceptance-nydx_v1m/`.
+
+The accepted Mac R002 result below remains incomplete: twelve negative baseline
+closes, two open baseline cases, and no established positive economic edge.
+Neither a diagnostic pass nor these synthetic checks advance production gates.
+
 ## First supplied Mac R002 readout accepted, 22 November 2026 PKT
 
 The supplied readout for `momentum-20261121T221741Z-XgpqRI/report`, following the

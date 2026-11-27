@@ -33,6 +33,7 @@ Giethoorn on your Mac
   ./scripts/mac evaluate ID Evaluate fixed cycles across a quality development cohort
   ./scripts/mac bounded-exit ID Test one residual close on a frozen quality cohort
   ./scripts/mac momentum ID Run the fixed R002 cost-screened momentum study
+  ./scripts/mac momentum-explain ID Explain a completed saved R002 bundle
   ./scripts/mac open        Open the local monitor
   ./scripts/mac stop        Stop this collector and monitor; preserve recordings
 Recordings: ~/GiethoornData (override with absolute GIETHOORN_DATA_DIR)
@@ -199,6 +200,40 @@ case "${1:-help}" in
       --output-dir /review/report || mac_review_exit=$?
     echo "Review saved: $mac_review/report"
     exit "$mac_review_exit"
+    ;;
+  momentum-explain)
+    [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac momentum-explain momentum-ID'
+    mac_source_id=$2
+    case "$mac_source_id" in momentum-*) ;; *) fail 'Choose the original completed momentum snapshot identifier.' ;; esac
+    case "$mac_source_id" in *[!a-zA-Z0-9_-]*) fail 'Invalid momentum snapshot identifier.' ;; esac
+    docker_ready; image_ready; data_ready; run_args
+    mac_source_dir="$mac_data/$mac_source_id/report"
+    [[ -d "$mac_source_dir" && ! -L "$mac_source_dir" && ! -L "$mac_data/$mac_source_id" && -f "$mac_source_dir/momentum-report.json" ]] || fail 'Original R002 report is unavailable.'
+    for mac_required in ops/momentum_explain_core.py ops/momentum_explain_local.py ops/momentum_core.py ops/momentum_local.py web/momentum-explain.html web/momentum.html web/quality.html web/cost.html docs/momentum-explain-plan.md docs/r002-cost-momentum-plan.md docs/r002-cost-momentum-policy.json; do
+      [[ -f "$mac_project/$mac_required" ]] || fail "Download the diagnostic update first; missing $mac_required."
+    done
+    mac_dir=$(mktemp -d "$mac_data/momentum-explain-$(date -u +%Y%m%dT%H%M%SZ)-XXXXXX")
+    printf '%s\n' "Original R002 snapshot: $mac_source_id" 'Diagnostic: r002-retained-diagnostic-001' > "$mac_dir/source-selection.txt"
+    echo 'Checking saved R002 inputs offline. Keep this Terminal open; progress prints per recording.'
+    echo "Diagnostic evidence: $mac_dir"
+    mac_explain_exit=0
+    docker run --rm "${mac_args[@]}" --network none \
+      --mount "type=bind,src=$mac_source_dir,dst=/source,readonly" \
+      --mount "type=bind,src=$mac_project/ops,dst=/helpers,readonly" \
+      --mount "type=bind,src=$mac_project/web,dst=/assets,readonly" \
+      --mount "type=bind,src=$mac_project/docs,dst=/specs,readonly" \
+      --mount "type=bind,src=$mac_dir,dst=/data" "$mac_image" \
+      timeout --signal=TERM --kill-after=10s 3660s python3 /helpers/momentum_explain_local.py \
+      --binary /usr/local/bin/giethoorn --source /source --output-dir /data/report \
+      --quality-template /assets/quality.html --cost-template /assets/cost.html --momentum-template /assets/momentum.html \
+      --theme /app/web/theme.css --original-protocol /specs/r002-cost-momentum-plan.md \
+      --policy-spec /specs/r002-cost-momentum-policy.json --protocol /specs/momentum-explain-plan.md \
+      --template /assets/momentum-explain.html || mac_explain_exit=$?
+    echo "Diagnostic evidence: $mac_dir"
+    if [[ -f "$mac_dir/report/momentum-explain.html" ]]; then
+      if [[ "$(uname -s)" = Darwin ]]; then open "$mac_dir/report/momentum-explain.html" || true; else echo "$mac_dir/report/momentum-explain.html"; fi
+    fi
+    exit "$mac_explain_exit"
     ;;
   momentum)
     [[ "$#" -eq 2 ]] || fail 'Usage: bash scripts/mac momentum quality-ID'
