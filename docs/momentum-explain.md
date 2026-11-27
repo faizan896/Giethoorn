@@ -80,8 +80,11 @@ The [version-1 contract](momentum-explain-plan.md) fixes finite input, output,
 disk, native-call and total-time bounds. The original six profiles, signal and
 entry/close/retry parameters are unchanged. To inspect the output later, open the
 saved HTML in Finder. The JSON export retains exact decimal strings and large
-timestamps. Share the printed diagnostic summary for the next review; the Mac's
-actual failure causes remain unverified until its original bundle passes.
+timestamps. Share the printed diagnostic summary for review. The first
+[supplied Mac diagnostic](mac-r002-diagnostic-results.md) now reports a completed
+pass and explains the retained exceptions; the original research result remains
+incomplete. This workspace reviewed text and exact printed arithmetic, rather
+than independently replaying the private Mac files.
 
 Developer checks:
 

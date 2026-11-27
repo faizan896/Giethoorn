@@ -115,6 +115,10 @@ Use `bash scripts/mac momentum-explain MOMENTUM-ID` for the
 saved native inputs, distinguish missing close windows and assumed capacity,
 and check each closed case's exact price/cost identity. This preserves the
 original R002 result and requires no new capture or image build.
+The [first Mac diagnostic](docs/mac-r002-diagnostic-results.md) reports completed
+verification of 79 recordings and 173 ledgers. Recording EOF, assumed exit
+capacity and nonmarketable prices explain the exceptions; all twelve baseline
+closed cases remain negative and the research classification stays incomplete.
 
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.

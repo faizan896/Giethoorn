@@ -8,6 +8,39 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## First supplied Mac R002 diagnostic accepted, 28 November 2026 PKT
+
+The supplied `momentum-explain-20261127T215129Z-O4twGK/report` readout, following
+the issued `452a39f` update, reports completed verification of 79 recordings,
+173 distinct saved manual ledgers and 71 closed-cost identities, with input/code
+unchanged and no error. Progress, the 474 original slots and ledger counts
+reconcile with the prior result. See [the diagnostic findings](mac-r002-diagnostic-results.md).
+
+Child 2's recorded source ends exactly 15.107058486 seconds before its original
+close window opens. Child 32's partial exits equal the verified assumed capacity;
+baseline retains 0.00068 BTC and liquidity stress 0.000872. Delay stress retains
+0.00084 because its residual sell's assumed price is 3.491 USDC/BTC below the
+limit, despite sufficient assumed capacity. Child 30 slippage stress's buy price
+exceeds its limit by 5.001 USDC/BTC, preserving the separate no-fill case.
+These establish causes under the original offline model; they do not identify
+physical faults, actual venue liquidity or executable alternative fills.
+
+All twelve printed baseline closed-cost identities independently reproduce with
+exact rational arithmetic and match the prior nets/fees. Nine decision-midpoint
+benchmarks are negative and three positive; all twelve remain negative after
+costs. These are benchmarks conditional on original assumed fills, not expected
+returns or a new forecast statistic. Twelve open cases and one no fill retain
+their outcomes; full profile nets remain unavailable and research stays incomplete.
+Private native files/audit hashes were not supplied here; their verification and
+the other 59 closed identities remain reported by the Mac runner. Receipt:
+`data/mac-r002-diagnostic-review-20261128-jkoccmp7/review.json`.
+
+No further Mac command is needed for this acceptance. New position-lifecycle and
+economic research needs a separate declared protocol and independent confirmation;
+R002 and all production gates remain unchanged. This review changes documentation
+only. Runtime, specifications, old producers, native binary/image and schemas are
+unchanged; existing 521-test software validation remains the prior receipt.
+
 ## Retained R002 diagnostic implemented, 28 November 2026 PKT
 
 `bash scripts/mac momentum-explain MOMENTUM-ID` now revalidates a completed saved
@@ -16,7 +49,8 @@ The [version-1 diagnostic contract](momentum-explain-plan.md) and
 [decision 0020](decisions/0020-r002-retained-diagnostic.md) preserve the original
 R002 protocol/policy, native schemas, old producer bodies, installed binary/image
 and historical results. No collection, build, account or live exchange action is
-performed. The Mac's actual failure causes remain pending this diagnostic run.
+performed. At implementation the Mac's actual failure causes remained pending;
+the subsequent supplied diagnostic is accepted above.
 
 Admission binds the complete original artifact inventory, installed executable,
 original producer/specification hashes and copied admitted quality inputs. Every

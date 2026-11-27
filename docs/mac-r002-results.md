@@ -7,6 +7,10 @@ out of 474 planned. There are 71 conditional closes, 12 open cases and one no-fi
 case across profiles. The baseline has 12 negative closes and two open cases.
 The frozen research classification is **incomplete**, with no production gate met.
 
+The subsequent [retained-evidence diagnostic](mac-r002-diagnostic-results.md) now
+supplies source-end, assumed-capacity and price-limit explanations while preserving
+this result. The scope statements below describe the original compact readout.
+
 ## Scope and verification
 
 The readout is for `~/GiethoornData/momentum-20261121T221741Z-XgpqRI/report`,
