@@ -120,6 +120,13 @@ verification of 79 recordings and 173 ledgers. Recording EOF, assumed exit
 capacity and nonmarketable prices explain the exceptions; all twelve baseline
 closed cases remain negative and the research classification stays incomplete.
 
+The [R003 specification](docs/r003-cost-reversion-plan.md) now declares a new
+30-second-move reversal hypothesis over 120 seconds, with a matched continuation
+control, announced session budgets and bounded residual exits. A fixed fresh-data
+pilot follows software verification; old data is for software fixtures only.
+The specification is frozen before implementation/data. There is no R003 command
+or result yet, and the existing Mac workflow remains unchanged.
+
 Requires Rust **1.91.1**, a C compiler, pkg-config, and OpenSSL development headers on
 Linux. `rust-toolchain.toml` pins the toolchain; `Cargo.lock` pins dependencies.
 Python 3.9+ and Bash are required for the operations checks/helpers.

@@ -8,6 +8,47 @@ and validation artifacts are separate from repository source. No live exchange
 execution or wallet functionality exists. An offline paper research model is
 described below.
 
+## R003 specification frozen, 28 November 2026 PKT
+
+The [R003 protocol](r003-cost-reversion-plan.md),
+[policy constants](r003-cost-reversion-policy.json) and
+[decision 0021](decisions/0021-r003-prospective-reversion.md) now fix a separate
+prospective feasibility pilot before implementation, capture or results. This is
+a post-R002 design hypothesis: a large past 30-second move reverses over the next
+120 seconds. A continuation control shares the new horizon, feature and exits;
+R002's earlier result is not its matched control. No positive edge is assumed.
+
+Entry uses a pre-capture announced 300-second case budget, reserving 120 seconds
+to hold, ten to close and one for terminal evidence. The latest budget-eligible
+entry is +169 seconds, independent of actual EOF. At most four residual closes
+use exact native owned inventory, terminal prior orders, new quotes, fixed spacing
+and the original protective envelope. Pending/censored/partial/risk-halted states
+remain explicit; no position carry or forced EOF liquidation is added.
+
+After separate software/native tests and a producer freeze, exactly 64 new public
+capture attempts form one pilot: 300 seconds each, resumable in batches of up to
+twelve within seven days, with failed/interrupted slots consumed rather than
+replaced. All 768 arm/profile slots and fixed 21/21/22 thirds remain visible.
+The old explored archive may test software only. Collection health can be viewed;
+economic readouts wait for all slots. Sparse signal count is a possible outcome.
+
+Complete baseline pairs are required for every selected feature. Primary/stress
+coverage, thirty closed cases/pairs, ten per fixed third and strictly positive
+baseline/stress/paired screens are feasibility gates. A pass can propose only a
+separately declared independent confirmation cohort. It cannot complete the day,
+execution-calibration or production gates. No hypothesis tuning or cohort extension
+follows this pilot's outcome within this version.
+
+This delivery changes specifications/documentation only. No R003 runner, capture
+command, new recording, paper evaluation or trading result exists yet. Native
+schemas, original protocols/helpers, the installed image and historical results
+are unchanged. Next implement and verify the offline runner and capture-manifest
+machinery before issuing a tested Mac command. No Mac action is needed now.
+Static review verifies exact threshold/budget boundaries, opposite arm mappings,
+the unchanged six cost profiles, finite native limits, complete pair/slot rules
+and document links. It evaluates no old or new economic data. Receipt:
+`data/r003-specification-ts4hh08p/specification-review.json`.
+
 ## First supplied Mac R002 diagnostic accepted, 28 November 2026 PKT
 
 The supplied `momentum-explain-20261127T215129Z-O4twGK/report` readout, following
